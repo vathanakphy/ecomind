@@ -779,3 +779,140 @@ body.planting-cursor .tile.plantable {
 .tile.plantable:hover .tile-visual {
     transform: scale(1.5);
 }
+
+/* ======================================================= */
+/* MEDIA QUERIES FOR TABLET & DESKTOP                      */
+/* ======================================================= */
+
+/* --- Tablet Styles (up to 1024px) --- */
+@media (min-width: 768px) {
+  .App {
+    padding: 20px;
+    border-radius: 15px;
+    min-height: 90vh;
+    max-height: 95vh;
+  }
+  h1 { font-size: 2.5em; }
+  h2 { font-size: 1.8em; }
+  h3 { font-size: 1.4em; }
+
+  /* Main Menu */
+  .main-menu-screen .planet-background { width: 90%; }
+
+  /* Mission Select */
+  .mission-select-screen .mission-cards-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .mission-card {
+    width: clamp(250px, 40%, 300px);
+  }
+
+  /* Ocean Mission */
+  .environment-view { height: 250px; }
+  .ai-helper-mission { flex-direction: row; }
+  .dialogue-box { text-align: left; }
+  .resource-counters {
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 1.1em;
+  }
+  .action-buttons-mission {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  /* Minigames */
+  .sorting-bins, .classification-buttons {
+    flex-direction: row;
+  }
+  .sorting-bins .game-button, .classification-buttons .game-button {
+    width: auto;
+    flex-grow: 1;
+    max-width: 200px;
+  }
+
+  /* Forest Mission */
+  .forest-mission-screen {
+    height: 100vh;
+    overflow: hidden;
+  }
+  .forest-hud {
+    flex-direction: row;
+    font-size: 1.1em;
+  }
+  .forest-main-content {
+    flex-direction: row;
+  }
+  .left-sidebar {
+    width: 220px;
+    border-right: 2px solid #a5d6a7;
+    border-bottom: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  .resource-counters.vertical {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .forest-map-grid {
+    grid-template-columns: repeat(var(--grid-width, 15), 40px);
+    gap: 3px;
+  }
+  .tile {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5em;
+  }
+  .planting-menu {
+    position: absolute;
+    bottom: 50px;
+    left: 240px; /* Adjust based on sidebar width */
+    width: 300px;
+    border-radius: 8px;
+  }
+  .notification-log-container {
+    height: 50px;
+    position: static;
+  }
+  
+}
+
+.forest-map-container {
+  flex-grow: 1;
+  padding: 10px; /* Reduced padding to give more space */
+  display: flex; /* Use flexbox for centering */
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Hide anything that overflows */
+  width: 100%;
+}
+
+.forest-map-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-width, 15), 40px); /* Default desktop size */
+  gap: 3px;
+  /* This allows the scaling to originate from the center */
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.tile {
+  width: 40px; /* Default desktop size */
+  height: 40px; /* Default desktop size */
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5em; /* Default desktop size */
+  transition: all 0.2s ease;
+}
+
+/* --- Desktop Styles (Optional, for very large screens) --- */
+@media (min-width: 1200px) {
+  /* You can add specific styles for very large monitors here if needed */
+  /* For example, increase font size or spacing */
+}
