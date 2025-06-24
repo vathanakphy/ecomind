@@ -1,0 +1,781 @@
+/* Optional: Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+:root {
+  --primary-blue: #3498db;
+  --bright-green: #2ecc71;
+  --sunny-yellow: #f1c40f;
+  --accent-orange: #e67e22;
+  --warning-red: #e74c3c;
+  --neutral-light-gray: #ecf0f1;
+  --neutral-dark-gray: #34495e;
+  --text-color: #2c3e50;
+  --font-family: 'Nunito', sans-serif; /* Use imported font */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--neutral-light-gray);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.App {
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  min-height: 90vh;
+  max-height: 95vh;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.screen {
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+h1, h2, h3 {
+  color: var(--primary-blue);
+  margin-top: 0;
+}
+
+h1 { font-size: 2.5em; }
+h2 { font-size: 1.8em; }
+h3 { font-size: 1.4em; }
+
+.icon {
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+/* --- Buttons --- */
+.game-button {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px; /* Rounded corners */
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  min-width: 150px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.game-button:hover:not(:disabled) {
+  background-color: #2980b9; /* Darker blue */
+  transform: translateY(-2px);
+}
+
+.game-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.game-button:disabled {
+  background-color: #bdc3c7; /* Light gray for disabled */
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.play-button {
+  background-color: var(--bright-green);
+  font-size: 1.5em;
+  padding: 15px 40px;
+}
+.play-button:hover:not(:disabled) {
+  background-color: #27ae60; /* Darker green */
+}
+
+
+/* --- Main Menu --- */
+.main-menu-screen .planet-background {
+  background-color: var(--primary-blue); /* Placeholder for actual image */
+  color: white;
+  padding: 40px 20px;
+  border-radius: 10px;
+  width: 90%;
+  margin-bottom: 20px;
+}
+.main-menu-screen .ai-helper-corner {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  font-size: 1.2em;
+  color: var(--bright-green);
+}
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 60%;
+  max-width: 300px;
+}
+
+/* --- Mission Select --- */
+.mission-select-screen .mission-cards-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.mission-card {
+  background-color: var(--neutral-light-gray);
+  border: 2px solid var(--primary-blue);
+  border-radius: 10px;
+  padding: 20px;
+  width: clamp(200px, 40%, 280px); /* Responsive width */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.mission-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+.mission-card h3 { margin-top: 0; color: var(--primary-blue); }
+.mission-card.locked {
+  border-color: #95a5a6;
+  background-color: #ecf0f1;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.mission-card.locked h3 { color: #7f8c8d; }
+.mission-card.locked:hover { transform: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+
+/* --- Ocean Mission --- */
+.ocean-mission-screen {
+  position: relative;
+}
+.environment-view {
+  width: 100%;
+  height: 250px; /* Adjust as needed */
+  background-color: var(--primary-blue); /* Default clean ocean */
+  border-radius: 10px;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 1s ease, opacity 1s ease;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 2em;
+}
+.pollution-item, .clean-item {
+  animation: float 3s ease-in-out infinite alternate;
+}
+.oil-slick {
+  width: 80px; height: 30px; background-color: #333; opacity: 0.5; border-radius: 50%;
+}
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-10px); }
+}
+
+.ai-helper-mission {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--neutral-light-gray);
+  padding: 10px;
+  border-radius: 8px;
+  width: 90%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.ai-avatar { font-size: 2em; }
+.dialogue-box {
+  flex-grow: 1;
+  text-align: left;
+  background-color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.main-ui-dashboard {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.status-bar { width: 100%; }
+.progress-bar-container {
+  width: 100%;
+  height: 25px;
+  background-color: #e0e0e0;
+  border-radius: 12.5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--bright-green); /* Default to green */
+  border-radius: 12.5px 0 0 12.5px; /* Keep left round, right might be flat if not 100% */
+  transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  line-height: 25px;
+}
+.resource-counters {
+  display: flex;
+  justify-content: space-around;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+.resource-counters span {
+  background-color: var(--neutral-light-gray);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.action-buttons-mission {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+}
+.back-button-mission {
+  margin-top: 15px;
+  background-color: var(--accent-orange);
+}
+.back-button-mission:hover:not(:disabled) {
+  background-color: #d35400; /* Darker orange */
+}
+
+/* --- Sort Trash Minigame --- */
+.sort-trash-minigame {
+  background-color: #e8f6fd; /* Light blue techy background */
+}
+.minigame-item-area {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  width: 80%;
+}
+.item-to-sort {
+  font-size: 2.5em; /* Make item visual prominent */
+  margin-top: 10px;
+  font-weight: bold;
+}
+.sorting-bins {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  width: 100%;
+}
+.sorting-bins .game-button {
+  flex-grow: 1; /* Make bins take up available space */
+  max-width: 200px;
+}
+.minigame-feedback {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 15px;
+  min-height: 1.5em; /* Reserve space to prevent layout shift */
+}
+.minigame-feedback.correct { color: var(--bright-green); }
+.minigame-feedback.incorrect { color: var(--warning-red); }
+.minigame-quit-button {
+  margin-top: 20px;
+  background-color: var(--warning-red);
+}
+.minigame-quit-button:hover:not(:disabled) {
+  background-color: #c0392b;
+}
+
+
+/* --- Upgrade Panel (Popup) --- */
+.popup-overlay {
+  position: fixed; /* Use fixed for true overlay */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+}
+.upgrade-panel {
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: left;
+}
+.upgrade-panel h3 { text-align: center; margin-bottom: 20px; }
+.upgrade-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.upgrade-item {
+  background-color: var(--neutral-light-gray);
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 5px solid var(--sunny-yellow);
+}
+.upgrade-item h4 { margin-top: 0; color: var(--neutral-dark-gray); }
+.upgrade-item p { margin-bottom: 10px; }
+.upgrade-item .game-button { width: 100%; margin-top: 10px; }
+.upgrade-item.purchased {
+  border-left-color: var(--bright-green);
+  opacity: 0.8;
+}
+.upgrade-item.purchased .game-button {
+  background-color: var(--bright-green);
+}
+.upgrade-panel > .game-button { /* Close button styling */
+  display: block;
+  margin: 20px auto 0;
+  background-color: var(--accent-orange);
+}
+.upgrade-panel > .game-button:hover:not(:disabled) {
+  background-color: #d35400;
+}
+
+/* ... (previous CSS rules remain the same) ... */
+
+/* --- General Enhancements --- */
+.animated-ai .icon {
+  display: inline-block; /* Allows transform */
+  animation: subtleBob 1.5s ease-in-out infinite;
+}
+@keyframes subtleBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* --- Modal --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 15px; /* Ensure modal is not edge-to-edge on small screens */
+  box-sizing: border-box;
+}
+.modal-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px; /* Increased max-width for HowToPlay */
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: left; /* Better for lists and paragraphs */
+}
+.modal-content h3 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: var(--primary-blue);
+}
+.modal-content ol {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+.modal-content li {
+  margin-bottom: 8px;
+}
+.modal-close-button { /* Specific styling for modal close button */
+  display: block;
+  margin: 20px auto 0;
+  background-color: var(--accent-orange);
+}
+.modal-close-button:hover:not(:disabled) {
+  background-color: #d35400;
+}
+
+/* --- Mission Select Enhancements --- */
+.mission-card.completed {
+  border-left: 5px solid var(--bright-green);
+  background-color: #e8f8f5; /* Lighter green tint */
+}
+.mission-card.completed h3 .icon.check {
+  color: var(--bright-green);
+  margin-left: 5px;
+}
+
+/* --- Ocean Mission Environment View Enhancements --- */
+.ocean-view {
+  background: linear-gradient(to bottom, var(--primary-blue) 0%, #1abc9c 100%); /* Nicer gradient */
+  position: relative;
+}
+.ocean-view::before { /* Water surface shimmer */
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 30px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0));
+  opacity: var(--pollution-opacity, 0.5); /* Tie to pollution */
+  animation: shimmer 5s linear infinite;
+}
+@keyframes shimmer {
+  0% { transform: translateX(-20%); }
+  100% { transform: translateX(20%); }
+}
+
+.pollution-item, .clean-item {
+  position: absolute; /* Allows better placement */
+  font-size: 1.5em; /* Slightly smaller for more items */
+  opacity: var(--pollution-opacity, 1); /* Tie to pollution for pollution items */
+  transition: opacity 0.5s ease;
+}
+.clean-item {
+  opacity: calc(1 - var(--pollution-opacity, 0)); /* Inverse opacity for clean items */
+}
+
+/* Example placements for items - adjust as needed */
+.pollution-item.plastic-bottle { top: 20%; left: 15%; }
+.pollution-item.plastic-bag { top: 50%; left: 70%; }
+.pollution-item.oil-slick { top: 70%; left: 30%; width: 60px; height: 20px; background-color: #222; opacity: calc(var(--pollution-opacity, 1) * 0.7) !important; border-radius: 50%; }
+.pollution-item.tire { top: 80%; left: 5%; font-size: 1.8em; }
+
+.clean-item.happy-fish { top: 30%; left: 60%; font-size: 2em; }
+.clean-item.coral { top: 65%; left: 20%; color: #ff7f50; font-size: 1.8em; transform: rotate(-15deg); } /* Coral color */
+.clean-item.sun-rays {
+  top: 10%; left: 50%; transform: translateX(-50%);
+  font-size: 3em; color: var(--sunny-yellow);
+  opacity: calc( (1 - var(--pollution-opacity, 0)) * 0.7); /* Make sunrays appear when cleaner */
+}
+
+
+/* --- AI Helper Enhancements --- */
+.ai-helper-mission .ai-avatar .icon {
+  font-size: 1.5em; /* Make AI avatar icon a bit bigger */
+  transition: transform 0.3s ease;
+}
+.ai-helper-mission .ai-avatar .icon.happyAI { color: var(--bright-green); transform: scale(1.1); }
+.ai-helper-mission .ai-avatar .icon.concernedAI { color: var(--accent-orange); }
+.ai-helper-mission .ai-avatar .icon.thinkingAI { animation: thinkingPulse 1s infinite; }
+
+@keyframes thinkingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* --- Notification System --- */
+.notification-area {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: auto; /* Fit content */
+  max-width: 300px;
+}
+.notification {
+  background-color: var(--neutral-dark-gray);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideInNotification 0.3s ease-out;
+}
+.notification.notification-success { background-color: var(--bright-green); }
+.notification.notification-error { background-color: var(--warning-red); }
+.notification.notification-info { background-color: var(--primary-blue); }
+
+.notification-dismiss {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0 5px;
+}
+@keyframes slideInNotification {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* --- Sort Trash Minigame Enhancements --- */
+.minigame-timer {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--primary-blue);
+  margin-bottom: 10px;
+  background-color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Tooltip (Simple, can be enhanced with JS library for complex ones) */
+[title] {
+  position: relative; /* Needed for more complex tooltip styling if you go that route */
+}
+/* For very simple browser default tooltips, this is often enough.
+   If you want custom tooltips, you'd add ::after pseudo-elements and more CSS. */
+
+
+/* Ensure Upgrade Panel is scrollable if content overflows */
+.upgrade-panel { /* This was in the JSX, ensure it's here too for modal content */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.upgrade-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+/* App.css */
+
+/* --- Forest Mission Screen --- */
+.forest-mission-screen {
+  display: flex;
+  flex-direction: column;
+  background: #e8f5e9; /* Light green background */
+  color: #1b5e20; /* Dark green text */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.forest-hud {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(5px);
+  border-bottom: 2px solid #a5d6a7;
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-item .progress-bar-container.small {
+  width: 100px;
+  height: 12px;
+}
+
+.forest-main-content {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.left-sidebar {
+  width: 200px;
+  padding: 15px;
+  background: #c8e6c9;
+  border-right: 2px solid #a5d6a7;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.left-sidebar h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.left-sidebar .game-button.active {
+  background-color: #66bb6a;
+  box-shadow: 0 2px #388e3c;
+}
+
+.forest-map-container {
+  flex-grow: 1;
+  padding: 20px;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+}
+
+.forest-map-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-width, 15), 40px);
+  gap: 3px;
+}
+
+.tile {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #a5d6a7;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5em;
+  transition: all 0.2s ease;
+}
+
+.tile-empty { background: #fbe9e7; }
+.tile-young { background: #c8e6c9; }
+.tile-mature { background: #81c784; }
+.tile-fire { background: #ff7043; animation: fire-flicker 0.5s infinite alternate; }
+.tile-logged { background: #8d6e63; }
+
+.tile.plantable:hover {
+  background-color: #a5d6a7;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+@keyframes fire-flicker {
+  from { box-shadow: 0 0 10px #ffab91; }
+  to { box-shadow: 0 0 15px #ff7043; }
+}
+
+.planting-menu {
+  position: absolute;
+  bottom: 50px;
+  left: 220px;
+  background: white;
+  border: 2px solid #81c784;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 300px;
+  z-index: 10;
+}
+.planting-menu ul { list-style: none; padding: 0; margin: 0; }
+.planting-menu li { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 4px; cursor: pointer; }
+.planting-menu li:hover { background: #e8f5e9; }
+.planting-menu li.selected { background: #a5d6a7; font-weight: bold; }
+.planting-menu li.disabled { opacity: 0.5; cursor: not-allowed; }
+.planting-menu .tree-visual { font-size: 1.5em; }
+.planting-menu .tree-info { flex-grow: 1; display: flex; flex-direction: column; }
+.planting-menu .tree-cost { font-weight: bold; }
+
+.notification-log-container {
+  height: 50px;
+  background: #37474f;
+  color: #eceff1;
+  padding: 5px 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.notification-log { list-style: none; padding: 0; margin: 0; }
+.log-entry.log-success { color: #a5d6a7; }
+.log-entry.log-error { color: #ef9a9a; }
+.log-entry.log-info { color: #90caf9; }
+
+
+/* --- Forest AI Training Screen --- */
+.ai-training-screen {
+  padding: 2rem;
+  text-align: center;
+}
+.training-item-area {
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 2px dashed #a5d6a7;
+  border-radius: 8px;
+  max-width: 500px;
+}
+.training-image-placeholder {
+  width: 100%;
+  height: 200px;
+  background: #e0e0e0;
+  display: grid;
+  place-items: center;
+  font-style: italic;
+  color: #757575;
+  border-radius: 4px;
+}
+.training-description {
+  margin-top: 1rem;
+  font-size: 1.1em;
+}
+.classification-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+body.planting-cursor,
+body.planting-cursor .tile.plantable {
+  /* Use a custom image or a standard cursor */
+  /* For a simple crosshair: */
+  cursor: crosshair;
+  /* For a custom sapling cursor (make sure you have sapling.png in public/): */
+  /* cursor: url('/sapling.png') 16 32, auto; */
+}
+
+
+/* --- Styles for Vertical Resource Counters --- */
+.resource-counters.vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  align-items: flex-start;
+}
+.resource-counters.vertical span {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+
+/* --- Styles for Plantable Tiles --- */
+.tile.plantable {
+  background-color: #a5d6a7; /* Light green to indicate possible action */
+  box-shadow: 0 0 10px 2px #66bb6a; /* Add a glow */
+}
+
+.tile.plantable:hover {
+  transform: scale(1.1);
+  border-color: #388e3c;
+}
+
+.tile .tile-visual {
+    transition: transform 0.2s ease-in-out;
+}
+
+.tile.plantable:hover .tile-visual {
+    transform: scale(1.5);
+}
