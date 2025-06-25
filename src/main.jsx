@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom'; // Import BrowserRouter
-import { LanguageProvider } from './utils/language';
+import { LanguageProvider } from './utils/LanguageProvider.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

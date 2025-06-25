@@ -1,31 +1,34 @@
 // src/screens/ForestMissionScreen.js
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../utils/language'; // Import the language hook
 import TopHud from '../components/game/forest/TopHud';
 import ForestMap from '../components/game/forest/ForestMap';
 import PlantingMenu from '../components/game/forest/PlantingMenu';
-import NotificationLog from '../components/game/forest/NotificationLog';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import UpgradePanel from '../components/game/UpgradePanel';
-// --- NEW: Import the GameGuide component ---
-import GameGuideFoest from '../components/ui/GameGuideForest';
+import GameGuideFoest from '../components/ui/GameGuideForest'; // Note: Typo in original filename 'Foest' -> 'Forest' might be needed
 import { DEPLOY_AI_FOREST_DATA_COST, DEPLOY_AI_FOREST_ENERGY_COST } from '../constants/gameConstants';
 
 const ForestMissionScreen = (props) => {
   const {
     co2Level, globalTemp, biodiversity, forestCoverage, forestMap,
-    forestNotifications, dataPoints, energy,
+    dataPoints, energy,
     onPlantTree, onTrainAI, onDeployAIForest,
     onBuyUpgrade, onConvertBiomass, upgrades,
     forestAIAccuracy
   } = props;
+
   const navigate = useNavigate();
   const [isPlanting, setIsPlanting] = useState(false);
   const [selectedTree, setSelectedTree] = useState(null);
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
-  // --- NEW: State to control the guide visibility ---
-  const [showGuide, setShowGuide] = useState(false); // Show guide on first load
+  const [showGuide, setShowGuide] = useState(false);
+  
+  // Get translations
+  const { result } = useLanguage();
+  const text = result.forestMissionScreen;
 
   useEffect(() => {
     if (selectedTree) {
@@ -64,50 +67,49 @@ const ForestMissionScreen = (props) => {
       />
       <div className="forest-main-content">
         <div className="left-sidebar">
-          <h3>Actions</h3>
+          <h3>{text.actionsTitle}</h3> {/* Translated */}
           <div className="resource-counters vertical">
-            <span title="Data Points: Used for planting and upgrades"><Icon type="data" /> {dataPoints} DP</span>
-            <span title="Energy: Used for AI training"><Icon type="energy" /> {energy} ⚡️</span>
-            <span title="Forest AI Accuracy"><Icon type="brain" /> {forestAIAccuracy}%</span>
+            <span title={text.resources.dataPoints}><Icon type="data" /> {dataPoints} DP</span> {/* Translated */}
+            <span title={text.resources.energy}><Icon type="energy" /> {energy} ⚡️</span> {/* Translated */}
+            <span title={text.resources.aiAccuracy}><Icon type="brain" /> {forestAIAccuracy}%</span> {/* Translated */}
           </div>
 
-          <Button onClick={onTrainAI} title="Train AI to identify forest health">
-            <Icon type="🧪" /> Train AI
+          <Button onClick={onTrainAI} title={text.buttons.trainAITitle}> {/* Translated */}
+            <Icon type="🧪" /> {text.buttons.trainAI} {/* Translated */}
           </Button>
 
           <Button
             onClick={onDeployAIForest}
             disabled={dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST}
-            title="Deploy AI to automatically plant saplings"
+            title={text.buttons.deployAITitle} /* Translated */
           >
-            <Icon type="🌱" /> Deploy AI
+            <Icon type="🌱" /> {text.buttons.deployAI} {/* Translated */}
           </Button>
           
           <Button onClick={handleTogglePlanting} className={isPlanting ? 'active' : ''}>
-            <Icon type="⚖️" /> Manage Forest
+            <Icon type="⚖️" /> {text.buttons.manageForest} {/* Translated */}
           </Button>
+
            {upgrades.hasUpgradeBiomassGenerator && (
-            <Button onClick={onConvertBiomass} disabled={loggedTileCount === 0} title="Convert 1 logged tile to energy">
-              <Icon type="🔥" /> Convert Biomass ({loggedTileCount})
+            <Button onClick={onConvertBiomass} disabled={loggedTileCount === 0} title={text.buttons.convertBiomassTitle}> {/* Translated */}
+              <Icon type="🔥" /> {text.buttons.convertBiomass} ({loggedTileCount}) {/* Translated */}
             </Button>
           )}
 
           <Button onClick={() => setShowUpgradePanel(true)}>
-            <Icon type="wrench" /> Upgrades
+            <Icon type="wrench" /> {text.buttons.upgrades} {/* Translated */}
           </Button>
 
-          {/* --- NEW: Button to show the guide again --- */}
           <Button onClick={() => setShowGuide(true)}>
-            <Icon type="❓" /> Help
+            <Icon type="❓" /> {text.buttons.help} {/* Translated */}
           </Button>
 
-          <Button onClick={() => navigate('/missions')} className="back-button-mission"> Back to Missions </Button>
+          <Button onClick={() => navigate('/missions')} className="back-button-mission"> {text.buttons.backToMissions} </Button> {/* Translated */}
         </div>
         <ForestMap
           forestMap={forestMap} onTileClick={handleTileClick} selectedTree={selectedTree}
         />
       </div>
-      {/* <NotificationLog notifications={forestNotifications} /> */}
       {isPlanting && (
         <PlantingMenu
           onSelectTree={handleSelectTree} selectedTree={selectedTree} dataPoints={dataPoints}
@@ -121,9 +123,7 @@ const ForestMissionScreen = (props) => {
         upgrades={upgrades}
       />
 
-      {/* --- NEW: Render the GameGuide modal conditionally --- */}
       <GameGuideFoest show={showGuide} onClose={() => setShowGuide(false)} />
-
     </div>
   );
 };
