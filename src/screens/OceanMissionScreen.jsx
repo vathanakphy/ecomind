@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import UpgradePanel from '../components/game/UpgradePanel';
+import GameGuideOcean from '../components/ui/GameGuideOcean'; // Adjust path
 // --- FIX IS ON THIS LINE ---
 import { MAX_OCEAN_HEALTH, DEPLOY_AI_DATA_COST, DEPLOY_AI_ENERGY_COST } from '../constants/gameConstants';
 
@@ -15,6 +16,7 @@ const OceanMissionScreen = (props) => {
   } = props;
   
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
+  const [showGameGuide, setShowGameGuide] = useState(false);
   const navigate = useNavigate();
 
   const healthPercentage = Math.max(0, Math.min(MAX_OCEAN_HEALTH, oceanHealth));
@@ -57,7 +59,9 @@ const OceanMissionScreen = (props) => {
           <Button onClick={() => setShowUpgradePanel(true)} title="View and purchase AI upgrades."><Icon type="wrench" /> UPGRADES</Button>
         </div>
       </div>
-      
+      <Button onClick={() => setShowGameGuide(true)}>
+          <Icon type="❓" /> Help
+      </Button>
       <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
       
       <UpgradePanel 
@@ -66,6 +70,11 @@ const OceanMissionScreen = (props) => {
         onBuyUpgrade={onBuyUpgrade}
         dataPoints={dataPoints}
         upgrades={upgrades}
+      />
+
+      <GameGuideOcean
+        show={showGameGuide}
+        onClose={() => setShowGameGuide(false)}
       />
     </div>
   );

@@ -47,6 +47,8 @@ const ForestMap = ({ forestMap, onTileClick, selectedTree }) => {
       case 'mature': return TREE_TYPES.find(t => t.id === tile.treeId)?.visual || '🌳';
       case 'fire': return '🔥';
       case 'logged': return '🪓';
+      case 'diseased': return '🤢';
+      case 'fire_risk': return '🔥';
       default: return '';
     }
   };

@@ -53,7 +53,7 @@ const UpgradePanel = ({ show, onClose, onBuyUpgrade, dataPoints, upgrades }) => 
               {upgrades.hasUpgradeSolarPanels ? 'PURCHASED' : 'BUY'}
             </Button>
         </div>
-        <div className={`upgrade-item ${upgrades.hasUpgradeBiomassGenerator ? 'purchased' : ''}`}>
+        {/* <div className={`upgrade-item ${upgrades.hasUpgradeBiomassGenerator ? 'purchased' : ''}`}>
             <h4><Icon type="🔥" /> Biomass Generator</h4>
             <p>Convert logged forest tiles (stumps) directly into a burst of energy. Adds a new action button in the forest.</p>
             <p>Cost: {UPGRADE_BIOMASS_GENERATOR_COST} DP</p>
@@ -63,7 +63,7 @@ const UpgradePanel = ({ show, onClose, onBuyUpgrade, dataPoints, upgrades }) => 
             >
               {upgrades.hasUpgradeBiomassGenerator ? 'PURCHASED' : 'BUY'}
             </Button>
-        </div>
+        </div> */}
       </div>
     </Modal>
   );

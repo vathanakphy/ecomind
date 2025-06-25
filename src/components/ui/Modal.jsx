@@ -1,5 +1,4 @@
 // src/components/ui/Modal.js
-import React from 'react';
 import Button from './Button';
 
 const Modal = ({ show, onClose, title, children }) => {

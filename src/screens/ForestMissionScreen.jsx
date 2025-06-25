@@ -1,5 +1,5 @@
 // src/screens/ForestMissionScreen.js
-import { useState, useEffect } from 'react'; // Import useEffect
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopHud from '../components/game/forest/TopHud';
 import ForestMap from '../components/game/forest/ForestMap';
@@ -7,7 +7,9 @@ import PlantingMenu from '../components/game/forest/PlantingMenu';
 import NotificationLog from '../components/game/forest/NotificationLog';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
-import UpgradePanel from '../components/game/UpgradePanel'; // <-- Import the panel
+import UpgradePanel from '../components/game/UpgradePanel';
+// --- NEW: Import the GameGuide component ---
+import GameGuideFoest from '../components/ui/GameGuideForest';
 import { DEPLOY_AI_FOREST_DATA_COST, DEPLOY_AI_FOREST_ENERGY_COST } from '../constants/gameConstants';
 
 const ForestMissionScreen = (props) => {
@@ -15,24 +17,26 @@ const ForestMissionScreen = (props) => {
     co2Level, globalTemp, biodiversity, forestCoverage, forestMap,
     forestNotifications, dataPoints, energy,
     onPlantTree, onTrainAI, onDeployAIForest,
-    onBuyUpgrade, onConvertBiomass, upgrades // <-- Receive new props
+    onBuyUpgrade, onConvertBiomass, upgrades,
+    forestAIAccuracy
   } = props;
-   const navigate = useNavigate();
-    const [isPlanting, setIsPlanting] = useState(false);
-    const [selectedTree, setSelectedTree] = useState(null);
-    const [showUpgradePanel, setShowUpgradePanel] = useState(false); // <-- State for the panel
-  // --- NEW: Add/remove a class to the body for the custom cursor ---
+  const navigate = useNavigate();
+  const [isPlanting, setIsPlanting] = useState(false);
+  const [selectedTree, setSelectedTree] = useState(null);
+  const [showUpgradePanel, setShowUpgradePanel] = useState(false);
+  // --- NEW: State to control the guide visibility ---
+  const [showGuide, setShowGuide] = useState(false); // Show guide on first load
+
   useEffect(() => {
     if (selectedTree) {
       document.body.classList.add('planting-cursor');
     } else {
       document.body.classList.remove('planting-cursor');
     }
-    // Cleanup function to remove the class if the component unmounts
     return () => {
       document.body.classList.remove('planting-cursor');
     };
-  }, [selectedTree]); // Re-run this effect whenever selectedTree changes
+  }, [selectedTree]);
 
   const handleTogglePlanting = () => {
     const newIsPlanting = !isPlanting;
@@ -51,7 +55,7 @@ const ForestMissionScreen = (props) => {
       onPlantTree(x, y, selectedTree);
     }
   };
-    const loggedTileCount = forestMap.flat().filter(t => t.type === 'logged').length;
+  const loggedTileCount = forestMap.flat().filter(t => t.type === 'logged').length;
 
   return (
     <div className="screen forest-mission-screen">
@@ -64,13 +68,13 @@ const ForestMissionScreen = (props) => {
           <div className="resource-counters vertical">
             <span title="Data Points: Used for planting and upgrades"><Icon type="data" /> {dataPoints} DP</span>
             <span title="Energy: Used for AI training"><Icon type="energy" /> {energy} ⚡️</span>
+            <span title="Forest AI Accuracy"><Icon type="brain" /> {forestAIAccuracy}%</span>
           </div>
 
           <Button onClick={onTrainAI} title="Train AI to identify forest health">
             <Icon type="🧪" /> Train AI
           </Button>
 
-          {/* --- MODIFICATION HERE: Button is now enabled and functional --- */}
           <Button
             onClick={onDeployAIForest}
             disabled={dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST}
@@ -92,13 +96,18 @@ const ForestMissionScreen = (props) => {
             <Icon type="wrench" /> Upgrades
           </Button>
 
+          {/* --- NEW: Button to show the guide again --- */}
+          <Button onClick={() => setShowGuide(true)}>
+            <Icon type="❓" /> Help
+          </Button>
+
           <Button onClick={() => navigate('/missions')} className="back-button-mission"> Back to Missions </Button>
         </div>
         <ForestMap
           forestMap={forestMap} onTileClick={handleTileClick} selectedTree={selectedTree}
         />
       </div>
-      <NotificationLog notifications={forestNotifications} />
+      {/* <NotificationLog notifications={forestNotifications} /> */}
       {isPlanting && (
         <PlantingMenu
           onSelectTree={handleSelectTree} selectedTree={selectedTree} dataPoints={dataPoints}
@@ -111,6 +120,10 @@ const ForestMissionScreen = (props) => {
         dataPoints={dataPoints}
         upgrades={upgrades}
       />
+
+      {/* --- NEW: Render the GameGuide modal conditionally --- */}
+      <GameGuideFoest show={showGuide} onClose={() => setShowGuide(false)} />
+
     </div>
   );
 };

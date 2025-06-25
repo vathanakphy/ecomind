@@ -25,7 +25,7 @@ export const playSound = (type) => {
       oscillator.type = 'square';
       oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
       gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.4);
-      break;
+      break;  
     case 'deploy':
       oscillator.type = 'sawtooth';
       oscillator.frequency.setValueAtTime(100, audioContext.currentTime);

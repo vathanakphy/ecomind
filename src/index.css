@@ -7,21 +7,22 @@
   --neutral-light-gray: #ecf0f1;
   --neutral-dark-gray: #34495e;
   --text-color: #2c3e50;
-  --font-family: 'Nunito', sans-serif;
+  --font-family: "Baloo 2", sans-serif,"Taprom", system-ui;
 }
 
 a {
   font-weight: 500;
   color: #646cff;
   text-decoration: inherit;
-}
+}  
 a:hover {
-  color: #535bf2;
+  color: #535bf2;  
 }
 
 body {
   margin: 0;
   display: flex;
+  /* font-family: "Roboto", sans-serif,"Taprom", system-ui; */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;

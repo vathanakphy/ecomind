@@ -1,39 +1,68 @@
-// src/screens/MainMenuScreen.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../utils/language';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import Modal from '../components/ui/Modal';
+// Import your new custom language selector
+import LanguageFlagSelector from '../utils/LanguageSelection'; // Adjust path as necessary
 
 const MainMenuScreen = ({ onAddNotification, aiMood }) => {
   const [showHowToPlayModal, setShowHowToPlayModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const navigate = useNavigate();
+  const { language, setLanguage, result } = useLanguage();
+  const menu = result.mainMenu;
 
   return (
     <div className="screen main-menu-screen">
+      {/* Main UI */}
       <div className="planet-background">
-        <h1><Icon type="leaf" /> EcoMind</h1>
-        <p>Train Your AI to Save the Planet</p>
+        <h1 style={{ color: 'white' }}>
+          <Icon type="leaf" /> {menu.title}
+        </h1>
+        <p>{menu.subtitle}</p>
       </div>
       <div className="ai-helper-corner animated-ai">
         <Icon type={aiMood || 'neutralAI'} /> Eco
+         <div style={{ marginTop: '1rem' }}>
+          <label><strong>Choose Language:</strong></label><br />
+          {/* Replace the native select with your custom component */}
+          <LanguageFlagSelector 
+            language={language}
+            setLanguage={setLanguage}
+          />
+          
+        </div>
       </div>
       <div className="menu-buttons">
-        <Button onClick={() => navigate('/missions')} className="play-button">PLAY</Button>
-        <Button onClick={() => setShowHowToPlayModal(true)}>HOW TO PLAY</Button>
-        <Button onClick={() => onAddNotification("Settings are not yet implemented.", "info")}>SETTINGS</Button>
+        <Button onClick={() => navigate('/missions')} className="play-button">{menu.play}</Button>
+        <Button onClick={() => setShowHowToPlayModal(true)}>{menu.howToPlay}</Button>
+        <Button onClick={() => setShowSettingsModal(true)}>{menu.settings}</Button>
       </div>
-      <Modal show={showHowToPlayModal} onClose={() => setShowHowToPlayModal(false)} title="How to Play EcoMind">
-        {/* ... Modal content is unchanged ... */}
-        <p>Welcome, Eco-Hero!</p>
+
+      {/* How to Play Modal */}
+      <Modal show={showHowToPlayModal} onClose={() => setShowHowToPlayModal(false)} title={menu.modalTitle}>
+        <p>{menu.welcome}</p>
         <ol>
-          <li><strong>Select a Mission:</strong> Choose an environmental challenge to tackle.</li>
-          <li><strong>Train Your AI:</strong> Play minigames like "Sort the Trash" to collect Data Points (DP) and improve your AI's Accuracy.</li>
-          <li><strong>Manage Resources:</strong> Keep an eye on your Data Points and Energy.</li>
-          <li><strong>Deploy AI:</strong> Use DP and Energy to send your AI into the simulation to clean the environment. The AI's success depends on its Accuracy.</li>
-          <li><strong>Upgrade AI:</strong> Spend DP on upgrades to make your AI smarter and more efficient.</li>
+          {menu.steps.map((step, index) => (
+            <li key={index}><strong>{step}</strong></li>
+          ))}
         </ol>
-        <p>Your goal is to restore environmental health to 100%!</p>
+        <p>{menu.goal}</p>
+      </Modal>
+
+      {/* Settings Modal (Language Selector) */}
+      <Modal show={showSettingsModal} onClose={() => setShowSettingsModal(false)} title={menu.settings}>
+        <div style={{ marginTop: '1rem' }}>
+          <label><strong>Choose Language:</strong></label><br />
+          {/* Replace the native select with your custom component */}
+          <LanguageFlagSelector 
+            language={language}
+            setLanguage={setLanguage}
+          />
+          
+        </div>
       </Modal>
     </div>
   );

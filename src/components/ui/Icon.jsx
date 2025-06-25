@@ -1,6 +1,4 @@
 // src/components/ui/Icon.js
-import React from 'react';
-
 const Icon = ({ type, className = '' }) => {
   const icons = {
     brain: '🧠', leaf: '🌿', gear: '⚙️', data: '💾', energy: '⚡️',
