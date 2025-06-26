@@ -18,7 +18,7 @@ import {
   // Clean City
   INITIAL_CITY_AQI, INITIAL_CITY_ECONOMY, INITIAL_CITY_HAPPINESS,
   CITY_DECISIONS, CITY_DISTRICTS, MAX_CITY_STATS,CITY_TRAINING_PROPOSALS,
-  DEPLOY_AI_CITY_DATA_COST, DEPLOY_AI_CITY_ENERGY_COST, AI_GENERATED_DECISION,
+  DEPLOY_AI_CITY_DATA_COST, DEPLOY_AI_CITY_ENERGY_COST, AI_GENERATED_DECISION,  
   INITIAL_CITY_AI_ACCURACY, AI_RECOMMENDATION_DISCOUNT,
   //Game Point
   MAX_ENERGY, UPGRADE_SOLAR_PANELS_COST, SOLAR_PANEL_ENERGY_GENERATION,
@@ -361,87 +361,120 @@ function App() {
     }, 1000);
   }, [aiForestTrainingIndex, navigate, addForestNotification]);
 
-   const handleDeployAIForest = useCallback(() => {
-    if (dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST) { /* ... */ return; }
+   // Replace the old function in App.jsx with this one
 
+// Replace the old function in App.jsx with this new, smarter version
+
+const handleDeployAIForest = useCallback(() => {
+    // 1. Check for sufficient resources
+    if (dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST) {
+        addForestNotification("Not enough resources to deploy the Forest Warden AI.", "error");
+        return;
+    }
+
+    // 2. Pay the deployment costs
     setDataPoints(dp => dp - DEPLOY_AI_FOREST_DATA_COST);
     setEnergy(e => e - DEPLOY_AI_FOREST_ENERGY_COST);
     playSound('deploy');
 
-    // AI logic: a chance to succeed based on accuracy
-    if (Math.random() * 100 > forestAIAccuracy) {
-      addForestNotification("AI Scan Failed: Accuracy too low to detect anything.", "error");
-      return;
+    // --- NEW DETERMINISTIC LOGIC ---
+
+    // 3. Accuracy now determines the number of tiles the AI can scan.
+    const totalTiles = FOREST_MAP_WIDTH * FOREST_MAP_HEIGHT;
+    // At 100% accuracy, it scans all tiles. At 0%, it scans none.
+    const scanPower = Math.floor(totalTiles * (forestAIAccuracy / 100));
+
+    if (scanPower < 1) {
+        addForestNotification("AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.", "info");
+        return;
     }
 
-    // SUCCESS: AI performs its tasks
-    const threatTiles = forestMap.flat().filter(t => t.type === TILE_TYPES.DISEASED || t.type === TILE_TYPES.FIRE_RISK);
-    const newMap = forestMap.map(row => row.map(cell => ({...cell})));
+    // 4. Get a random sample of tiles to scan based on the AI's power
+    const allTiles = forestMap.flat();
+    // Shuffle all tiles and take the first 'scanPower' number of them
+    const tilesToScan = [...allTiles].sort(() => 0.5 - Math.random()).slice(0, scanPower);
 
-    if (threatTiles.length > 0) {
-      // Priority 1: Handle a threat
-      const tileToFix = threatTiles[0];
-      const threatType = tileToFix.type;
-      newMap[tileToFix.y][tileToFix.x].type = TILE_TYPES.EMPTY; // Fix the tile
-      setForestMap(newMap);
-      addForestNotification(`AI detected and neutralized a ${threatType.replace('_', ' ')} threat!`, 'success');
-    } else {
-      // Priority 2: Reforest if no threats are found
-      const availableTiles = forestMap.flat().filter(tile => tile.type === TILE_TYPES.EMPTY);
-      if (availableTiles.length === 0) { /* ... */ return; }
-      
-      const treeToPlant = TREE_TYPES.find(t => t.id === 'pine');
-      const tilesToPlant = availableTiles.slice(0, AI_PLANTING_COUNT);
-      let biodiversityGained = 0;
+    const newMap = JSON.parse(JSON.stringify(forestMap)); // Deep copy for mutation
+    let threatFound = false;
 
-      tilesToPlant.forEach(tile => {
-        newMap[tile.y][tile.x] = { ...newMap[tile.y][tile.x], type: TILE_TYPES.YOUNG, treeId: treeToPlant.id, growth: 0 };
-        biodiversityGained += treeToPlant.biodiversityImpact;
-      });
-      
-      setForestMap(newMap);
-      setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + biodiversityGained));
-      addForestNotification(`AI Scan Complete: No threats found. Planting ${tilesToPlant.length} new saplings.`, 'success');
+    // 5. Check the scanned area for threats
+    for (const tile of tilesToScan) {
+        if (tile.type === TILE_TYPES.DISEASED || tile.type === TILE_TYPES.FIRE_RISK) {
+            const threatType = tile.type;
+            newMap[tile.y][tile.x].type = TILE_TYPES.EMPTY; // Fix the tile
+            
+            setForestMap(newMap);
+            addForestNotification(`AI scanned a section of the forest and neutralized a ${threatType.replace('_', ' ')} threat!`, 'success');
+            threatFound = true;
+            break; // Handle one threat per deployment
+        }
     }
-  }, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification]);
 
+    // 6. If the AI scanned and found NO threats, it proceeds to reforestation
+    if (!threatFound) {
+        const emptyTilesInScannedArea = tilesToScan.filter(t => t.type === TILE_TYPES.EMPTY);
+
+        if (emptyTilesInScannedArea.length === 0) {
+            addForestNotification(`AI scanned ${scanPower} tiles and found no threats or empty space to plant.`, "info");
+            return;
+        }
+
+        const treeToPlant = TREE_TYPES.find(t => t.id === 'pine');
+        // AI plants in up to 3 spots it found in its scan
+        const spotsToPlant = emptyTilesInScannedArea.slice(0, 3); 
+        let biodiversityGained = 0;
+
+        spotsToPlant.forEach(tile => {
+            newMap[tile.y][tile.x].type = TILE_TYPES.YOUNG;
+            newMap[tile.y][tile.x].treeId = treeToPlant.id;
+            newMap[tile.y][tile.x].growth = 0;
+            biodiversityGained += treeToPlant.biodiversityImpact;
+        });
+
+        setForestMap(newMap);
+        setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + biodiversityGained));
+        addForestNotification(`AI scanned ${scanPower} tiles and found no threats. Planting ${spotsToPlant.length} new saplings.`, 'success');
+    }
+}, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification]);
 
   
   // --- NEW: LOGIC FOR CITY DECISIONS ---
   const handleApproveCityDecision = useCallback((decision) => {
-      let finalCostDP = decision.costDP;
-      let finalCostEnergy = decision.costEnergy;
-      let wasDiscounted = false;
-      if (decision.id === aiRecommendedDecisionId) {
-        finalCostDP *= (1 - AI_RECOMMENDATION_DISCOUNT);
-        finalCostEnergy *= (1 - AI_RECOMMENDATION_DISCOUNT);
-        wasDiscounted = true;
-      }
-    if (dataPoints < decision.costDP || energy < decision.costEnergy) {
-      addNotification("Not enough resources to enact this policy!", "error");
-      return; 
-    }
+    let finalCostDP = decision.costDP;
+    let finalCostEnergy = decision.costEnergy;
+    let wasDiscounted = false;
 
-    // 1. Pay costs
+    if (decision.id === aiRecommendedDecisionId) {
+      finalCostDP *= (1 - AI_RECOMMENDATION_DISCOUNT);
+      finalCostEnergy *= (1 - AI_RECOMMENDATION_DISCOUNT);
+      wasDiscounted = true;
+    }
+    
+    if (dataPoints < finalCostDP || energy < finalCostEnergy) {
+      addNotification("Not enough resources to enact this policy!", "error");
+      return;
+    }
+    
     setDataPoints(dp => dp - finalCostDP);
     setEnergy(e => e - finalCostEnergy);
-    playSound('deploy');
+    playSound('deploy'); // Play a sound for enacting a policy
 
-    // 2. Apply impacts
+    // Apply impacts
     const impacts = decision.impacts;
     if (impacts.aqi) setCityAqi(aqi => Math.max(0, aqi + impacts.aqi));
     if (impacts.economy) setCityEconomy(econ => Math.min(MAX_CITY_STATS, econ + impacts.economy));
     if (impacts.happiness) setCityHappiness(happy => Math.min(MAX_CITY_STATS, happy + impacts.happiness));
 
-    // 3. Remove decision from list
+    // --- CRITICAL FIX: Clear the recommendation ID after ANY decision is approved ---
+    setAiRecommendedDecisionId(null); 
+    
     if (wasDiscounted) {
-          addNotification(`AI Discount Applied! Enacted: ${decision.title}`, 'success');
-          setAiRecommendedDecisionId(null); // Clear recommendation after use
-        } else {
-          addNotification(`Policy enacted: ${decision.title}`, 'success');
-        }
+      addNotification(`AI Discount Applied! Enacted: ${decision.title}`, 'success');
+    } else {
+      addNotification(`Policy enacted: ${decision.title}`, 'success');
+    }
+    // Remove the approved decision from the list
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
-    addNotification(`Policy enacted: ${decision.title}`, 'success');
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId]);
  const handleStartCityTraining = useCallback(() => {
     setCityTrainingIndex(0);
@@ -478,21 +511,30 @@ function App() {
     }, 1200);
   }, [cityTrainingIndex, addNotification, navigate]);
     const handleDeployAICity = useCallback(() => {
-    if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) { /* ... */ }
-    
-    setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST);
-    setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST);
-    playSound('deploy');
-    setAiRecommendedDecisionId(null); // Clear previous recommendation
+       if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) {
+          addNotification("Not enough resources to deploy the AI.", "error");
+          return;
+        }
+      if (availableDecisions.find(d => d.id === AI_GENERATED_DECISION.id)) {
+        addNotification("AI has already provided its optimal policy solution.", "info");
+        return;
+      }
+      setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST);
+      setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST);
+      playSound('deploy');
+      setAiRecommendedDecisionId(null); 
+      setAvailableDecisions(prev => [AI_GENERATED_DECISION, ...prev]);
+      addNotification("AI Deployed! A new, optimized policy is now available for your review.", 'success');
 
-    // AI logic: a chance to succeed based on accuracy
-    if (Math.random() * 100 < cityAIAccuracy) {
-      // SUCCESS: Find the best policy
+
+
+      // AI logic: a chance to succeed based on accuracy
+      if (Math.random() * 100 < cityAIAccuracy) {
+      // SUCCESS: Find the best policy from the available options
       let bestDecision = null;
       let bestScore = -Infinity;
 
       availableDecisions.forEach(decision => {
-        // Simple scoring: prioritize big AQI improvements
         const score = (decision.impacts.aqi * -2) + (decision.impacts.happiness || 0) + (decision.impacts.economy || 0);
         if (score > bestScore) {
           bestScore = score;
@@ -504,13 +546,20 @@ function App() {
         setAiRecommendedDecisionId(bestDecision.id);
         addNotification(`AI analysis complete! A high-impact policy has been recommended with a discount.`, 'success');
       } else {
-        addNotification("AI could not find an optimal policy at this time.", "info");
+        addNotification("AI could not find an optimal policy, but the analysis cost has been paid.", "info");
       }
     } else {
-      // FAILURE: AI is not smart enough
-      addNotification("AI analysis failed: Accuracy too low. The AI couldn't determine the best policy.", "error");
+      // FAILURE: AI is not smart enough, but give a partial refund.
+      const refundDP = Math.round(DEPLOY_AI_CITY_DATA_COST * 0.75);
+      const refundEnergy = Math.round(DEPLOY_AI_CITY_ENERGY_COST * 0.75);
+      
+      setDataPoints(dp => dp + refundDP);
+      setEnergy(e => e + refundEnergy);
+
+      addNotification(`AI analysis failed: Accuracy too low. Partially refunded ${refundDP} DP and ${refundEnergy} Energy.`, "error");
     }
   }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification]);
+
 
 
 
@@ -666,9 +715,8 @@ function App() {
             onBuyUpgrade={buyUpgrade}
             onConvertBiomass={convertBiomassToEnergy}
             forestAIAccuracy={forestAIAccuracy} // <-- Pass new accuracy stat
-            upgrades={{ hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
-            
-          />
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}          
+            />            
         }/>
         <Route path="/missions/forest/train" element={
           <ForestAITrainingScreen
@@ -690,12 +738,12 @@ function App() {
               cityDecisions={availableDecisions}
               dataPoints={dataPoints}
               energy={energy}
-              upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+              upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}    
               onApproveDecision={handleApproveCityDecision}
               onStartCityTraining={handleStartCityTraining}
               cityAIAccuracy={cityAIAccuracy}
               aiRecommendedDecisionId={aiRecommendedDecisionId}
-              onDeployAICity={handleDeployAICity} // <-- Pass Deploy function
+              onDeployAICity={handleDeployAICity} // <-- Pass Deploy function           
               onBuyUpgrade={buyUpgrade}          // <-- Pass Upgrade function
             />
           } />

@@ -1,7 +1,7 @@
 // src/constants/gameConstants.js
 
-export const INITIAL_DATA_POINTS = 50;
-export const INITIAL_ENERGY = 100;
+export const INITIAL_DATA_POINTS = 5000;
+export const INITIAL_ENERGY = 5000;
 export const INITIAL_OCEAN_HEALTH = 20;
 export const INITIAL_AI_ACCURACY = 30;
 export const MAX_OCEAN_HEALTH = 100;
@@ -10,11 +10,11 @@ export const DEPLOY_AI_DATA_COST = 50;
 export const DEPLOY_AI_ENERGY_COST = 20;
 export const LOW_ENERGY_THRESHOLD = 20; 
 
-export const UPGRADE_SORT_SPEED_COST = 100;
+export const UPGRADE_SORT_SPEED_COST = 100;     
 export const UPGRADE_EFFICIENT_DEPLOYMENT_COST = 150;
 export const UPGRADE_ADVANCED_SENSORS_COST = 200;
 
-export const MAX_ENERGY = 200; // The maximum energy you can store
+export const MAX_ENERGY = 5000; // The maximum energy you can store
 export const UPGRADE_SOLAR_PANELS_COST = 300;
 export const SOLAR_PANEL_ENERGY_GENERATION = 10; // Energy generated per tick
 
