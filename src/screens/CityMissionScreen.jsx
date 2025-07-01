@@ -16,10 +16,13 @@ const CityMissionScreen = (props) => {
     cityAqi, cityEconomy, cityHappiness, cityDistricts, cityDecisions,
     dataPoints, energy, upgrades,
     onApproveDecision, onStartCityTraining, onDeployAICity, onBuyUpgrade,
+
     cityAIAccuracy, aiRecommendedDecisionId
+
   } = props;
   
   const navigate = useNavigate();
+
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
   const [showGameGuide, setShowGameGuide] = useState(false);
 
@@ -37,9 +40,11 @@ const CityMissionScreen = (props) => {
             <CityMap districts={cityDistricts} />
             <CityStatusReport aqi={cityAqi} economy={cityEconomy} happiness={cityHappiness} />
             <div className="resource-counters horizontal">
+
               <span title={text.resources.dataPoints}> DP <Icon type="data" /> {dataPoints} </span> {/* Translated */}
               <span title={text.resources.energy}><Icon type="energy" /> {energy} </span> {/* Translated */}
               <span title={text.resources.aiAccuracy}><Icon type="brain" /> {cityAIAccuracy}%</span> {/* Translated */}
+
             </div>
           </div>
 
@@ -50,9 +55,11 @@ const CityMissionScreen = (props) => {
                <DecisionCard
                   key={decision.id}
                   decision={decision}
+
                   onApprove={onApproveDecision}
                   dataPoints={dataPoints}
                   energy={energy}
+
                   isRecommended={decision.id === aiRecommendedDecisionId}
                 />
               ))}

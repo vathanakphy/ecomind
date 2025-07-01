@@ -488,6 +488,8 @@ h3 { font-size: 1.4em; }
   top: 20px;
   right: 20px;
   z-index: 2000;
+  overflow-y: scroll;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 10px;
