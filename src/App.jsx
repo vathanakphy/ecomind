@@ -1,39 +1,17 @@
+// App.jsx
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 
-// --- Constants ---
-import {
-  // Shared
-  INITIAL_DATA_POINTS, INITIAL_ENERGY, LOW_ENERGY_THRESHOLD, // <-- Added LOW_ENERGY_THRESHOLD
-  // Ocean
-  INITIAL_OCEAN_HEALTH, INITIAL_AI_ACCURACY, MAX_OCEAN_HEALTH, DEPLOY_AI_DATA_COST, DEPLOY_AI_ENERGY_COST,
-  UPGRADE_SORT_SPEED_COST, UPGRADE_EFFICIENT_DEPLOYMENT_COST, UPGRADE_ADVANCED_SENSORS_COST,
-  TRASH_ITEMS_DATA, MINIGAME_DURATION_SECONDS, MINIGAME_QUICK_BONUS_THRESHOLD, MINIGAME_QUICK_BONUS_DP,
-  // Forest
-  INITIAL_CO2_PPM, INITIAL_BIODIVERSITY, MAX_BIODIVERSITY, FOREST_MAP_WIDTH, FOREST_MAP_HEIGHT,
-  TILE_TYPES, TREE_TYPES, FOREST_AI_TRAINING_IMAGES, AI_TRAINING_COST_FOREST,
-  DEPLOY_AI_FOREST_DATA_COST, DEPLOY_AI_FOREST_ENERGY_COST, AI_PLANTING_COUNT,
-  INITIAL_FOREST_AI_ACCURACY,
-  // Clean City
-  INITIAL_CITY_AQI, INITIAL_CITY_ECONOMY, INITIAL_CITY_HAPPINESS,
-  CITY_DECISIONS, CITY_DISTRICTS, MAX_CITY_STATS,CITY_TRAINING_PROPOSALS,
-  DEPLOY_AI_CITY_DATA_COST, DEPLOY_AI_CITY_ENERGY_COST, AI_GENERATED_DECISION,  
-  INITIAL_CITY_AI_ACCURACY, AI_RECOMMENDATION_DISCOUNT,
-  //Game Point
-  MAX_ENERGY, UPGRADE_SOLAR_PANELS_COST, SOLAR_PANEL_ENERGY_GENERATION,
-  UPGRADE_BIOMASS_GENERATOR_COST, BIOMASS_ENERGY_PER_STUMP
-
-} from './constants/gameConstants';
-
-// --- Utils & UI ---
+// --- Components and Utils ---
 import { playSound } from './utils/audio';
 import Notification from './components/ui/Notification';
-import Modal from './components/ui/Modal'; // <-- Import Modal
-import Button from './components/ui/Button'; // <-- Import Button
-import { useLanguage } from './utils/language'; // <-- Make sure useLanguage is imported
+import Modal from './components/ui/Modal';
+import Button from './components/ui/Button';
+import Icon from './components/ui/Icon';
+import { useLanguage } from './utils/language';
 
-// --- Screen Components ---
+// --- Screens ---
 import MainMenuScreen from './screens/MainMenuScreen';
 import MissionSelectScreen from './screens/MissionSelectScreen';
 import OceanMissionScreen from './screens/OceanMissionScreen';
@@ -43,19 +21,37 @@ import ForestAITrainingScreen from './screens/ForestAITrainingScreen';
 import CityMissionScreen from './screens/CityMissionScreen'
 import CityAITrainingScreen from './screens/CityAITrainingScreen';
 
+// --- Constants (assuming they are in the correct file) ---
+import {
+  INITIAL_DATA_POINTS, INITIAL_ENERGY, LOW_ENERGY_THRESHOLD, MAX_ENERGY,
+  INITIAL_OCEAN_HEALTH, INITIAL_AI_ACCURACY, MAX_OCEAN_HEALTH, DEPLOY_AI_DATA_COST, DEPLOY_AI_ENERGY_COST,
+  UPGRADE_SORT_SPEED_COST, UPGRADE_EFFICIENT_DEPLOYMENT_COST, UPGRADE_ADVANCED_SENSORS_COST,
+  TRASH_ITEMS_DATA, MINIGAME_DURATION_SECONDS, MINIGAME_QUICK_BONUS_THRESHOLD, MINIGAME_QUICK_BONUS_DP,
+  INITIAL_CO2_PPM, INITIAL_BIODIVERSITY, MAX_BIODIVERSITY, FOREST_MAP_WIDTH, FOREST_MAP_HEIGHT,
+  TILE_TYPES, TREE_TYPES, FOREST_AI_TRAINING_IMAGES, AI_TRAINING_COST_FOREST,
+  DEPLOY_AI_FOREST_DATA_COST, DEPLOY_AI_FOREST_ENERGY_COST,
+  INITIAL_FOREST_AI_ACCURACY,
+  INITIAL_CITY_AQI, INITIAL_CITY_ECONOMY, INITIAL_CITY_HAPPINESS,
+  CITY_DECISIONS, CITY_DISTRICTS, MAX_CITY_STATS, CITY_TRAINING_PROPOSALS,
+  DEPLOY_AI_CITY_DATA_COST, DEPLOY_AI_CITY_ENERGY_COST, AI_GENERATED_DECISION,
+  INITIAL_CITY_AI_ACCURACY, AI_RECOMMENDATION_DISCOUNT,
+  UPGRADE_SOLAR_PANELS_COST, SOLAR_PANEL_ENERGY_GENERATION,
+  UPGRADE_BIOMASS_GENERATOR_COST, BIOMASS_ENERGY_PER_STUMP
+} from './constants/gameConstants';
+
+
 // --- Helper Functions ---
 const generateInitialForestMap = () => {
-  return Array.from({ length: FOREST_MAP_HEIGHT }, (_, y) =>
-    Array.from({ length: FOREST_MAP_WIDTH }, (_, x) => {
-      let type = TILE_TYPES.EMPTY;
-      const rand = Math.random();
-      if (rand > 0.95) type = TILE_TYPES.MATURE;
-      else if (rand > 0.9) type = TILE_TYPES.FIRE_RISK; // Add some fire risks
-      else if (rand > 0.85) type = TILE_TYPES.DISEASED; // Add some diseased tiles
-      
-      return { id: `${x}-${y}`, x, y, type, treeId: null, growth: 0 };
-    })
-  );
+    return Array.from({ length: FOREST_MAP_HEIGHT }, (_, y) =>
+      Array.from({ length: FOREST_MAP_WIDTH }, (_, x) => {
+        let type = TILE_TYPES.EMPTY;
+        const rand = Math.random();
+        if (rand > 0.95) type = TILE_TYPES.MATURE;
+        else if (rand > 0.9) type = TILE_TYPES.FIRE_RISK;
+        else if (rand > 0.85) type = TILE_TYPES.DISEASED;
+        return { id: `${x}-${y}`, x, y, type, treeId: null, growth: 0 };
+      })
+    );
 };
 
 
@@ -65,22 +61,43 @@ const generateInitialForestMap = () => {
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const {result } = useLanguage(); // Get the translation function
+  const { result } = useLanguage();
 
   // --- SHARED STATE ---
   const [dataPoints, setDataPoints] = useState(INITIAL_DATA_POINTS);
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
-  const [notifications, setNotifications] = useState([]);
   const [aiMood, setAiMood] = useState('neutralAI');
   const [aiDialogue, setAiDialogue] = useState('Hi! I am Eco, your AI helper!');
 
-  // --- NEW STATE FOR LOW ENERGY POPUP ---
+  // --- NOTIFICATION STATE ---
+  // For the temporary pop-up toasts
+  const [toasts, setToasts] = useState([]);
+  // For the full list on mobile
+  const [notificationHistory, setNotificationHistory] = useState([]);
+  // To show/hide the full-screen history on mobile
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+
+
+  // --- NOTIFICATION LOGIC ---
+  const addNotification = useCallback((message, type = 'info') => {
+    const id = Date.now();
+    const newNotification = { id, message, type };
+
+    // Add to the history for the full-screen view
+    setNotificationHistory(prev => [newNotification, ...prev.slice(0, 49)]); // keeps the last 50
+
+    // Add to the toasts to show the pop-up
+    setToasts(prev => [...prev, newNotification]);
+
+    // Set a timer to automatically remove the pop-up toast after 3 seconds
+    setTimeout(() => {
+      setToasts(prev => prev.filter(n => n.id !== id));
+    }, 3000);
+  }, []);
+
+  // --- LOW ENERGY MODAL and OTHER STATE ---
   const [showLowEnergyModal, setShowLowEnergyModal] = useState(false);
-  // This flag prevents the modal from re-popping immediately if energy stays low
-  const [hasSuggestedSolar, setHasSuggestedSolar] = useState(false); 
-
-
-  // --- OCEAN MISSION STATE ---
+  const [hasSuggestedSolar, setHasSuggestedSolar] = useState(false);
   const [oceanHealth, setOceanHealth] = useState(INITIAL_OCEAN_HEALTH);
   const [aiAccuracy, setAiAccuracy] = useState(INITIAL_AI_ACCURACY);
   const [isOceanMissionCompleted, setIsOceanMissionCompleted] = useState(false);
@@ -94,21 +111,17 @@ function App() {
   const [minigameFeedback, setMinigameFeedback] = useState('');
   const [minigameTimeLeft, setMinigameTimeLeft] = useState(MINIGAME_DURATION_SECONDS);
   const minigameTimerRef = useRef(null);
-
-  // --- FOREST MISSION STATE ---
   const [isForestMissionUnlocked, setIsForestMissionUnlocked] = useState(true);
   const [co2Level, setCo2Level] = useState(INITIAL_CO2_PPM);
   const [globalTemp, setGlobalTemp] = useState(1.1);
   const [biodiversity, setBiodiversity] = useState(INITIAL_BIODIVERSITY);
   const [forestCoverage, setForestCoverage] = useState(0);
   const [forestMap, setForestMap] = useState(generateInitialForestMap());
-  const [forestNotifications, setForestNotifications] = useState([{id: Date.now(), type: 'info', message: 'Welcome to the Forest Guardian mission!'}]);
+  const [forestNotifications, setForestNotifications] = useState([{ id: Date.now(), type: 'info', message: 'Welcome to the Forest Guardian mission!' }]);
   const [aiForestTrainingIndex, setAiForestTrainingIndex] = useState(0);
   const [forestTrainingFeedback, setForestTrainingFeedback] = useState('');
   const [forestAIAccuracy, setForestAIAccuracy] = useState(INITIAL_FOREST_AI_ACCURACY);
-
-  // --- ADD NEW STATE FOR THE CITY MISSION ---
-  const [isCityMissionUnlocked, setIsCityMissionUnlocked] = useState(true); // Set true for testing
+  const [isCityMissionUnlocked, setIsCityMissionUnlocked] = useState(true);
   const [cityAqi, setCityAqi] = useState(INITIAL_CITY_AQI);
   const [cityEconomy, setCityEconomy] = useState(INITIAL_CITY_ECONOMY);
   const [cityHappiness, setCityHappiness] = useState(INITIAL_CITY_HAPPINESS);
@@ -119,20 +132,11 @@ function App() {
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
 
-  // --- NOTIFICATION LOGIC ---
-  const addNotification = useCallback((message, type = 'info') => {
-    const id = Date.now();
-    setNotifications(prev => [...prev, { id, message, type }]);
-  }, []);
-  const dismissNotification = useCallback((id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
-  }, []);
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
     setForestNotifications(prev => [...prev.slice(-10), { id, message, type }]);
   }, []);
 
-  // --- NAVIGATION LOGIC ---
   const startMission = useCallback((mission) => {
     if (mission === 'OceanMission') {
       navigate('/missions/ocean');
@@ -146,9 +150,8 @@ function App() {
     } if (mission === 'CityMission' && isCityMissionUnlocked) {
       navigate('/missions/city');
     }
-  },[isForestMissionUnlocked, isCityMissionUnlocked, addNotification, navigate, addForestNotification]);
+  }, [isForestMissionUnlocked, isCityMissionUnlocked, addNotification, navigate, addForestNotification]);
 
-  // --- OCEAN MISSION LOGIC ---
   const endMinigame = useCallback((completedAllItems = true) => {
     clearInterval(minigameTimerRef.current);
     const timeTaken = MINIGAME_DURATION_SECONDS - minigameTimeLeft;
@@ -193,7 +196,7 @@ function App() {
       setEnergy(e => e - DEPLOY_AI_ENERGY_COST);
       let effectiveness = aiAccuracy / (hasUpgradeAdvancedSensors ? 8 : 10);
       if (hasUpgradeEfficientDeployment) effectiveness *= 1.5;
-      const healthImprovement = Math.floor(effectiveness);
+      const healthImprovement = Math.floor(effectiveness + 10);
       setOceanHealth(oh => Math.min(MAX_OCEAN_HEALTH, oh + healthImprovement));
       setAiDialogue(`AI deployed! Ocean health improved by ${healthImprovement} points.`);
       setAiMood('happyAI');
@@ -214,7 +217,7 @@ function App() {
     let alreadyOwned = false;
     let successMsg = "";
 
-    switch(upgradeType) {
+    switch (upgradeType) {
       case 'sortSpeed':
         cost = UPGRADE_SORT_SPEED_COST;
         canAfford = dataPoints >= cost;
@@ -239,18 +242,18 @@ function App() {
         alreadyOwned = hasUpgradeAdvancedSensors;
         if (canAfford && !alreadyOwned) {
           setHasUpgradeAdvancedSensors(true);
-          setAiAccuracy(acc => Math.min(100, acc + 10)); // Immediate small accuracy boost
+          setAiAccuracy(acc => Math.min(100, acc + 10));
           successMsg = "Advanced Contaminant Sensors purchased! AI base accuracy increased.";
         }
         break;
-      case 'solarPanels': // Case for buying solar panels
+      case 'solarPanels':
         cost = UPGRADE_SOLAR_PANELS_COST;
         canAfford = dataPoints >= cost;
         alreadyOwned = hasUpgradeSolarPanels;
         if (canAfford && !alreadyOwned) {
           setHasUpgradeSolarPanels(true);
           successMsg = "Solar Panels installed! You will now generate energy over time.";
-          setHasSuggestedSolar(false); // Reset suggestion flag once purchased
+          setHasSuggestedSolar(false);
         }
         break;
       case 'biomassGenerator':
@@ -296,14 +299,12 @@ function App() {
       return;
     }
 
-    // Convert one stump at a time
     const tileToConvert = loggedTiles[0];
     const newEnergy = BIOMASS_ENERGY_PER_STUMP;
 
     setEnergy(e => Math.min(MAX_ENERGY, e + newEnergy));
 
-    // Remove the stump from the map
-    const newMap = forestMap.map(row => row.map(cell => ({...cell})));
+    const newMap = forestMap.map(row => row.map(cell => ({ ...cell })));
     newMap[tileToConvert.y][tileToConvert.x].type = TILE_TYPES.EMPTY;
     newMap[tileToConvert.y][tileToConvert.x].treeId = null;
     setForestMap(newMap);
@@ -312,12 +313,12 @@ function App() {
     playSound('deploy');
 
   }, [forestMap, hasUpgradeBiomassGenerator, addForestNotification]);
-  // --- FOREST MISSION LOGIC ---
+
   const handlePlantTree = useCallback((x, y, tree) => {
     const tile = forestMap[y][x];
     if (tile.type === TILE_TYPES.EMPTY && dataPoints >= tree.cost) {
       setDataPoints(dp => dp - tree.cost);
-      const newMap = forestMap.map(row => row.map(cell => ({...cell})));
+      const newMap = forestMap.map(row => row.map(cell => ({ ...cell })));
       newMap[y][x] = { ...newMap[y][x], type: TILE_TYPES.YOUNG, treeId: tree.id, growth: 0 };
       setForestMap(newMap);
       setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + tree.biodiversityImpact));
@@ -328,7 +329,7 @@ function App() {
   }, [forestMap, dataPoints, addForestNotification]);
 
   const handleStartForestTraining = useCallback(() => {
-    if(energy >= AI_TRAINING_COST_FOREST) {
+    if (energy >= AI_TRAINING_COST_FOREST) {
       setAiForestTrainingIndex(0);
       setForestTrainingFeedback('');
       navigate('/missions/forest/train');
@@ -341,7 +342,7 @@ function App() {
     if (image.correctLabel === selectedLabel) {
       const dataGain = 15;
       setDataPoints(dp => dp + dataGain);
-      setForestAIAccuracy(acc => Math.min(100, acc + 4)); // <-- INCREASE FOREST AI ACCURACY
+      setForestAIAccuracy(acc => Math.min(100, acc + 4));
       setForestTrainingFeedback(`Correct! +${dataGain} DP. AI Accuracy Increased!`);
       playSound('correct');
     } else {
@@ -361,84 +362,66 @@ function App() {
     }, 1000);
   }, [aiForestTrainingIndex, navigate, addForestNotification]);
 
-   // Replace the old function in App.jsx with this one
-
-// Replace the old function in App.jsx with this new, smarter version
-
-const handleDeployAIForest = useCallback(() => {
-    // 1. Check for sufficient resources
+  const handleDeployAIForest = useCallback(() => {
     if (dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST) {
-        addForestNotification("Not enough resources to deploy the Forest Warden AI.", "error");
-        return;
+      addForestNotification("Not enough resources to deploy the Forest Warden AI.", "error");
+      return;
     }
 
-    // 2. Pay the deployment costs
     setDataPoints(dp => dp - DEPLOY_AI_FOREST_DATA_COST);
     setEnergy(e => e - DEPLOY_AI_FOREST_ENERGY_COST);
     playSound('deploy');
 
-    // --- NEW DETERMINISTIC LOGIC ---
-
-    // 3. Accuracy now determines the number of tiles the AI can scan.
     const totalTiles = FOREST_MAP_WIDTH * FOREST_MAP_HEIGHT;
-    // At 100% accuracy, it scans all tiles. At 0%, it scans none.
     const scanPower = Math.floor(totalTiles * (forestAIAccuracy / 100));
 
     if (scanPower < 1) {
-        addForestNotification("AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.", "info");
-        return;
+      addForestNotification("AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.", "info");
+      return;
     }
 
-    // 4. Get a random sample of tiles to scan based on the AI's power
     const allTiles = forestMap.flat();
-    // Shuffle all tiles and take the first 'scanPower' number of them
     const tilesToScan = [...allTiles].sort(() => 0.5 - Math.random()).slice(0, scanPower);
 
-    const newMap = JSON.parse(JSON.stringify(forestMap)); // Deep copy for mutation
+    const newMap = JSON.parse(JSON.stringify(forestMap));
     let threatFound = false;
 
-    // 5. Check the scanned area for threats
     for (const tile of tilesToScan) {
-        if (tile.type === TILE_TYPES.DISEASED || tile.type === TILE_TYPES.FIRE_RISK) {
-            const threatType = tile.type;
-            newMap[tile.y][tile.x].type = TILE_TYPES.EMPTY; // Fix the tile
-            
-            setForestMap(newMap);
-            addForestNotification(`AI scanned a section of the forest and neutralized a ${threatType.replace('_', ' ')} threat!`, 'success');
-            threatFound = true;
-            break; // Handle one threat per deployment
-        }
-    }
-
-    // 6. If the AI scanned and found NO threats, it proceeds to reforestation
-    if (!threatFound) {
-        const emptyTilesInScannedArea = tilesToScan.filter(t => t.type === TILE_TYPES.EMPTY);
-
-        if (emptyTilesInScannedArea.length === 0) {
-            addForestNotification(`AI scanned ${scanPower} tiles and found no threats or empty space to plant.`, "info");
-            return;
-        }
-
-        const treeToPlant = TREE_TYPES.find(t => t.id === 'pine');
-        // AI plants in up to 3 spots it found in its scan
-        const spotsToPlant = emptyTilesInScannedArea.slice(0, 3); 
-        let biodiversityGained = 0;
-
-        spotsToPlant.forEach(tile => {
-            newMap[tile.y][tile.x].type = TILE_TYPES.YOUNG;
-            newMap[tile.y][tile.x].treeId = treeToPlant.id;
-            newMap[tile.y][tile.x].growth = 0;
-            biodiversityGained += treeToPlant.biodiversityImpact;
-        });
-
+      if (tile.type === TILE_TYPES.DISEASED || tile.type === TILE_TYPES.FIRE_RISK) {
+        const threatType = tile.type;
+        newMap[tile.y][tile.x].type = TILE_TYPES.EMPTY;
         setForestMap(newMap);
-        setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + biodiversityGained));
-        addForestNotification(`AI scanned ${scanPower} tiles and found no threats. Planting ${spotsToPlant.length} new saplings.`, 'success');
+        addForestNotification(`AI scanned a section of the forest and neutralized a ${threatType.replace('_', ' ')} threat!`, 'success');
+        threatFound = true;
+        break;
+      }
     }
-}, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification]);
 
-  
-  // --- NEW: LOGIC FOR CITY DECISIONS ---
+    if (!threatFound) {
+      const emptyTilesInScannedArea = tilesToScan.filter(t => t.type === TILE_TYPES.EMPTY);
+
+      if (emptyTilesInScannedArea.length === 0) {
+        addForestNotification(`AI scanned ${scanPower} tiles and found no threats or empty space to plant.`, "info");
+        return;
+      }
+
+      const treeToPlant = TREE_TYPES.find(t => t.id === 'pine');
+      const spotsToPlant = emptyTilesInScannedArea.slice(0, 3);
+      let biodiversityGained = 0;
+
+      spotsToPlant.forEach(tile => {
+        newMap[tile.y][tile.x].type = TILE_TYPES.YOUNG;
+        newMap[tile.y][tile.x].treeId = treeToPlant.id;
+        newMap[tile.y][tile.x].growth = 0;
+        biodiversityGained += treeToPlant.biodiversityImpact;
+      });
+
+      setForestMap(newMap);
+      setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + biodiversityGained));
+      addForestNotification(`AI scanned ${scanPower} tiles and found no threats. Planting ${spotsToPlant.length} new saplings.`, 'success');
+    }
+  }, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification]);
+
   const handleApproveCityDecision = useCallback((decision) => {
     let finalCostDP = decision.costDP;
     let finalCostEnergy = decision.costEnergy;
@@ -449,34 +432,32 @@ const handleDeployAIForest = useCallback(() => {
       finalCostEnergy *= (1 - AI_RECOMMENDATION_DISCOUNT);
       wasDiscounted = true;
     }
-    
+
     if (dataPoints < finalCostDP || energy < finalCostEnergy) {
       addNotification("Not enough resources to enact this policy!", "error");
       return;
     }
-    
+
     setDataPoints(dp => dp - finalCostDP);
     setEnergy(e => e - finalCostEnergy);
-    playSound('deploy'); // Play a sound for enacting a policy
+    playSound('deploy');
 
-    // Apply impacts
     const impacts = decision.impacts;
     if (impacts.aqi) setCityAqi(aqi => Math.max(0, aqi + impacts.aqi));
     if (impacts.economy) setCityEconomy(econ => Math.min(MAX_CITY_STATS, econ + impacts.economy));
     if (impacts.happiness) setCityHappiness(happy => Math.min(MAX_CITY_STATS, happy + impacts.happiness));
 
-    // --- CRITICAL FIX: Clear the recommendation ID after ANY decision is approved ---
-    setAiRecommendedDecisionId(null); 
-    
+    setAiRecommendedDecisionId(null);
+
     if (wasDiscounted) {
       addNotification(`AI Discount Applied! Enacted: ${decision.title}`, 'success');
     } else {
       addNotification(`Policy enacted: ${decision.title}`, 'success');
     }
-    // Remove the approved decision from the list
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId]);
- const handleStartCityTraining = useCallback(() => {
+
+  const handleStartCityTraining = useCallback(() => {
     setCityTrainingIndex(0);
     setCityTrainingFeedback('');
     navigate('/missions/city/train');
@@ -491,11 +472,11 @@ const handleDeployAIForest = useCallback(() => {
     if (proposal.correctAnswer === answer) {
       const dataGain = 20;
       setDataPoints(dp => dp + dataGain);
-      setCityAIAccuracy(acc => Math.min(100, acc + 5)); // <-- INCREASE AI ACCURACY
+      setCityAIAccuracy(acc => Math.min(100, acc + 5));
       setCityTrainingFeedback(`Correct! +${dataGain} DP. AI Accuracy Increased!`);
       playSound('correct');
     } else {
-      setCityAIAccuracy(acc => Math.max(0, acc - 3)); // Penalty for being wrong
+      setCityAIAccuracy(acc => Math.max(0, acc - 3));
       setCityTrainingFeedback('Incorrect. AI Accuracy Decreased.');
       playSound('incorrect');
     }
@@ -510,27 +491,24 @@ const handleDeployAIForest = useCallback(() => {
       }
     }, 1200);
   }, [cityTrainingIndex, addNotification, navigate]);
-    const handleDeployAICity = useCallback(() => {
-       if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) {
-          addNotification("Not enough resources to deploy the AI.", "error");
-          return;
-        }
-      if (availableDecisions.find(d => d.id === AI_GENERATED_DECISION.id)) {
-        addNotification("AI has already provided its optimal policy solution.", "info");
-        return;
-      }
-      setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST);
-      setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST);
-      playSound('deploy');
-      setAiRecommendedDecisionId(null); 
-      setAvailableDecisions(prev => [AI_GENERATED_DECISION, ...prev]);
-      addNotification("AI Deployed! A new, optimized policy is now available for your review.", 'success');
 
+  const handleDeployAICity = useCallback(() => {
+    if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) {
+      addNotification("Not enough resources to deploy the AI.", "error");
+      return;
+    }
+    if (availableDecisions.find(d => d.id === AI_GENERATED_DECISION.id)) {
+      addNotification("AI has already provided its optimal policy solution.", "info");
+      return;
+    }
+    setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST);
+    setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST);
+    playSound('deploy');
+    setAiRecommendedDecisionId(null);
+    setAvailableDecisions(prev => [AI_GENERATED_DECISION, ...prev]);
+    addNotification("AI Deployed! A new, optimized policy is now available for your review.", 'success');
 
-
-      // AI logic: a chance to succeed based on accuracy
-      if (Math.random() * 100 < cityAIAccuracy) {
-      // SUCCESS: Find the best policy from the available options
+    if (Math.random() * 100 < cityAIAccuracy) {
       let bestDecision = null;
       let bestScore = -Infinity;
 
@@ -541,7 +519,7 @@ const handleDeployAIForest = useCallback(() => {
           bestDecision = decision;
         }
       });
-      
+
       if (bestDecision) {
         setAiRecommendedDecisionId(bestDecision.id);
         addNotification(`AI analysis complete! A high-impact policy has been recommended with a discount.`, 'success');
@@ -549,23 +527,14 @@ const handleDeployAIForest = useCallback(() => {
         addNotification("AI could not find an optimal policy, but the analysis cost has been paid.", "info");
       }
     } else {
-      // FAILURE: AI is not smart enough, but give a partial refund.
       const refundDP = Math.round(DEPLOY_AI_CITY_DATA_COST * 0.75);
       const refundEnergy = Math.round(DEPLOY_AI_CITY_ENERGY_COST * 0.75);
-      
       setDataPoints(dp => dp + refundDP);
       setEnergy(e => e + refundEnergy);
-
       addNotification(`AI analysis failed: Accuracy too low. Partially refunded ${refundDP} DP and ${refundEnergy} Energy.`, "error");
     }
   }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification]);
 
-
-
-
-  // --- USEEFFECT HOOKS ---
-
-  // Ocean Mission Completion Check
   useEffect(() => {
     if (oceanHealth >= MAX_OCEAN_HEALTH && !isOceanMissionCompleted) {
       setIsOceanMissionCompleted(true);
@@ -576,7 +545,6 @@ const handleDeployAIForest = useCallback(() => {
     }
   }, [oceanHealth, isOceanMissionCompleted, addNotification]);
 
-  // AI Dialogue & Mood based on current mission state
   useEffect(() => {
     if (location.pathname === '/missions/ocean') {
       if (oceanHealth < 30) { setAiDialogue("The ocean is heavily polluted."); setAiMood('concernedAI'); }
@@ -589,8 +557,7 @@ const handleDeployAIForest = useCallback(() => {
       setAiMood('neutralAI');
     }
   }, [oceanHealth, dataPoints, energy, location.pathname, isOceanMissionCompleted]);
-  
-  // Minigame Timer for SortTrashMinigame
+
   useEffect(() => {
     if (location.pathname === '/missions/ocean/train' && minigameTimeLeft > 0) {
       minigameTimerRef.current = setInterval(() => setMinigameTimeLeft(t => t - 1), 1000);
@@ -601,22 +568,19 @@ const handleDeployAIForest = useCallback(() => {
     return () => clearInterval(minigameTimerRef.current);
   }, [location.pathname, minigameTimeLeft, endMinigame]);
 
-  // Game Tick for passive actions (solar, forest growth)
   useEffect(() => {
     const gameTick = setInterval(() => {
-      // 1. Generate energy from solar panels (if purchased)
       if (hasUpgradeSolarPanels) {
         setEnergy(e => Math.min(MAX_ENERGY, e + SOLAR_PANEL_ENERGY_GENERATION));
       }
 
-      // 2. Run forest simulation logic
       let co2Reduction = 0, matureTrees = 0, youngTrees = 0;
       let mapNeedsUpdate = false;
 
       const newMap = forestMap.map(row => row.map(tile => {
-        const newTile = {...tile};
+        const newTile = { ...tile };
         const treeData = TREE_TYPES.find(t => t.id === newTile.treeId);
-        if(treeData) {
+        if (treeData) {
           if (newTile.type === TILE_TYPES.YOUNG) {
             youngTrees++;
             co2Reduction += treeData.co2Absorption * 0.5;
@@ -632,20 +596,19 @@ const handleDeployAIForest = useCallback(() => {
         }
         return newTile;
       }));
-      
-      if(mapNeedsUpdate) setForestMap(newMap);
+
+      if (mapNeedsUpdate) setForestMap(newMap);
 
       setCo2Level(co2 => Math.max(350, co2 - co2Reduction + 0.15));
       setGlobalTemp(1.1 + (co2Level - 420) * 0.05);
       setForestCoverage(Math.round(((matureTrees + youngTrees) / (FOREST_MAP_WIDTH * FOREST_MAP_HEIGHT)) * 100));
       setCityAqi(aqi => aqi + 0.2);
-    }, 2300); // This interval affects how often solar panels generate too.
+    }, 2300);
 
     return () => clearInterval(gameTick);
-  }, [forestMap, co2Level, hasUpgradeSolarPanels]); // Dependencies ensure it re-runs if these change
- // --- UPDATE DISTRICT AQI EFFECT ---
+  }, [forestMap, co2Level, hasUpgradeSolarPanels]);
+
   useEffect(() => {
-    // This makes the map visually update based on the average AQI
     setCityDistricts(prevDistricts =>
       prevDistricts.map(dist => ({
         ...dist,
@@ -654,39 +617,41 @@ const handleDeployAIForest = useCallback(() => {
     );
   }, [cityAqi]);
 
-  // --- NEW: Low Energy Popup Trigger ---
   useEffect(() => {
-    // Conditions to show the modal:
-    // 1. Solar Panels are NOT owned
-    // 2. Energy is below the threshold
-    // 3. We haven't already suggested it in this 'low energy' state
     if (!hasUpgradeSolarPanels && energy < LOW_ENERGY_THRESHOLD && !hasSuggestedSolar) {
       setShowLowEnergyModal(true);
-      setHasSuggestedSolar(true); // Mark as suggested for this low energy period
-      setAiDialogue(result.alertsLowEnergy.lowEnergyTitle); // AI helper also reacts
+      setHasSuggestedSolar(true);
+      setAiDialogue(result.alertsLowEnergy.lowEnergyTitle);
       setAiMood('concernedAI');
       addNotification(result.alertsLowEnergy.lowEnergyTitle, 'warning');
-      playSound('warning'); // Play a sound for the alert
+      playSound('warning');
     }
 
-    // Reset `hasSuggestedSolar` when energy recovers (so it can pop up again if energy drops later)
     if (energy >= LOW_ENERGY_THRESHOLD && hasSuggestedSolar) {
       setHasSuggestedSolar(false);
     }
-    // If solar panels are bought, ensure the suggestion flag is permanently reset
-    // (This is also handled in buyUpgrade, but a redundant check here ensures it)
     if (hasUpgradeSolarPanels && hasSuggestedSolar) {
       setHasSuggestedSolar(false);
     }
-  }, [energy, hasUpgradeSolarPanels, hasSuggestedSolar, addNotification, result]); // Add `t` to dependencies
+  }, [energy, hasUpgradeSolarPanels, hasSuggestedSolar, addNotification, result]);
+
 
   // --- JSX RENDER ---
   return (
     <div className="App">
+      {/* Pop-up toasts (mostly for desktop) */}
       <div className="notification-area">
-        {notifications.map(n => <Notification key={n.id} {...n} onDismiss={() => dismissNotification(n.id)} />)}
+        {toasts.map(n => <Notification key={n.id} {...n} onDismiss={() => setToasts(prev => prev.filter(toast => toast.id !== n.id))} />)}
       </div>
-      
+
+      {/* Mobile-only icon to open history */}
+      <div className="notification-icon-container">
+        {notificationHistory.length > 0 && <span className="notification-badge"></span>}
+        <Button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
+          <Icon type="bell" />    
+        </Button>
+      </div>
+
       <Routes>
         <Route path="/" element={<MainMenuScreen onAddNotification={addNotification} aiMood={aiMood} />} />
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
@@ -696,17 +661,18 @@ const handleDeployAIForest = useCallback(() => {
           <OceanMissionScreen
             oceanHealth={oceanHealth} dataPoints={dataPoints} energy={energy} aiAccuracy={aiAccuracy} aiMood={aiMood} aiDialogue={aiDialogue}
             onStartMinigame={startSortTrashMinigame} onDeployAI={handleDeployAI} onBuyUpgrade={buyUpgrade}
-            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}          />
-        }/>
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+          />
+        } />
         <Route path="/missions/ocean/train" element={
           <SortTrashMinigameScreen
             minigameItems={minigameItems} currentItemIndex={currentItemIndex} minigameFeedback={minigameFeedback} minigameTimeLeft={minigameTimeLeft}
             dataPoints={dataPoints} onSortItem={handleSortItem} onEndMinigame={endMinigame}
           />
-        }/>
+        } />
 
         {/* Forest Mission Routes */}
-         <Route path="/missions/forest" element={
+        <Route path="/missions/forest" element={
           <ForestMissionScreen
             co2Level={co2Level} globalTemp={globalTemp} biodiversity={biodiversity} forestCoverage={forestCoverage} forestMap={forestMap}
             forestNotifications={forestNotifications} dataPoints={dataPoints} energy={energy}
@@ -714,10 +680,10 @@ const handleDeployAIForest = useCallback(() => {
             onDeployAIForest={handleDeployAIForest}
             onBuyUpgrade={buyUpgrade}
             onConvertBiomass={convertBiomassToEnergy}
-            forestAIAccuracy={forestAIAccuracy} // <-- Pass new accuracy stat
-            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}          
-            />            
-        }/>
+            forestAIAccuracy={forestAIAccuracy}
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+          />
+        } />
         <Route path="/missions/forest/train" element={
           <ForestAITrainingScreen
             trainingImages={FOREST_AI_TRAINING_IMAGES}
@@ -727,27 +693,24 @@ const handleDeployAIForest = useCallback(() => {
             dataPoints={dataPoints}
             forestTrainingFeedback={forestTrainingFeedback}
           />
-        }/>
+        } />
 
-          <Route path="/missions/city" element={
-            <CityMissionScreen
-              cityAqi={cityAqi}
-              cityEconomy={cityEconomy}
-              cityHappiness={cityHappiness}
-              cityDistricts={cityDistricts}
-              cityDecisions={availableDecisions}
-              dataPoints={dataPoints}
-              energy={energy}
-              upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}    
-              onApproveDecision={handleApproveCityDecision}
-              onStartCityTraining={handleStartCityTraining}
-              cityAIAccuracy={cityAIAccuracy}
-              aiRecommendedDecisionId={aiRecommendedDecisionId}
-              onDeployAICity={handleDeployAICity} // <-- Pass Deploy function           
-              onBuyUpgrade={buyUpgrade}          // <-- Pass Upgrade function
-            />
-          } />
-         <Route path="/missions/city/train" element={
+        {/* City Mission Routes */}
+        <Route path="/missions/city" element={
+          <CityMissionScreen
+            cityAqi={cityAqi} cityEconomy={cityEconomy} cityHappiness={cityHappiness}
+            cityDistricts={cityDistricts} cityDecisions={availableDecisions}
+            dataPoints={dataPoints} energy={energy}
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            onApproveDecision={handleApproveCityDecision}
+            onStartCityTraining={handleStartCityTraining}
+            cityAIAccuracy={cityAIAccuracy}
+            aiRecommendedDecisionId={aiRecommendedDecisionId}
+            onDeployAICity={handleDeployAICity}
+            onBuyUpgrade={buyUpgrade}
+          />
+        } />
+        <Route path="/missions/city/train" element={
           <CityAITrainingScreen
             proposals={CITY_TRAINING_PROPOSALS}
             currentIndex={cityTrainingIndex}
@@ -757,19 +720,35 @@ const handleDeployAIForest = useCallback(() => {
           />
         } />
       </Routes>
-        {
-          console.log(result  )
-        }
+
       {/* Low Energy Solar Suggestion Modal */}
       <Modal
         show={showLowEnergyModal}
         onClose={() => setShowLowEnergyModal(false)}
-        title={result.alertsLowEnergy.lowEnergyTitle} 
+        title={result.alertsLowEnergy.lowEnergyTitle}
       >
         <p>{result.alertsLowEnergy.lowEnergyMessagePart1}</p>
         <p>{result.alertsLowEnergy.lowEnergyMessagePart2}</p>
         <Button onClick={() => setShowLowEnergyModal(false)}>{result.alertsLowEnergy.gotItButton}</Button>
       </Modal>
+
+      {/* Full-screen Notification History Modal */}
+      <Modal show={showNotificationModal} onClose={() => setShowNotificationModal(false)} fullscreen={true}>
+        <div className="notification-history-header">
+          <h3>Notification History</h3>
+          <Button onClick={() => setShowNotificationModal(false)} className="close-fullscreen-button">
+            <Icon type="x" />
+          </Button>
+        </div>
+        <div className="notification-history-list">
+          {notificationHistory.length > 0 ? (
+            notificationHistory.map(n => <Notification key={n.id} {...n} onDismiss={() => {}} isStatic={true} />)
+          ) : (
+            <p className="empty-history-message">No notifications yet.</p>
+          )}
+        </div>
+      </Modal>
+
     </div>
   );
 }

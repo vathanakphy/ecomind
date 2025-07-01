@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TopHud from '../components/game/forest/TopHud';
 import ForestMap from '../components/game/forest/ForestMap';
 import PlantingMenu from '../components/game/forest/PlantingMenu';
-import NotificationLog from '../components/game/forest/NotificationLog';
+// import NotificationLog from '../components/game/forest/NotificationLog';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import UpgradePanel from '../components/game/UpgradePanel';
@@ -48,6 +48,7 @@ const ForestMissionScreen = (props) => {
 
   const handleSelectTree = (tree) => {
     setSelectedTree(tree);
+     setIsPlanting(false) 
   };
   
   const handleTileClick = (x, y) => {
@@ -63,7 +64,7 @@ const ForestMissionScreen = (props) => {
         co2Level={co2Level} globalTemp={globalTemp} biodiversity={biodiversity} forestCoverage={forestCoverage}
       />
       <div className="forest-main-content">
-        <div className="left-sidebar">
+        <div className="forest-action-panel">
           <h3>Actions</h3>
           <div className="resource-counters vertical">
             <span title="Data Points: Used for planting and upgrades"><Icon type="data" /> {dataPoints} DP</span>
@@ -110,7 +111,10 @@ const ForestMissionScreen = (props) => {
       {/* <NotificationLog notifications={forestNotifications} /> */}
       {isPlanting && (
         <PlantingMenu
-          onSelectTree={handleSelectTree} selectedTree={selectedTree} dataPoints={dataPoints}
+          onSelectTree={handleSelectTree}
+          selectedTree={selectedTree}
+          dataPoints={dataPoints}
+          onClose={handleTogglePlanting}  // <-- ADD THIS LINE
         />
       )}
       <UpgradePanel

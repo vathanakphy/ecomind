@@ -59,12 +59,14 @@ const OceanMissionScreen = (props) => {
           <Button onClick={() => setShowUpgradePanel(true)} title="View and purchase AI upgrades."><Icon type="wrench" /> UPGRADES</Button>
         </div>
       </div>
-      <Button onClick={() => setShowGameGuide(true)}>
-          <Icon type="❓" /> Help
-      </Button>
-      <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
+      <div className="ocean-footer-buttons">
+        <Button onClick={() => setShowGameGuide(true)} className="help-button">
+          <Icon type="help" /> Help
+        </Button>
+        <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
+      </div>
       
-      <UpgradePanel 
+     <UpgradePanel 
         show={showUpgradePanel} 
         onClose={() => setShowUpgradePanel(false)}
         onBuyUpgrade={onBuyUpgrade}
