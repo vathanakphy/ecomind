@@ -1,15 +1,14 @@
 // src/screens/OceanMissionScreen.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../utils/language'; // Import the hook
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import UpgradePanel from '../components/game/UpgradePanel';
-import GameGuideOcean from '../components/ui/GameGuideOcean'; // Adjust path
-// --- FIX IS ON THIS LINE ---
+import GameGuideOcean from '../components/ui/GameGuideOcean';
 import { MAX_OCEAN_HEALTH, DEPLOY_AI_DATA_COST, DEPLOY_AI_ENERGY_COST } from '../constants/gameConstants';
 
 const OceanMissionScreen = (props) => {
-  // ... rest of the component code is unchanged
   const {
     oceanHealth, dataPoints, energy, aiAccuracy, aiMood, aiDialogue,
     onStartMinigame, onDeployAI, onBuyUpgrade, upgrades
@@ -18,6 +17,10 @@ const OceanMissionScreen = (props) => {
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
   const [showGameGuide, setShowGameGuide] = useState(false);
   const navigate = useNavigate();
+
+  // Get translations
+  const { result } = useLanguage();
+  const text = result.oceanMissionScreen;
 
   const healthPercentage = Math.max(0, Math.min(MAX_OCEAN_HEALTH, oceanHealth));
   const pollutionOpacity = Math.max(0.1, (100 - healthPercentage) / 100);
@@ -34,7 +37,6 @@ const OceanMissionScreen = (props) => {
         {healthPercentage > 90 && <div className="clean-item sun-rays">✨</div>}
       </div>
 
-
       <div className="ai-helper-mission">
         <div className="ai-avatar"><Icon type={aiMood} /></div>
         <div className="dialogue-box">{aiDialogue}</div>
@@ -42,21 +44,29 @@ const OceanMissionScreen = (props) => {
 
       <div className="main-ui-dashboard">
         <div className="status-bar">
-          <label htmlFor="oceanHealth">Ocean Health: {healthPercentage}%</label>
-          <div className="progress-bar-container" title={`Ocean Health: ${healthPercentage}%`}>
+          {/* Translated */}
+          <label htmlFor="oceanHealth">{text.oceanHealthLabel}: {healthPercentage}%</label>
+          {/* Translated */}
+          <div className="progress-bar-container" title={`${text.oceanHealthLabel}: ${healthPercentage}%`}>
             <div className="progress-bar-fill" style={{ width: `${healthPercentage}%`, backgroundColor: `hsl(${healthPercentage * 1.2}, 70%, 50%)` }}></div>
           </div>
         </div>
         <div className="resource-counters">
-          <span title="Data Points: Used for training and upgrades"><Icon type="data" /> {dataPoints} DP</span>
-          <span title="Energy: Used for deploying the AI"><Icon type="energy" /> {energy} ⚡️</span>
-          <span title="AI Accuracy: Affects deployment success"><Icon type="brain" /> {aiAccuracy}%</span>
+          {/* Translated */}
+          <span title={text.resources.dataPointsTitle}><Icon type="data" /> {dataPoints} DP</span>
+          {/* Translated */}
+          <span title={text.resources.energyTitle}><Icon type="energy" /> {energy} ⚡️</span>
+          {/* Translated */}
+          <span title={text.resources.aiAccuracyTitle}><Icon type="brain" /> {aiAccuracy}%</span>
         </div>
 
         <div className="action-buttons-mission">
-          <Button onClick={onStartMinigame} title="Go to minigame to earn Data Points and improve AI."><Icon type="brain" /> TRAIN AI</Button>
-          <Button onClick={onDeployAI} disabled={dataPoints < DEPLOY_AI_DATA_COST || energy < DEPLOY_AI_ENERGY_COST || oceanHealth >= MAX_OCEAN_HEALTH} title="Deploy AI to clean the ocean. Requires DP and Energy."><Icon type="rocket" /> DEPLOY AI</Button>
-          <Button onClick={() => setShowUpgradePanel(true)} title="View and purchase AI upgrades."><Icon type="wrench" /> UPGRADES</Button>
+          {/* Translated */}
+          <Button onClick={onStartMinigame} title={text.buttons.trainAITitle}><Icon type="brain" /> {text.buttons.trainAI}</Button>
+          {/* Translated */}
+          <Button onClick={onDeployAI} disabled={dataPoints < DEPLOY_AI_DATA_COST || energy < DEPLOY_AI_ENERGY_COST || oceanHealth >= MAX_OCEAN_HEALTH} title={text.buttons.deployAITitle}><Icon type="rocket" /> {text.buttons.deployAI}</Button>
+          {/* Translated */}
+          <Button onClick={() => setShowUpgradePanel(true)} title={text.buttons.upgradesTitle}><Icon type="wrench" /> {text.buttons.upgrades}</Button>
         </div>
       </div>
       <div className="ocean-footer-buttons">
