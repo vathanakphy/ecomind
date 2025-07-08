@@ -874,10 +874,11 @@
 
 /* --- Main Content Area --- */
 .forest-main-content {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  display: grid;
+  /* On mobile, creates a single column, so items stack vertically */
+  grid-template-columns: 1fr;
   gap: 1rem;
+  padding: 1rem;
 }
 
 /* --- Forest Map Container --- */
@@ -970,41 +971,50 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-/* ======================================================= */
+}/* ======================================================= */
 /* --- DESKTOP STYLES for Forest Mission --- */
 @media (min-width: 1024px) {
   .forest-mission-screen {
     display: grid;
     grid-template-rows: auto 1fr;
-    height: 100vh;
+    /* Changed to prevent vertical overflow on short screens */
+    height: 100vh; 
+    overflow: hidden;
   }
   .forest-hud {
     position: static;
   }
   .forest-main-content {
-    flex-direction: row;
+    /* On desktop, create a sidebar (240px) and a main content area (1fr) */
+    grid-template-columns: 240px 1fr;
     padding: 0;
+    gap: 0;
+    /* Allows the map container to scroll independently if needed */
+    height: 100%; 
+    overflow: hidden;
   }
   .forest-action-panel {
-    width: 240px;
+    /* The width is now controlled by the parent grid, so this is not needed */
+    /* width: 240px; */ 
     border-radius: 0;
     border-top: none;
     border-right: 2px solid #a5d6a7;
+    /* Allow scrolling if action panel content is too long */
+    overflow-y: auto; 
   }
   .action-button-grid {
     display: flex;
     flex-direction: column;
   }
   .forest-map-container {
-    overflow-x: hidden;
+    overflow: auto; /* Changed to auto to allow both vertical/horizontal scroll if map is large */
     justify-content: center;
+    padding: 1rem; /* Add padding back for desktop view */
   }
   .planting-menu {
     position: absolute; width: 300px; bottom: 20px; left: 260px; right: auto;
   }
 }
-
   /* ======================================================= */
   /* MEDIA QUERIES FOR TABLET & DESKTOP                      */
   /* ======================================================= */
