@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 
+
 // --- Components and Utils ---
 import { playSound } from './utils/audio';
 import Notification from './components/ui/Notification';
@@ -127,6 +128,8 @@ function App() {
   const [cityTrainingFeedback, setCityTrainingFeedback] = useState('');
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
+  const [cityTrainingProposals, setCityTrainingProposals] = useState([]);
+
 
 
   const handleMusicChange = (newTrackSrc) => {
@@ -149,6 +152,7 @@ function App() {
       setToasts(prev => prev.filter(n => n.id !== id));
     }, 3000);
   }, []);
+
 
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
@@ -396,9 +400,11 @@ function App() {
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId, text]);
 
+
   const handleStartCityTraining = useCallback(() => {
     if (activeTutorial.mission === 'city' && activeTutorial.step === 3) { advanceTutorial(); }
     setCityTrainingIndex(0); setCityTrainingFeedback(''); navigate('/missions/city/train');
+
   }, [navigate, activeTutorial]);
 
   const handleClassifyCityProposal = useCallback((proposal, answer, isFinished = false) => {
@@ -526,6 +532,7 @@ function App() {
       <Routes>
         <Route path="/" element={ <MainMenuScreen onAddNotification={addNotification} aiMood={aiMood} musicTracks={musicTracks} currentTrackSrc={currentTrackSrc} onMusicChange={handleMusicChange}/> } />
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
+
         
         {/* Routes are the same... */}
         <Route path="/missions/ocean" element={<OceanMissionScreen oceanHealth={oceanHealth} dataPoints={dataPoints} energy={energy} aiAccuracy={aiAccuracy} aiMood={aiMood} aiDialogue={aiDialogue} onStartMinigame={startSortTrashMinigame} onDeployAI={handleDeployAI} onBuyUpgrade={buyUpgrade} upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }} tutorialInfo={activeTutorial} onStartTutorial={() => startTutorial('ocean')} onAdvanceStep={advanceTutorial} onEndTutorial={endTutorial} /> } />
@@ -534,6 +541,7 @@ function App() {
         <Route path="/missions/forest/train" element={<ForestAITrainingScreen trainingImages={FOREST_AI_TRAINING_IMAGES} currentImageIndex={aiForestTrainingIndex} onImageLabel={handleImageLabel} onEndTraining={() => navigate('/missions/forest')} dataPoints={dataPoints} forestTrainingFeedback={forestTrainingFeedback} tutorialInfo={activeTutorial}/> } />
         <Route path="/missions/city" element={ <CityMissionScreen cityAqi={cityAqi} cityEconomy={cityEconomy} cityHappiness={cityHappiness} cityDistricts={cityDistricts} cityDecisions={availableDecisions} dataPoints={dataPoints} energy={energy} upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }} onApproveDecision={handleApproveCityDecision} onStartCityTraining={handleStartCityTraining} cityAIAccuracy={cityAIAccuracy} aiRecommendedDecisionId={aiRecommendedDecisionId} onDeployAICity={handleDeployAICity} onBuyUpgrade={buyUpgrade} tutorialInfo={activeTutorial} onStartTutorial={() => startTutorial('city')} onAdvanceStep={advanceTutorial} onEndTutorial={endTutorial}/> } />
         <Route path="/missions/city/train" element={ <CityAITrainingScreen proposals={CITY_TRAINING_PROPOSALS} currentIndex={cityTrainingIndex} onClassify={handleClassifyCityProposal} feedback={cityTrainingFeedback} dataPoints={dataPoints} tutorialInfo={activeTutorial}/> } />
+
       </Routes>
 
       <Modal show={showLowEnergyModal} onClose={() => setShowLowEnergyModal(false)} title={result.alertsLowEnergy.lowEnergyTitle} >
