@@ -309,61 +309,87 @@
     font-weight: bold;
     line-height: 25px;
   }
-  .resource-counters {
-    display: flex;
-    justify-content: space-around;
-    font-size: 1.1em;
-    font-weight: bold;
-  }
-  .resource-counters span {
-    background-color: var(--neutral-light-gray);
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  .action-buttons-mission {
-    display: flex;
-    /* Mobile-first: stack buttons vertically */
-    flex-direction: column;
-    align-items: stretch; /* Makes buttons full-width */
-    gap: 0.75rem;
-  }
+  /* === Resource Counters === */
+.resource-counters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center on mobile */
+  gap: 0.5rem;              /* Add spacing between items */
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 
+.resource-counters span {
+  background-color: var(--neutral-light-gray);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+
+
+/* === Action Buttons (Mission) === */
+.action-buttons-mission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* Center buttons in column */
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+/* === Footer Buttons (Mission) === */
+.ocean-footer-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
   .ocean-footer-buttons {
-    width: 100%;
-    max-width: 500px; /* Match other content for consistency */
-    display: flex;
-    margin-top: 1rem;
-    /* Mobile-first: stack buttons vertically */
-    flex-direction: column;
-    align-items: stretch; /* Makes buttons full-width */
-    gap: 0.75rem;
+    flex-direction: row;
+    justify-content: center;  
+    align-items: center;
+    gap: 1.5rem;              
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* === Back Button Styling === */
+.back-button-mission {
+  margin-top: 15px;
+  background-color: var(--accent-orange);
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.back-button-mission:hover:not(:disabled) {
+  background-color: #d35400;
+}
+
+/* === Desktop / Tablet Layout === */
+@media (min-width: 768px) {
+  .action-buttons-mission {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0 auto;
   }
 
+  
+}
 
-  .back-button-mission {
-    margin-top: 15px;
-    background-color: var(--accent-orange);
-  }
-  .back-button-mission:hover:not(:disabled) {
-    background-color: #d35400; /* Darker orange */
-  }
-
-  @media (min-width: 768px) {
-    .action-buttons-mission {
-      /* Switch to horizontal layout on wider screens */
-      flex-direction: row;
-      justify-content: space-around;
-      flex-wrap: wrap;
-    }
-
-    .ocean-footer-buttons {
-      /* Switch to horizontal layout */
-      flex-direction: row;
-      justify-content: space-between; /* Pushes buttons to each side */
-      align-items: center;
-      max-width: none; /* Allow it to span the full dashboard width */
-    }
-  }
   /* --- Sort Trash Minigame (Improved Responsiveness) --- */
   .sort-trash-minigame {
     background-color: #e8f6fd;
@@ -417,24 +443,28 @@
   }
 
   .sorting-bins {
-    display: flex;
-    gap: 1rem;
-    max-width: 500px;
-    flex-direction: column;
-    width: -webkit-fill-available; /* Modern cross-browser way to fill space */
-    width: -moz-available;
-    width: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  width: 100%;           
+  margin: 0 auto;         
+  align-items: center;    
+}
 
+@media (min-width: 768px) {
+  .sorting-bins {
+    flex-direction: row;
+    justify-content: center;  
+    align-items: stretch;     
   }
 
-  @media (min-width: 768px) {
-    .sorting-bins {
-      flex-direction: row;
-    }
-    .sorting-bins .game-button {
-      flex-grow: 1;
-    }
+  .sorting-bins .game-button {
+    flex-grow: 1;
+    min-width: 120px;       
   }
+}
+
 
   .minigame-feedback {
     font-size: 1.2em;
