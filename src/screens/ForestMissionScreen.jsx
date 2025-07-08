@@ -35,6 +35,7 @@ const ForestMissionScreen = (props) => {
   const text = result.forestMissionScreen;
 
   const isTutorialActive = tutorialInfo.mission === 'forest';
+  const tutorialText = text?.tutorial;
 
   useEffect(() => {
     if (isTutorialActive) {
@@ -47,44 +48,48 @@ const ForestMissionScreen = (props) => {
     };
   }, [isTutorialActive]);
 
-  const forestTutorialSteps = useMemo(() => ({
-    1: {
-      highlightId: 'tutorial-hud',
-      text: "Welcome to the Forest Mission! Your goal is to lower <strong>CO₂</strong> and temperature by restoring the forest.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    2: {
-      highlightId: 'tutorial-forest-resources',
-      text: "You'll need <strong>Data Points</strong> and <strong>Energy</strong>. Get Data Points by training the AI.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    3: {
-      highlightId: 'tutorial-forest-train',
-      text: "Click <strong>'Train AI'</strong> to teach it to identify healthy and unhealthy trees.",
-      buttonText: null, // This forces the user to click the actual button
-      action: onTrainAI,
-    },
-    5: {
-      highlightId: 'tutorial-forest-deploy',
-      text: "Use DP and Energy to <strong>Deploy AI</strong>. It will automatically remove threats or plant new trees!",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    6: {
-      highlightId: 'tutorial-forest-plant',
-      text: "Click <strong>'Manage Forest'</strong> to open the menu and plant trees yourself. This is the best way to lower CO₂!",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    7: {
-      highlightId: 'tutorial-forest-map',
-      text: "This is your forest. Click on empty tiles to plant the trees you select from the menu.",
-      buttonText: "Got It!",
-      action: onEndTutorial,
+const forestTutorialSteps = useMemo(() => {
+    if (!tutorialText) return {}; // Safety check
+
+    return {
+      1: {
+        highlightId: 'tutorial-hud',
+        textKey: "step1_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      2: {
+        highlightId: 'tutorial-forest-resources',
+        textKey: "step2_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      3: {
+        highlightId: 'tutorial-forest-train',
+        textKey: "step3_text",
+        buttonTextKey: null,
+        action: onTrainAI,
+      },
+      5: {
+        highlightId: 'tutorial-forest-deploy',
+        textKey: "step5_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      6: {
+        highlightId: 'tutorial-forest-plant',
+        textKey: "step6_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      7: {
+        highlightId: 'tutorial-forest-map',
+        textKey: "step7_text",
+        buttonTextKey: "button_got_it",
+        action: onEndTutorial,
+      }
     }
-  }), [onAdvanceStep, onEndTutorial, onTrainAI]);
+  }, [onAdvanceStep, onEndTutorial, onTrainAI, tutorialText]); // Add tutorialText dependency
 
   useEffect(() => {
     if (selectedTree) {
@@ -116,6 +121,9 @@ const ForestMissionScreen = (props) => {
     }
   };
   const loggedTileCount = forestMap.flat().filter(t => t.type === 'logged').length;
+  if (!text || !tutorialText) {
+    return <div className="screen">Loading...</div>;
+  }
 
   return (
     <div className="screen forest-mission-screen">
@@ -126,6 +134,7 @@ const ForestMissionScreen = (props) => {
           onNext={onAdvanceStep}
           onEnd={onEndTutorial}
           onForceAction={onTrainAI}
+          translations={tutorialText} // Pass the tutorial translations
         />
       )}
 
@@ -136,7 +145,7 @@ const ForestMissionScreen = (props) => {
       </div>
       <div className="forest-main-content">
         <div className="forest-action-panel">
-          <h3>Actions</h3>
+          <h3>{text.actionsTitle}</h3>
           <div id="tutorial-forest-resources" className="resource-counters vertical">
             <span title={text.resources.dataPoints}><Icon type="data" /> {dataPoints} DP</span>
             <span title={text.resources.energy}><Icon type="energy" /> {energy} ⚡️</span>

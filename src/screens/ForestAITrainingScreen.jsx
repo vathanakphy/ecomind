@@ -16,6 +16,7 @@ const ForestAITrainingScreen = ({
 }) => {
   const { result } = useLanguage();
   const text = result.forestAITraining;
+   const tutorialText = text?.tutorial;
 
   // --- NEW: Tutorial Logic ---
   const shouldShowTutorial = tutorialInfo.mission === 'forest' && tutorialInfo.step === 4;
@@ -26,17 +27,24 @@ const ForestAITrainingScreen = ({
   }, [shouldShowTutorial]);
 
   // Define Step 4 for the tutorial overlay
-  const forestTutorialStep4 = useMemo(() => ({
-    4: {
-      highlightId: 'tutorial-forest-training-area',
-      text: "Label these images correctly to improve the AI's accuracy and earn Data Points.",
-      buttonText: "Let's Go!",
-      action: () => setShowTutorial(false),
+  const forestTutorialStep4 = useMemo(() => {
+    if (!tutorialText) return {}; // Safety check
+
+    return {
+      4: {
+        highlightId: 'tutorial-forest-training-area',
+        textKey: "step4_text",         // Use key
+        buttonTextKey: "button_lets_go", // Use key
+        action: () => setShowTutorial(false),
+      }
     }
-  }), []);
-  // --- End of Tutorial Logic ---
+  }, [tutorialText]); // Depend on the translations object
 
   const currentItem = trainingImages[currentImageIndex];
+  // Safety check for when translations are still loading
+  if (!text || !text.descriptions || !tutorialText) {
+    return <div className="screen">Loading...</div>;
+  }
 
   if (!currentItem) {
     return (
@@ -47,22 +55,30 @@ const ForestAITrainingScreen = ({
     );
   }
 
-  return(
+  return (
     <div className="screen ai-training-screen">
       {/* NEW: Render the tutorial overlay */}
       {showTutorial && (
         <TutorialOverlay
           steps={forestTutorialStep4}
           step={4}
-          onEnd={() => setShowTutorial(false)}
+          onEnd={() => setShowTutorial(false)} // onEnd is for the close 'x' button
+          translations={tutorialText} // Pass the relevant translation object
         />
       )}
 
       <h2><Icon type="🧪" /> {text.title}</h2>
       <p>{text.subtitle}</p>
       <div className="training-item-area" id="tutorial-forest-training-area">
-        <img className="training-image-placeholder" src={currentItem.visual} alt={currentItem.description} />
-        <p className="training-description">{currentItem.description}</p>
+        {/* --- FIX 3: Use the key to get the translated description --- */}
+        <img
+          className="training-image-placeholder"
+          src={currentItem.visual}
+          alt={text.descriptions[currentItem.descriptionKey]}
+        />
+        <p className="training-description">
+          {text.descriptions[currentItem.descriptionKey]}
+        </p>
       </div>
       <div className="classification-buttons">
         <Button onClick={() => onImageLabel(currentItem, 'Healthy')}>{text.labels.healthy}</Button>
