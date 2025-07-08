@@ -368,7 +368,7 @@ export const translations = {
       endTraining: "End Training",
     },
     gameData: {
-      trashItems: {
+      trashItems : {
         1: { name: "Plastic Bottle" },
         2: { name: "Apple Core" },
         3: { name: "Fish Bones" },
@@ -379,6 +379,26 @@ export const translations = {
         8: { name: "Tin Can" },
         9: { name: "Egg Shells" },
         10: { name: "Styrofoam Cup" },
+        11: { name: "Cardboard Box" },
+        12: { name: "Coffee Grounds" },
+        13: { name: "Greasy Pizza Box" },
+        14: { name: "Glass Jar" },
+        15: { name: "Yard Trimmings" },
+        16: { name: "Batteries" },
+        17: { name: "Milk Carton" },
+        18: { name: "Vegetable Scraps" },
+        19: { name: "Chip Bag" },
+        20: { name: "Junk Mail" },
+        21: { name: "Tea Bag" },
+        22: { name: "Plastic Cutlery" },
+        23: { name: "Aluminum Foil (Clean)" },
+        24: { name: "Bread Crusts" },
+        25: { name: "Light Bulb" },
+        26: { name: "Shampoo Bottle" },
+        27: { name: "Corn Cob" },
+        28: { name: "Used Face Mask" },
+        29: { name: "Cereal Box" },
+        30: { name: "Old Plastic Toy" },
       },
       treeTypes: {
         oak: { name: "Oak Tree" },
@@ -386,14 +406,33 @@ export const translations = {
         sequoia: { name: "Sequoia" },
         mangrove: { name: "Mangrove" },
       },
-      forestTraining: {
-        1: { description: "Healthy canopy, vibrant green." },
-        2: { description: "Leaves with brown spots and wilting." },
-        3: { description: "Very dry, brown undergrowth, potential tinder." },
-        4: { description: "Lush and green, diverse plant life." },
-        5: { description: "Browning pine needles, signs of infestation." },
-        6: { description: "Young trees showing new growth." },
-      },
+      forestTraining : {
+          1: { description: "Drone footage shows a dense, closed canopy with vibrant, uniform green coloration across the upper branches." },
+          2: { description: "A close-up image of leaves shows distinct necrotic lesions (brown spots) and significant wilting along the edges." },
+          3: { description: "Thermal analysis indicates extremely low moisture content in the ground-level foliage and a thick layer of dry tinder." },
+          4: { description: "The forest floor is covered in a diverse array of ferns, mosses, and wildflowers, indicating rich soil and ample water." },
+          5: { description: "Patches of pine trees are showing browning needles and small holes in the bark, consistent with beetle infestation." },
+          6: { description: "A clearing shows numerous young saplings successfully taking root and showing vigorous new leaf growth." },
+          7: { description: "Image analysis reveals a large, oozing canker on the main trunk of a tree, a sign of a severe fungal infection." },
+          8: { description: "Lidar data shows a high density of standing dead trees with very low moisture content, acting as potential \"ladder fuels\"." },
+          9: { description: "Sensor data shows high water clarity in a forest stream, indicating minimal soil erosion and a stable ecosystem." },
+          10: { description: "Visible decay and fungal mycelium are present at the base of several mature trees, pointing to widespread root rot." },
+          11: { description: "A tall, isolated tree shows a long, fresh scar down its trunk from a recent lightning strike, making it susceptible to ignition." },
+          12: { description: "A remote camera trap has captured multiple images of deer and other small mammals foraging, indicating a robust food web." },
+          13: { description: "Thermal imaging indicates significant water stress across a sector; the leaves on many trees are curled and losing turgor." },
+          14: { description: "A fallen log is covered in thick moss and various fungi, actively decomposing and recycling nutrients back into the soil." },
+          15: { description: "High-resolution image shows a pattern of small boreholes in tree bark with \"frass\" (a sawdust-like substance) accumulating below." },
+          16: { description: "A vibrant forest with many trees and birds. The scene includes various bird species singing at different pitches, creating a rich and lively soundscape. This diverse audio activity reflects a healthy, biodiverse ecosystem." },
+          17: { description: "Image analysis identifies numerous low-hanging dead branches on mature trees, which could carry a ground fire into the canopy." },
+          18: { description: "A tree is showing multiple instances of \"witches' broom\" – a dense, chaotic mass of twig growth caused by a pathogen." },
+          19: { description: "Drone close-up of several tree trunks shows bark is intact and healthy, with no signs of peeling or deep cracks." },
+          20: { description: "Field sensors detect large patches of a non-native, invasive grass species that has dried out completely, creating a continuous fuel source." },
+          21: { description: "Analysis of ground cover shows a significant number of leaves have been shed from deciduous trees far ahead of the normal season." },
+          22: { description: "Sub-surface soil scan reveals a dense and thriving network of mycorrhizal fungi interconnected with tree roots." },
+          23: { description: "A remote camera has spotted a smoldering, unattended campfire at an unauthorized campsite within the forest boundary." },
+          24: { description: "Magnified leaf image shows distinctive winding tunnels and trails within the leaf tissue, indicating a leaf miner insect infestation." },
+          25: { description: "Image of a muddy path shows a variety of fresh animal tracks, including boar and deer, suggesting active animal populations." }
+        },
       cityDecisions: {
         city_dec1: {
           title: "Subsidize Electric Taxis",
@@ -426,34 +465,106 @@ export const translations = {
             "Use our AI to create an ultra-efficient power grid, reducing waste and pollution.",
         },
       },
-      cityTrainingProposals: {
+      cityTrainingProposals : {
         ctp1: {
           title: "Replace Parking Lot with Park",
-          description: "A developer wants to build a new public park downtown.",
+          description: "A developer wants to build a new public park downtown, increasing green space and reducing the heat island effect.",
         },
         ctp2: {
           title: "Build a New Highway Through Suburbs",
-          description:
-            "This would increase traffic and pollution in a residential area.",
+          description: "This would increase traffic and pollution in a residential area, prioritizing cars over people.",
         },
         ctp3: {
           title: "Dump Industrial Waste in River",
-          description:
-            "A factory is proposing a cheaper way to get rid of its waste.",
+          description: "A factory is proposing a cheaper, but highly polluting, way to get rid of its chemical waste.",
         },
         ctp4: {
           title: "Community Composting Program",
-          description: "A city-wide initiative to reduce landfill waste.",
+          description: "A city-wide initiative to collect food scraps and reduce the amount of organic waste going to the landfill.",
         },
         ctp5: {
           title: "Remove Emission Standards for Cars",
-          description:
-            "A proposal to make it cheaper to own older, more polluting cars.",
+          description: "A proposal to make it cheaper to own older, more polluting cars, which would worsen air quality.",
         },
         ctp6: {
           title: "Switch Streetlights to Low-Energy LEDs",
-          description:
-            "This will reduce the city's overall energy consumption.",
+          description: "This will reduce the city's overall energy consumption and lower its carbon footprint.",
+        },
+        ctp7: {
+          title: "Expand the Public Bus System",
+          description: "Adding more bus routes to reduce reliance on personal motos and cars, easing traffic congestion and emissions.",
+        },
+        ctp8: {
+          title: "Fill in a Natural Lake for a New Mall",
+          description: "A plan to reclaim a large urban lake for a luxury shopping center, destroying a vital natural wetland.",
+        },
+        ctp9: {
+          title: "Subsidize Rooftop Solar Panels",
+          description: "Offer financial help for homes and businesses to install solar panels, promoting clean, renewable energy.",
+        },
+        ctp10: {
+          title: "Encourage Single-Use Plastic Bags",
+          description: "A proposal to give out free, non-biodegradable plastic bags at all markets to increase customer convenience.",
+        },
+        ctp11: {
+          title: "Install Public Water Filtration Stations",
+          description: "Provide free, clean drinking water in public spaces to reduce the widespread use of plastic water bottles.",
+        },
+        ctp12: {
+          title: "Import Cheap, Unregulated Two-Stroke Motos",
+          description: "Allow the import of older, less efficient motorbikes that produce a large amount of smoke and noise pollution.",
+        },
+        ctp13: {
+          title: "Mandate Green Roofs on New Buildings",
+          description: "Require new commercial buildings to have gardens on their roofs to help cool the city and manage rainwater.",
+        },
+        ctp14: {
+          title: "Create Protected Bicycle Lanes",
+          description: "Build a network of safe, separated bike lanes across the city to encourage carbon-free transportation.",
+        },
+        ctp15: {
+          title: "Build a Coal Power Plant on City Outskirts",
+          description: "A proposal to generate cheap electricity for the city by burning coal, a major source of air pollution and CO₂.",
+        },
+        ctp16: {
+          title: "Build a Modern Waste-to-Energy Plant",
+          description: "Process non-recyclable city trash in a high-tech incinerator to generate electricity, reducing landfill size.",
+        },
+        ctp17: {
+          title: "Allow Construction Work 24/7",
+          description: "Remove restrictions on construction hours to speed up projects, leading to constant noise pollution in neighborhoods.",
+        },
+        ctp18: {
+          title: "Convert Vacant Lots into Community Farms",
+          description: "Allow citizens to grow their own food in unused city spaces, promoting local food security and greening the area.",
+        },
+        ctp19: {
+          title: "Pave Over Riverside Greenways for Parking",
+          description: "Remove natural riverfront parks and green spaces to create more parking lots for cars.",
+        },
+        ctp20: {
+          title: "Offer Incentives for Electric Tuk-Tuks",
+          description: "Provide loans or grants for drivers to switch from gasoline-powered tuk-tuks to silent, non-polluting electric models.",
+        },
+        ctp21: {
+          title: "Delay Upgrades to Sewage Treatment System",
+          description: "Postpone essential maintenance on the city's wastewater treatment plants, risking raw sewage leaks into waterways.",
+        },
+        ctp22: {
+          title: "Create Car-Free Pedestrian Zones",
+          description: "Designate popular market and riverside areas as \"walking only\" on weekends to improve safety and air quality.",
+        },
+        ctp23: {
+          title: "Allow Loudspeaker Advertising Trucks",
+          description: "Permit vehicles to drive through neighborhoods broadcasting loud advertisements at all hours, increasing noise pollution.",
+        },
+        ctp24: {
+          title: "Promote Rainwater Harvesting Systems",
+          description: "Encourage buildings to collect and store rainwater for non-drinking uses, reducing strain on the city's water supply.",
+        },
+        ctp25: {
+          title: "Ban All Street Food Vendors",
+          description: "A plan to \"clean up the streets\" by banning all street food vendors, which harms local culture and small businesses.",
         },
       },
       cityDistricts: {
@@ -946,33 +1057,71 @@ export const translations = {
     },
     gameData: {
       trashItems: {
-        1: { name: "ដប​ជ័រ" },
-        2: { name: "ស្នូលផ្លែប៉ោម" },
-        3: { name: "ឆ្អឹងត្រី" },
-        4: { name: "ថង់​ប្លា​ស្ទិ​ក" },
-        5: { name: "សំបកចេក" },
-        6: { name: "កាសែតចាស់" },
-        7: { name: "បំបែងកែវ" },
-        8: { name: "កំប៉ុងដែក" },
-        9: { name: "សំបកស៊ុត" },
-        10: { name: "ពែងស្នោ" },
-      },
+      1: { "name": "ដប​ជ័រ" },
+      2: { "name": "ស្នូលផ្លែប៉ោម" },
+      3: { "name": "ឆ្អឹងត្រី" },
+      4: { "name": "ថង់​ប្លា​ស្ទិ​ក" },
+      5: { "name": "សំបកចេក" },
+      6: { "name": "កាសែតចាស់" },
+      7: { "name": "បំបែងកែវ" },
+      8: { "name": "កំប៉ុងដែក" },
+      9: { "name": "សំបកស៊ុត" },
+      10: { "name": "ពែងស្នោ" },
+      11: { "name": "ប្រអប់ក្រដាសកាតុង" },
+      12: { "name": "កាកកាហ្វេ" },
+      13: { "name": "ប្រអប់ភីហ្សាប្រឡាក់ខ្លាញ់" },
+      14: { "name": "ពាងកែវ" },
+      15: { "name": "មែកឈើ កាកសំណល់សួន" },
+      16: { "name": "ថ្មពិល" },
+      17: { "name": "ប្រអប់ទឹកដោះគោ" },
+      18: { "name": "បំណែកបន្លែ" },
+      19: { "name": "ថង់នំកញ្ចប់" },
+      20: { "name": "សំបុត្រឥតប្រយោជន៍" },
+      21: { "name": "ថង់តែ" },
+      22: { "name": "ស្លាបព្រាប្លាស្ទិក" },
+      23: { "name": "ក្រដាសអាលុយមីញ៉ូម (ស្អាត)" },
+      24: { "name": "សំបកនំប៉័ង" },
+      25: { "name": "អំពូលភ្លើង" },
+      26: { "name": "ដបសាប៊ូកក់សក់" },
+      27: { "name": "ពោត" },
+      28: { "name": "ម៉ាស់ប្រើរួច" },
+      29: { "name": "ប្រអប់នំប៉័ង" },
+      30: { "name": "ប្រដាប់ក្មេងលេងប្លាស្ទិកចាស់" }
+    },
       treeTypes: {
         oak: { name: "ដើមឈើអុក" },
         pine: { name: "ដើមស្រល់" },
         sequoia: { name: "ដើមសេក្វូយ៉ា" },
         mangrove: { name: "ដើមកោងកាង" },
       },
-      forestTraining: {
-        1: { description: "ដំបូលព្រៃមានសុខភាពល្អ, ពណ៌បៃតងរស់រវើក។" },
-        2: { description: "ស្លឹកមានស្នាមអុចៗពណ៌ត្នោត និងស្រពោន។" },
-        3: { description: "រុក្ខជាតិក្រោមដីស្ងួតខ្លាំង, អាចបង្កជាភ្លើង។" },
-        4: { description: "ខៀវស្រងាត់, មានជីវិតរុក្ខជាតិចម្រុះ។" },
-        5: {
-          description: "ស្លឹកស្រល់ប្រែពណ៌ត្នោត, សញ្ញានៃការបំផ្លាញដោយសត្វល្អិត។",
-        },
-        6: { description: "កូនឈើបង្ហាញពីការលូតលាស់ថ្មី។" },
-      },
+       forestTraining : {
+          1: { description: "រូបភាពពីដ្រូនបង្ហាញពីគម្របព្រៃឈើក្រាស់ មានពណ៌បៃតងស្រស់ស្អាតដូចគ្នា នៅលើមែកឈើខាងលើ។" },
+          2: { description: "រូបភាពស្លឹកឈើជិតៗបង្ហាញពីចំណុចក្រហមត្នោត (ចំណុចងាប់) និងក្រៀមស្វិតខ្លាំងនៅតាមគែមស្លឹក។" },
+          3: { description: "ការវិភាគកម្ដៅបង្ហាញថា ដីនៅជិតផ្ទៃខាងក្រោមមានសំណើមទាបបំផុត ហើយមានស្រទាប់ឈើស្ងួតក្រាស់។" },
+          4: { description: "ផ្ទៃព្រៃត្រូវបានគ្របដណ្ដប់ដោយរុក្ខជាតិហ្វឺន ស្មៅ និងផ្កាព្រៃជាច្រើនប្រភេទ ដែលបង្ហាញពីដីមានជីជាតិ និងទឹកច្រើន។" },
+          5: { description: "ដើមស្រល់មួយចំនួនបង្ហាញពីម្ជុលប្រែពណ៌ត្នោត និងប្រហោងតូចៗនៅលើសំបកឈើ ដែលត្រូវនឹងការបំផ្លាញដោយសត្វល្អិត។" },
+          6: { description: "កន្លែងវាលស្មៅបង្ហាញពីកូនឈើតូចៗជាច្រើនកំពុងដុះលូតលាស់ល្អ និងមានស្លឹកខ្ចីៗ។" },
+          7: { description: "ការវិភាគរូបភាពបង្ហាញពីដំបៅធំមួយនៅលើដើមឈើមេ ដែលជាសញ្ញានៃការឆ្លងមេរោគផ្សិតធ្ងន់ធ្ងរ។" },
+          8: { description: "ទិន្នន័យ Lidar បង្ហាញពីដង់ស៊ីតេខ្ពស់នៃដើមឈើងាប់ៗ ដែលមានសំណើមទាបបំផុត អាចក្លាយជាឥន្ធនៈងាយឆេះ។" },
+          9: { description: "ទិន្នន័យឧបករណ៏ចាប់សញ្ញាបង្ហាញពីភាពថ្លានៃទឹកអូរក្នុងព្រៃ ដែលបង្ហាញពីសំណឹកដីតិចតួច និងប្រព័ន្ធអេកូឡូស៊ីមានស្ថិរភាព។" },
+          10: { description: "ការរលួយ និងផ្សិតអាចមើលឃើញនៅគល់ដើមឈើធំៗជាច្រើន ដែលបង្ហាញពីការរលួយឫសរីករាលដាល។" },
+          11: { description: "ដើមឈើខ្ពស់ឯកោមួយបង្ហាញពីស្លាកស្នាមស្រស់ៗនៅលើដើមរបស់វាពីការបាញ់រន្ទះថ្មីៗ ដែលធ្វើឱ្យវាងាយឆេះ។" },
+          12: { description: "ម៉ាស៊ីនថតកាមេរ៉ាពីចម្ងាយបានថតរូបសត្វក្តាន់ និងសត្វតូចៗផ្សេងទៀតកំពុងរកស៊ី ដែលបង្ហាញពីបណ្ដាញអាហាររឹងមាំ។" },
+          13: { description: "រូបភាពកម្ដៅបង្ហាញពីកង្វះទឹកគួរឱ្យកត់សម្គាល់នៅទូទាំងតំបន់។ ស្លឹកឈើជាច្រើនបានរួញ និងបាត់បង់ជាតិទឹក។" },
+          14: { description: "គល់ឈើដែលដួលរលំត្រូវបានគ្របដណ្ដប់ដោយស្មៅ និងផ្សិតផ្សេងៗ ដែលកំពុងពុកផុយ និងផ្ដល់សារធាតុចិញ្ចឹមត្រឡប់ទៅក្នុងដីវិញ។" },
+          15: { description: "រូបភាពកម្រិតច្បាស់ខ្ពស់បង្ហាញពីលំនាំនៃប្រហោងតូចៗនៅលើសំបកឈើ ជាមួយនឹងកាកសំណល់ឈើ (ដូចជាធូលីដី) កកកុញនៅខាងក្រោម។" },
+          16: { description: "ព្រៃឈើដែលមានដើមឈើ និងសត្វស្លាបជាច្រើន។ ទេសភាពនេះរួមបញ្ចូលទាំងប្រភេទសត្វស្លាបជាច្រើនប្រភេទកំពុងច្រៀងដោយសំឡេងផ្សេងៗគ្នា បង្កើតបានជាទេសភាពសំឡេងដ៏សម្បូរបែប និងរស់រវើក។ សកម្មភាពសំឡេងចម្រុះនេះឆ្លុះបញ្ចាំងពីប្រព័ន្ធអេកូឡូស៊ីដែលមានសុខភាពល្អ និងសម្បូរបែប។" },
+          17: { description: "ការវិភាគរូបភាពកំណត់អត្តសញ្ញាណមែកឈើងាប់ជាច្រើននៅទាបនៅលើដើមឈើធំៗ ដែលអាចនាំឱ្យភ្លើងពីដីឆេះដល់គម្របព្រៃ។" },
+          18: { description: "ដើមឈើមួយបង្ហាញពីសភាពដូច \"អំបោសធ្មប់\" – ជាដុំមែកឈើដុះច្របូកច្របល់ដែលបណ្ដាលមកពីមេរោគ។" },
+          19: { description: "រូបភាពដ្រូនជិតៗនៃដើមឈើជាច្រើនបង្ហាញថា សំបកឈើនៅដដែល និងមានសុខភាពល្អ គ្មានសញ្ញានៃការរបក ឬប្រេះជ្រៅៗឡើយ។" },
+          20: { description: "ឧបករណ៏ចាប់សញ្ញានៅក្នុងព្រៃរកឃើញស្មៅជាច្រើនប្រភេទដែលមិនមែនជាស្មៅក្នុងស្រុក បានរីងស្ងួតទាំងស្រុង បង្កើតបានជាប្រភពឥន្ធនៈបន្ត។" },
+          21: { description: "ការវិភាគគម្របដីបង្ហាញពីចំនួនស្លឹកឈើជាច្រើនបានជ្រុះចេញពីដើមឈើជ្រុះស្លឹក លឿនជាងរដូវធម្មតា។" },
+          22: { description: "ការស្កេនដីក្រោមដីបង្ហាញពីបណ្ដាញផ្សិត mycorrhizal ក្រាស់ និងលូតលាស់ល្អ ដែលភ្ជាប់ជាមួយឫសឈើ។" },
+          23: { description: "កាមេរ៉ាពីចម្ងាយបានប្រទះឃើញភ្លើងឆេះគគុកដែលមិនមានអ្នកមើលថែនៅកន្លែងបោះជំរុំខុសច្បាប់នៅក្នុងព្រៃ។" },
+          24: { description: "រូបភាពស្លឹកឈើដែលពង្រីកបង្ហាញពីផ្លូវរូងក្រោមដី និងគន្លងប្លែកៗនៅក្នុងជាលិកាស្លឹក ដែលបង្ហាញពីការបំផ្លាញដោយសត្វល្អិតខាំស៊ីស្លឹក។" },
+          25: { description: "រូបភាពផ្លូវភក់បង្ហាញពីដានជើងសត្វស្រស់ៗជាច្រើនប្រភេទ រួមទាំងជ្រូកព្រៃ និងក្តាន់ ដែលបង្ហាញពីចំនួនសត្វសកម្ម។" }
+        }
+        ,
       cityDecisions: {
         city_dec1: {
           title: "ជួយបង់ថ្លៃតាក់ស៊ីអគ្គិសនី",
@@ -1005,36 +1154,109 @@ export const translations = {
             "ប្រើប្រាស់ AI របស់យើងដើម្បីបង្កើតបណ្ដាញអគ្គិសនីដែលមានប្រសិទ្ធភាពខ្ពស់បំផុត កាត់បន្ថយការខ្ជះខ្ជាយ និងការបំពុល។",
         },
       },
-      cityTrainingProposals: {
+      cityTrainingProposals : {
         ctp1: {
-          title: "ប្តូរកន្លែងចតឡានទៅជាសួនច្បារ",
-          description:
-            "អ្នកអភិវឌ្ឍន៍ម្នាក់ចង់សាងសង់សួនសាធារណៈថ្មីនៅកណ្តាលក្រុង។",
+          title: "ជំនួសកន្លែងចតឡានដោយសួនច្បារ",
+          description: "អ្នកអភិវឌ្ឍន៍ម្នាក់ចង់សាងសង់សួនសាធារណៈថ្មីមួយនៅកណ្តាលទីក្រុង ដើម្បីបង្កើនដើមឈើបៃតង និងកាត់បន្ថយឥទ្ធិពលកោះកំដៅ។"
         },
         ctp2: {
-          title: "សាងសង់ផ្លូវHigh way ថ្មីកាត់តំបន់ជាយក្រុង",
-          description:
-            "នេះនឹងបង្កើនការកកស្ទះចរាចរណ៍ និងការបំពុលនៅតំបន់លំនៅដ្ឋាន។",
+          title: "សាងសង់ផ្លូវហាយវេថ្មីឆ្លងកាត់ជាយក្រុង",
+          description: "នេះនឹងបង្កើនចរាចរណ៍ និងការបំពុលនៅក្នុងតំបន់លំនៅដ្ឋាន ដោយផ្តល់អាទិភាពដល់រថយន្តលើមនុស្ស។"
         },
         ctp3: {
-          title: "បោះចោលកាកសំណល់ឧស្សាហកម្មចូលទន្លេ",
-          description:
-            "រោងចក្រមួយកំពុងស្នើវិធីសាស្រ្តដែលមានតម្លៃថោកដើម្បីកម្ចាត់កាកសំណល់របស់ខ្លួន។",
+          title: "ចាក់កាកសំណល់ឧស្សាហកម្មចូលទន្លេ",
+          description: "រោងចក្រមួយកំពុងស្នើវិធីចំណាំយលុយតិច ប៉ុន្តែមានភាពបំពុលខ្លាំង ដើម្បីកម្ចាត់កាកសំណល់គីមីរបស់ខ្លួន។"
         },
         ctp4: {
-          title: "កម្មវិធីជីកំប៉ុស្តសហគមន៍",
-          description:
-            "គំនិតផ្តួចផ្តើមក្នុងទីក្រុងដើម្បីកាត់បន្ថយកាកសំណល់ពីកន្លែងចាក់សំរាម។",
+          title: "សហគមន៍ធ្វើជីកំប៉ុស្ត",
+          description: "គំនិតផ្តួចផ្តើមទូទាំងទីក្រុងដើម្បីប្រមូលសំណល់អាហារ និងកាត់បន្ថយបរិមាណសំណល់សរីរាង្គដែលទៅកន្លែងចាក់សំរាម។"
         },
         ctp5: {
-          title: "លុបចោលការបំពុលរបស់រថយន្ត",
-          description: "គោលបំណងដើម្បីធ្វើឱ្យទ្បានចាស់មានតម្លៃថោក។",
+          title: "លុបចោលស្តង់ដារបំភាយឧស្ម័នសម្រាប់រថយន្ត",
+          description: "សំណើដើម្បីធ្វើឱ្យការកាន់កាប់រថយន្តចាស់ៗ ដែលបំពុលច្រើន មានតម្លៃថោក ដែលនឹងធ្វើឱ្យគុណភាពខ្យល់កាន់តែអាក្រក់។"
         },
         ctp6: {
           title: "ប្តូរភ្លើងបំភ្លឺផ្លូវទៅជាអំពូល LED ដែលស៊ីភ្លើងតិច",
-          description: "កាត់បន្ថយការប្រើប្រាស់ថាមពលសរុបរបស់ទីក្រុង។",
+          description: "នេះនឹងកាត់បន្ថយការប្រើប្រាស់ថាមពលសរុបរបស់ទីក្រុង និងកាត់បន្ថយការបំភាយកាបូនរបស់វា។"
         },
-      },
+        ctp7: {
+          title: "ពង្រីកប្រព័ន្ធរថយន្តក្រុងសាធារណៈ",
+          description: "បន្ថែមផ្លូវរថយន្តក្រុងបន្ថែមទៀតដើម្បីកាត់បន្ថយការពឹងផ្អែកលើម៉ូតូ និងរថយន្តផ្ទាល់ខ្លួន កាត់បន្ថយការកកស្ទះចរាចរណ៍ និងការបំភាយឧស្ម័ន។"
+        },
+        ctp8: {
+          title: "ចាក់បំពេញបឹងធម្មជាតិសម្រាប់ផ្សារទំនើបថ្មី",
+          description: "គម្រោង​ទាមទារ​យក​បឹង​ក្នុង​ទីក្រុង​ធំ​មួយ​សម្រាប់ធ្វើ​មជ្ឈមណ្ឌល​លក់​ទំនិញ​ប្រណីត បំផ្លាញ​ដីសើម​ធម្មជាតិ​។"
+        },
+        ctp9: {
+          title: "ឧបត្ថម្ភធនបន្ទះសូឡាលើដំបូល",
+          description: "ផ្តល់ជំនួយហិរញ្ញវត្ថុសម្រាប់ផ្ទះ និងអាជីវកម្មដើម្បីដំឡើងបន្ទះសូឡា ជំរុញថាមពលស្អាត ។"
+        },
+        ctp10: {
+          title: "លើកទឹកចិត្តការប្រើប្រាស់ថង់ប្លាស្ទិកប្រើតែម្តង",
+          description: "សំណើផ្តល់ថង់ប្លាស្ទិកដែលមិនអាចរលួយដោយឥតគិតថ្លៃនៅគ្រប់ទីផ្សារ ដើម្បីបង្កើនភាពងាយស្រួលរបស់អតិថិជន។"
+        },
+        ctp11: {
+          title: "ដំឡើងស្ថានីយ៍ចម្រោះទឹកសាធារណៈ",
+          description: "ផ្តល់ទឹកស្អាតដែលអាចផឹកបានដោយឥតគិតថ្លៃនៅក្នុងទីសាធារណៈ ដើម្បីកាត់បន្ថយការប្រើប្រាស់ដបទឹកប្លាស្ទិក។"
+        },
+        ctp12: {
+          title: "នាំចូលម៉ូតូពីរហ្វាដែលថោក និងគ្មានបទប្បញ្ញត្តិ",
+          description: "អនុញ្ញាតឱ្យនាំចូលម៉ូតូចាស់ៗ ដែលមានប្រសិទ្ធភាពទាប ដែលផលិតផ្សែង និងសំឡេងរំខានច្រើន។"
+        },
+        ctp13: {
+          title: "តម្រូវឱ្យមានរុក្ខជាតិបៃតងលើអគារថ្មី",
+          description: "តម្រូវឱ្យអគារពាណិជ្ជកម្មថ្មីមានសួនច្បារនៅលើដំបូលរបស់ពួកគេ ដើម្បីជួយធ្វើឱ្យទីក្រុងត្រជាក់ និងគ្រប់គ្រងទឹកភ្លៀង។"
+        },
+        ctp14: {
+          title: "បង្កើតផ្លូវជិះកង់ការពារ",
+          description: "សាងសង់បណ្តាញផ្លូវជិះកង់ដែលមានសុវត្ថិភាព និងបំបែកគ្នាពាសពេញទីក្រុង ដើម្បីលើកទឹកចិត្តការដឹកជញ្ជូនដែលគ្មានកាបូន។"
+        },
+        ctp15: {
+          title: "សាងសង់រោងចក្រថាមពលធ្យូងថ្មនៅជាយក្រុង",
+          description: "សំណើដើម្បីបង្កើតអគ្គិសនីថោកសម្រាប់ទីក្រុងដោយការដុតធ្យូងថ្ម ដែលជាប្រភពសំខាន់នៃការបំពុលខ្យល់ និង CO₂។"
+        },
+        ctp16: {
+          title: "សាងសង់រោងចក្រកាកសំណល់ទៅថាមពលទំនើប",
+          description: "កែច្នៃសំរាមទីក្រុងដែលមិនអាចកែច្នៃបាននៅក្នុងឡដុតកម្រិតខ្ពស់ដើម្បីបង្កើតអគ្គិសនី កាត់បន្ថយទំហំកន្លែងចាក់សំរាម។"
+        },
+        ctp17: {
+          title: "អនុញ្ញាតការងារសំណង់ 24/7",
+          description: "លុបចោលការរឹតបន្តឹងលើម៉ោងសំណង់ដើម្បីពន្លឿនគម្រោង ដែលនាំឱ្យមានការបំពុលសំឡេងឥតឈប់ឈរនៅក្នុងសង្កាត់។"
+        },
+        ctp18: {
+          title: "បំប្លែងដីទទេទៅជាកសិដ្ឋានសហគមន៍",
+          description: "អនុញ្ញាតឱ្យប្រជាពលរដ្ឋដាំដុះអាហារផ្ទាល់ខ្លួនរបស់ពួកគេនៅក្នុងទីក្រុងដែលមិនប្រើប្រាស់ ជំរុញសន្តិសុខស្បៀងក្នុងស្រុក និងធ្វើឱ្យតំបន់នោះមានរុក្ខជាតិពណ៌បៃតង។"
+        },
+        ctp19: {
+          title: "ក្រាលកៅស៊ូលើផ្លូវលើរុក្ខជាតិបៃតងតាមមាត់ទន្លេសម្រាប់ធ្វើចំណត",
+          description: "លុបបំបាត់ឧទ្យានធម្មជាតិមាត់ទន្លេ និងកន្លែងបៃតងដើម្បីបង្កើតចំណតរថយន្តបន្ថែមទៀត។"
+        },
+        ctp20: {
+          title: "ផ្តល់ការលើកទឹកចិត្តសម្រាប់រ៉ឺម៉កអគ្គិសនី",
+          description: "ផ្តល់ប្រាក់កម្ចី ឬជំនួយសម្រាប់អ្នកបើកបរដើម្បីប្តូរពីម៉ូតូកង់បីដែលប្រើសាំងទៅជាម៉ូដែលអគ្គិសនីដែលគ្មានសំឡេង និងគ្មានការបំពុល។"
+        },
+        ctp21: {
+          title: "ពន្យារពេលការដំឡើងកំណែប្រព័ន្ធប្រព្រឹត្តិកម្មលូ",
+          description: "ពន្យារពេលការថែទាំសំខាន់ៗលើរោងចក្រប្រព្រឹត្តិកម្មទឹកស្អុយរបស់ទីក្រុង ប្រថុយនឹងការលេចធ្លាយទឹកស្អុយឆៅចូលទៅក្នុងផ្លូវទឹក។"
+        },
+        ctp22: {
+          title: "បង្កើតតំបន់ថ្មើរជើងគ្មានរថយន្ត",
+          description: "កំណត់តំបន់ផ្សារ និងមាត់ទន្លេដ៏ពេញនិយមជាតំបន់ 'ដើរតែប៉ុណ្ណោះ' នៅចុងសប្តាហ៍ ដើម្បីកែលម្អសុវត្ថិភាព និងគុណភាពខ្យល់។"
+        },
+        ctp23: {
+          title: "អនុញ្ញាតរថយន្តផ្សាយពាណិជ្ជកម្ម",
+          description: "អនុញ្ញាតឱ្យយានយន្តបើកបរឆ្លងកាត់សង្កាត់ផ្សាយពាណិជ្ជកម្មខ្លាំងៗគ្រប់ម៉ោង បង្កើនការបំពុលសំឡេង។"
+        },
+        ctp24: {
+          title: "លើកកម្ពស់ប្រព័ន្ធប្រមូលទឹកភ្លៀង",
+          description: "លើកទឹកចិត្តអគារឱ្យប្រមូល និងស្តុកទឹកភ្លៀងសម្រាប់ប្រើប្រាស់ដែលមិនមែនជាការផឹក កាត់បន្ថយសម្ពាធលើការផ្គត់ផ្គង់ទឹករបស់ទីក្រុង។"
+        },
+        ctp25: {
+          title: "ហាមឃាត់អ្នកលក់អាហារតាមផ្លូវទាំងអស់",
+          description: "ផែនការ 'សម្អាតផ្លូវ' ដោយហាមឃាត់អ្នកលក់អាហារតាមផ្លូវទាំងអស់ ដែលប៉ះពាល់ដល់វប្បធម៌ក្នុងស្រុក និងអាជីវកម្មខ្នាតតូច។"
+        }
+      }
+,
       cityDistricts: {
         d1: { name: "Downtown" },
         d2: { name: "Suburbs" },

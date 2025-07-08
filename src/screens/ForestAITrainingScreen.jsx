@@ -90,7 +90,7 @@ const ForestAITrainingScreen = ({
         <p className={`minigame-feedback ${forestTrainingFeedback.includes('Correct') ? 'correct' : 'incorrect'}`}>
           {forestTrainingFeedback}
         </p>
-      )}
+      )}  
 
       <p>{text.progress.image}: {currentImageIndex + 1} / {trainingImages.length} | {text.progress.data}: {dataPoints}</p>
 
