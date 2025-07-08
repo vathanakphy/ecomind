@@ -57,6 +57,7 @@
   background-color: #3498db; /* A friendly blue */
   color: white;
   border: none;
+  width: 100%;
   padding: 12px 25px;
   border-radius: 25px;
   font-size: 1em;
@@ -640,6 +641,7 @@
   display: flex;
   flex-direction: column;
   text-align: left;
+  align-items:center
 }
 
 .mission-card:hover {
@@ -980,9 +982,6 @@
   .forest-mission-screen {
     display: grid;
     grid-template-rows: auto 1fr;
-    /* Changed to prevent vertical overflow on short screens */
-    height: 100vh; 
-    overflow: hidden;
   }
   .forest-hud {
     position: static;

@@ -191,7 +191,6 @@ const CityMissionScreen = (props) => {
                 <Icon type="rocket" /> {text.buttons.deployAI}
               </Button>
               <Button id="tutorial-city-upgrades" onClick={() => setShowUpgradePanel(true)}><Icon type="wrench" /> {text.buttons.upgrades}</Button>
-              {/* This button now correctly starts the 'city' tutorial */}
               <Button onClick={onStartTutorial}><Icon type="❓" /> {text.buttons.help}</Button>
               <Button onClick={() => navigate('/missions')}><Icon type="⏪" /> {text.buttons.backToMissions}</Button>
             </div>

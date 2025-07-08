@@ -54,21 +54,29 @@ const generateInitialForestMap = () => {
     );
 };
 
+// Helper to shuffle arrays
+const shuffleArray = (array) => {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+};
+
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const { result, language } = useLanguage();
 
-  // --- FIX 1: Add a loading state check at the very top ---
-  // This prevents the app from crashing before translations are loaded.
-  if (!result.app || !result.gameData || !result.alertsLowEnergy) {
+  if (!result.app || !result.gameData || !result.alertsLowEnergy || !result.cityAITraining || !result.forestAITraining) {
     return <div className="App">Loading...</div>;
   }
   const text = result.app;
   const gameData = result.gameData;
-  // --- End of Fix 1 ---
-
+  
   const [activeTutorial, setActiveTutorial] = useState({ mission: null, step: 1 });
 
   const startTutorial = (missionName) => {
@@ -84,14 +92,12 @@ function App() {
   const [dataPoints, setDataPoints] = useState(INITIAL_DATA_POINTS);
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
   const [aiMood, setAiMood] = useState('neutralAI');
-  // --- FIX 2: Use translated initial dialogue ---
   const [aiDialogue, setAiDialogue] = useState(text.initialDialogue);
   
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
   const [currentTrackSrc, setCurrentTrackSrc] = useState(musicTracks[0].src);
 
-  // ... (All other state hooks are the same)
   const [toasts, setToasts] = useState([]);
   const [notificationHistory, setNotificationHistory] = useState([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
@@ -114,7 +120,7 @@ function App() {
   const [biodiversity, setBiodiversity] = useState(INITIAL_BIODIVERSITY);
   const [forestCoverage, setForestCoverage] = useState(0);
   const [forestMap, setForestMap] = useState(generateInitialForestMap());
-  const [forestNotifications, setForestNotifications] = useState([]); // Start empty
+  const [forestNotifications, setForestNotifications] = useState([]); 
   const [aiForestTrainingIndex, setAiForestTrainingIndex] = useState(0);
   const [forestTrainingFeedback, setForestTrainingFeedback] = useState('');
   const [forestAIAccuracy, setForestAIAccuracy] = useState(INITIAL_FOREST_AI_ACCURACY);
@@ -129,8 +135,24 @@ function App() {
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
   const [cityTrainingProposals, setCityTrainingProposals] = useState([]);
+  const [forestTrainingImages, setForestTrainingImages] = useState([]);
 
+const checkIfSmallScreen = (setIsForestMissionUnlocked) => {
+  if (window.innerWidth <= 480) {
+    setIsForestMissionUnlocked(false);
+  } else {
+    setIsForestMissionUnlocked(true);
+  }
+};
 
+useEffect(() => {
+  checkIfSmallScreen(setIsForestMissionUnlocked);
+
+  const handleResize = () => checkIfSmallScreen(setIsForestMissionUnlocked);
+  window.addEventListener('resize', handleResize);
+
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
   const handleMusicChange = (newTrackSrc) => {
     setCurrentTrackSrc(newTrackSrc);
@@ -159,7 +181,6 @@ function App() {
     setForestNotifications(prev => [...prev.slice(-10), { id, message, type }]);
   }, []);
 
-  // --- START OF TRANSLATED FUNCTIONS ---
 
   const startMission = useCallback((mission) => {
     if (mission === 'OceanMission') {
@@ -168,7 +189,6 @@ function App() {
       setAiMood('neutralAI');
     } else if (mission === 'ForestMission' && isForestMissionUnlocked) {
       navigate('/missions/forest');
-      // No initial notification to avoid spamming.
     } else if (mission === 'ForestMission' && !isForestMissionUnlocked) {
       addNotification(text.notifications.unlockForest, "error");
     } if (mission === 'CityMission' && isCityMissionUnlocked) {
@@ -207,7 +227,7 @@ function App() {
     if (currentItemIndex < minigameItems.length - 1) {
       setCurrentItemIndex(idx => idx + 1);
     } else {
-      endMinigame(true, 999); // timeTaken is missing, passing a default value.
+      endMinigame(true, 999); 
     }
   }, [hasUpgradeSortSpeed, hasUpgradeAdvancedSensors, addNotification, currentItemIndex, minigameItems.length, endMinigame, text]);
 
@@ -267,7 +287,7 @@ function App() {
   }, [dataPoints, hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeBiomassGenerator, hasUpgradeSolarPanels, addNotification, text]);
 
   const startSortTrashMinigame = useCallback(() => {
-    const shuffledItems = [...TRASH_ITEMS_DATA].sort(() => 0.5 - Math.random());
+    const shuffledItems = shuffleArray([...TRASH_ITEMS_DATA]);
     setMinigameItems(shuffledItems);
     setCurrentItemIndex(0);
     setMinigameFeedback('');
@@ -321,14 +341,60 @@ function App() {
     }
   }, [forestMap, dataPoints, addForestNotification, gameData, text]);
 
+  // --- START OF FIX ---
   const handleStartForestTraining = useCallback(() => {
-    if (energy >= AI_TRAINING_COST_FOREST) {
-      if (activeTutorial.mission === 'forest' && activeTutorial.step === 3) { advanceTutorial(); }
-      setAiForestTrainingIndex(0);
-      setForestTrainingFeedback('');
-      navigate('/missions/forest/train');
-    } else { addForestNotification(text.notifications.forestTrainFail, 'error'); }
-  }, [energy, navigate, activeTutorial, text]);
+    if (energy < AI_TRAINING_COST_FOREST) {
+      addForestNotification(text.notifications.forestTrainFail, 'error');
+      return;
+    }
+    
+    if (activeTutorial.mission === 'forest' && activeTutorial.step === 3) {
+      advanceTutorial();
+    }
+
+    // 1. Combine data from constants with description keys from translations
+    const detailedImages = FOREST_AI_TRAINING_IMAGES.map(img => {
+      const id = img.id;
+      return {
+        ...img, // a { id, visual, correctLabel }
+        descriptionKey: `desc_${id}`, // Add the key to look up the description
+      };
+    });
+
+    // 2. Shuffle the detailed list and take a slice for the current session
+    const sessionImages = shuffleArray(detailedImages).slice(0, 10);
+    
+    setForestTrainingImages(sessionImages);
+    setAiForestTrainingIndex(0);
+    setForestTrainingFeedback('');
+    navigate('/missions/forest/train');
+  }, [energy, navigate, activeTutorial, text, addForestNotification]);
+
+  const handleStartCityTraining = useCallback(() => {
+    if (activeTutorial.mission === 'city' && activeTutorial.step === 3) { 
+      advanceTutorial(); 
+    }
+
+    // 1. Combine data from constants with title/description keys
+    const detailedProposals = CITY_TRAINING_PROPOSALS.map(proposal => {
+      const id = proposal.id; // e.g., 'ctp1'
+      return {
+        ...proposal, // a { id, icon, correctAnswer }
+        titleKey: `${id}_title`, // Add the key for the title
+        descriptionKey: `${id}_desc`, // Add the key for the description
+      };
+    });
+
+    // 2. Shuffle the detailed list and take a slice
+    const sessionProposals = shuffleArray(detailedProposals).slice(0, 10);
+      
+    setCityTrainingProposals(sessionProposals);
+    setCityTrainingIndex(0); 
+    setCityTrainingFeedback(''); 
+    navigate('/missions/city/train');
+  }, [navigate, activeTutorial]);
+  // --- END OF FIX ---
+
 
   const handleImageLabel = useCallback((image, selectedLabel) => {
     if (image.correctLabel === selectedLabel) {
@@ -343,11 +409,14 @@ function App() {
       playSound('incorrect');
     }
     setTimeout(() => {
-      if (aiForestTrainingIndex < FOREST_AI_TRAINING_IMAGES.length - 1) {
+      if (aiForestTrainingIndex < forestTrainingImages.length - 1) { // Use the length of the current session
         setAiForestTrainingIndex(i => i + 1); setForestTrainingFeedback('');
-      } else { navigate('/missions/forest'); addForestNotification(text.notifications.forestTrainComplete, 'info'); }
+      } else { 
+        navigate('/missions/forest'); 
+        addForestNotification(text.notifications.forestTrainComplete, 'info'); 
+      }
     }, 1000);
-  }, [aiForestTrainingIndex, navigate, addForestNotification, text]);
+  }, [aiForestTrainingIndex, forestTrainingImages, navigate, addForestNotification, text]);
 
   const handleDeployAIForest = useCallback(() => {
     if (dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST) {
@@ -360,7 +429,7 @@ function App() {
     const scanPower = Math.floor(totalTiles * (forestAIAccuracy / 100));
     if (scanPower < 1) { addForestNotification(text.notifications.forestScanLowAcc, "info"); return; }
     const allTiles = forestMap.flat();
-    const tilesToScan = [...allTiles].sort(() => 0.5 - Math.random()).slice(0, scanPower);
+    const tilesToScan = shuffleArray(allTiles).slice(0, scanPower);
     const newMap = JSON.parse(JSON.stringify(forestMap));
     let threatFound = false;
     for (const tile of tilesToScan) {
@@ -400,13 +469,6 @@ function App() {
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId, text]);
 
-
-  const handleStartCityTraining = useCallback(() => {
-    if (activeTutorial.mission === 'city' && activeTutorial.step === 3) { advanceTutorial(); }
-    setCityTrainingIndex(0); setCityTrainingFeedback(''); navigate('/missions/city/train');
-
-  }, [navigate, activeTutorial]);
-
   const handleClassifyCityProposal = useCallback((proposal, answer, isFinished = false) => {
     if (isFinished) { navigate('/missions/city'); return; }
     if (proposal.correctAnswer === answer) {
@@ -416,11 +478,14 @@ function App() {
       setCityAIAccuracy(acc => Math.max(0, acc - 3)); setCityTrainingFeedback(text.feedback.cityTrainIncorrect); playSound('incorrect');
     }
     setTimeout(() => {
-      if (cityTrainingIndex < CITY_TRAINING_PROPOSALS.length - 1) {
+      if (cityTrainingIndex < cityTrainingProposals.length - 1) { // Use the length of the current session
         setCityTrainingIndex(i => i + 1); setCityTrainingFeedback('');
-      } else { navigate('/missions/city'); addNotification(text.notifications.cityTrainComplete, 'success'); }
+      } else { 
+        navigate('/missions/city'); 
+        addNotification(text.notifications.cityTrainComplete, 'success'); 
+      }
     }, 1200);
-  }, [cityTrainingIndex, addNotification, navigate, text]);
+  }, [cityTrainingIndex, cityTrainingProposals, addNotification, navigate, text]);
 
   const handleDeployAICity = useCallback(() => {
     if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) { addNotification(text.notifications.deployFail, "error"); return; }
@@ -454,7 +519,7 @@ function App() {
     if (oceanHealth >= MAX_OCEAN_HEALTH && !isOceanMissionCompleted) {
       setIsOceanMissionCompleted(true); setIsForestMissionUnlocked(true);
       setAiDialogue(text.dialogue.oceanComplete); setAiMood('happyAI');
-      addNotification(text.notifications.oceanComplete, 'success');
+      addNotification(text.notifications.oceanComplete, 'success'); 
     }
   }, [oceanHealth, isOceanMissionCompleted, addNotification, text]);
 
@@ -533,15 +598,84 @@ function App() {
         <Route path="/" element={ <MainMenuScreen onAddNotification={addNotification} aiMood={aiMood} musicTracks={musicTracks} currentTrackSrc={currentTrackSrc} onMusicChange={handleMusicChange}/> } />
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
 
-        
-        {/* Routes are the same... */}
-        <Route path="/missions/ocean" element={<OceanMissionScreen oceanHealth={oceanHealth} dataPoints={dataPoints} energy={energy} aiAccuracy={aiAccuracy} aiMood={aiMood} aiDialogue={aiDialogue} onStartMinigame={startSortTrashMinigame} onDeployAI={handleDeployAI} onBuyUpgrade={buyUpgrade} upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }} tutorialInfo={activeTutorial} onStartTutorial={() => startTutorial('ocean')} onAdvanceStep={advanceTutorial} onEndTutorial={endTutorial} /> } />
-        <Route path="/missions/ocean/train" element={ <SortTrashMinigameScreen minigameItems={minigameItems} currentItemIndex={currentItemIndex} minigameFeedback={minigameFeedback} dataPoints={dataPoints} onSortItem={handleSortItem} onEndMinigame={(completed) => endMinigame(completed, null)} tutorialInfo={activeTutorial} /> } />
-        <Route path="/missions/forest" element={ <ForestMissionScreen co2Level={co2Level} globalTemp={globalTemp} biodiversity={biodiversity} forestCoverage={forestCoverage} forestMap={forestMap} forestNotifications={forestNotifications} dataPoints={dataPoints} energy={energy} onPlantTree={handlePlantTree} onTrainAI={handleStartForestTraining} onDeployAIForest={handleDeployAIForest} onBuyUpgrade={buyUpgrade} onConvertBiomass={convertBiomassToEnergy} forestAIAccuracy={forestAIAccuracy} upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }} tutorialInfo={activeTutorial} onStartTutorial={() => startTutorial('forest')} onAdvanceStep={advanceTutorial} onEndTutorial={endTutorial}/> } />
-        <Route path="/missions/forest/train" element={<ForestAITrainingScreen trainingImages={FOREST_AI_TRAINING_IMAGES} currentImageIndex={aiForestTrainingIndex} onImageLabel={handleImageLabel} onEndTraining={() => navigate('/missions/forest')} dataPoints={dataPoints} forestTrainingFeedback={forestTrainingFeedback} tutorialInfo={activeTutorial}/> } />
-        <Route path="/missions/city" element={ <CityMissionScreen cityAqi={cityAqi} cityEconomy={cityEconomy} cityHappiness={cityHappiness} cityDistricts={cityDistricts} cityDecisions={availableDecisions} dataPoints={dataPoints} energy={energy} upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }} onApproveDecision={handleApproveCityDecision} onStartCityTraining={handleStartCityTraining} cityAIAccuracy={cityAIAccuracy} aiRecommendedDecisionId={aiRecommendedDecisionId} onDeployAICity={handleDeployAICity} onBuyUpgrade={buyUpgrade} tutorialInfo={activeTutorial} onStartTutorial={() => startTutorial('city')} onAdvanceStep={advanceTutorial} onEndTutorial={endTutorial}/> } />
-        <Route path="/missions/city/train" element={ <CityAITrainingScreen proposals={CITY_TRAINING_PROPOSALS} currentIndex={cityTrainingIndex} onClassify={handleClassifyCityProposal} feedback={cityTrainingFeedback} dataPoints={dataPoints} tutorialInfo={activeTutorial}/> } />
+        {/* Ocean Mission Routes */}
+        <Route path="/missions/ocean" element={
+          <OceanMissionScreen
+            oceanHealth={oceanHealth} dataPoints={dataPoints} energy={energy} aiAccuracy={aiAccuracy} aiMood={aiMood} aiDialogue={aiDialogue}
+            onStartMinigame={startSortTrashMinigame} onDeployAI={handleDeployAI} onBuyUpgrade={buyUpgrade}
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            tutorialInfo={activeTutorial}
+            onStartTutorial={() => startTutorial('ocean')}
+            onAdvanceStep={advanceTutorial}
+            onEndTutorial={endTutorial}
+          />
+        } />
+        <Route path="/missions/ocean/train" element={
+          <SortTrashMinigameScreen
+            minigameItems={minigameItems} currentItemIndex={currentItemIndex} minigameFeedback={minigameFeedback} 
+            dataPoints={dataPoints} onSortItem={handleSortItem} onEndMinigame={endMinigame}
+            tutorialInfo={activeTutorial} 
+          />
+        } />  
 
+        {/* Forest Mission Routes */}
+        <Route path="/missions/forest" element={
+          <ForestMissionScreen
+            co2Level={co2Level} globalTemp={globalTemp} biodiversity={biodiversity} forestCoverage={forestCoverage} forestMap={forestMap}
+            forestNotifications={forestNotifications} dataPoints={dataPoints} energy={energy}
+            onPlantTree={handlePlantTree} onTrainAI={handleStartForestTraining}
+            onDeployAIForest={handleDeployAIForest}
+            onBuyUpgrade={buyUpgrade}
+            onConvertBiomass={convertBiomassToEnergy}
+            forestAIAccuracy={forestAIAccuracy}
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            tutorialInfo={activeTutorial}
+            onStartTutorial={() => startTutorial('forest')}
+            onAdvanceStep={advanceTutorial}
+            onEndTutorial={endTutorial}
+          />
+        } />
+        <Route path="/missions/forest/train" element={
+          <ForestAITrainingScreen
+            trainingImages={forestTrainingImages}
+            currentImageIndex={aiForestTrainingIndex}
+            onImageLabel={handleImageLabel}
+            onEndTraining={() => navigate('/missions/forest')}
+            dataPoints={dataPoints}
+            forestTrainingFeedback={forestTrainingFeedback}
+            tutorialInfo={activeTutorial}
+          />
+        } />
+
+        {/* City Mission Routes */}
+        <Route path="/missions/city" element={
+          <CityMissionScreen
+            cityAqi={cityAqi} cityEconomy={cityEconomy} cityHappiness={cityHappiness}
+            cityDistricts={cityDistricts} cityDecisions={availableDecisions}
+            dataPoints={dataPoints} energy={energy}
+            upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            onApproveDecision={handleApproveCityDecision}
+            onStartCityTraining={handleStartCityTraining}
+            cityAIAccuracy={cityAIAccuracy}
+            aiRecommendedDecisionId={aiRecommendedDecisionId}
+            onDeployAICity={handleDeployAICity}
+            onBuyUpgrade={buyUpgrade}
+            tutorialInfo={activeTutorial}
+              onStartTutorial={() => startTutorial('city')}
+              onAdvanceStep={advanceTutorial}
+              onEndTutorial={endTutorial}
+          />
+        } />
+        <Route path="/missions/city/train" element={
+          <CityAITrainingScreen
+            proposals={cityTrainingProposals}
+            currentIndex={cityTrainingIndex}
+            onClassify={handleClassifyCityProposal}
+            feedback={cityTrainingFeedback}
+            dataPoints={dataPoints}
+            tutorialInfo={activeTutorial}
+          />
+        } />
       </Routes>
 
       <Modal show={showLowEnergyModal} onClose={() => setShowLowEnergyModal(false)} title={result.alertsLowEnergy.lowEnergyTitle} >

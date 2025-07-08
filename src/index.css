@@ -128,3 +128,38 @@ button:focus-visible {
   transform: scale(0.95);
   box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
 }
+.settings-modal-content {
+  background: linear-gradient(to bottom right, #e0f7fa, #fce4ec);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.settings-label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #4a148c;
+  margin-bottom: 10px;
+}
+
+.music-selector {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 2px solid #ce93d8;
+  border-radius: 8px;
+  background-color: #fff3e0;
+  color: #4a148c;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.music-selector:hover {
+  background-color: #ffe0b2;
+  border-color: #ab47bc;
+}
