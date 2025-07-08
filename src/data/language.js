@@ -190,16 +190,35 @@ export const translations = {
         "Consider purchasing Solar Panels from the Upgrades menu to generate energy automatically over time.",
       gotItButton: "Got It",
     },
-    cityAITraining: {
-      trainingComplete: "Training Session Complete!",
-      returnToCity: "Return to City",
-      title: "AI Training: Policy Review",
-      subtitle: "Is this a good or bad idea for the city's health?",
-      goodIdea: "Good Idea",
-      badIdea: "Bad Idea",
-      proposalLabel: "Proposal",
-      dataLabel: "Data",
+  "cityAITraining": {
+    "title": "City AI Training",
+    "subtitle": "Classify these city proposals to help train the AI.",
+    "goodIdea": "Good Idea",
+    "badIdea": "Bad Idea",
+    "proposalLabel": "Proposal",
+    "dataLabel": "Data",
+    "trainingComplete": "Training Complete!",
+    "returnToCity": "Return to City",
+    "endTraining": "End Training",
+    "tutorial": {
+      "step4_text": "Review each proposal and classify it as a 'Good Idea' or 'Bad Idea' to earn Data Points and improve the AI.",
+      "button_lets_go": "Let's Go!"
     },
+    "proposals": {
+      "ctp1_title": "Replace Parking Lot with Park",
+      "ctp1_desc": "A developer wants to build a new public park downtown.",
+      "ctp2_title": "Build a New Highway Through Suburbs",
+      "ctp2_desc": "This would increase traffic and pollution in a residential area.",
+      "ctp3_title": "Dump Industrial Waste in River",
+      "ctp3_desc": "A factory is proposing a cheaper way to get rid of its waste.",
+      "ctp4_title": "Community Composting Program",
+      "ctp4_desc": "A city-wide initiative to reduce landfill waste.",
+      "ctp5_title": "Remove Emission Standards for Cars",
+      "ctp5_desc": "A proposal to make it cheaper to own older, more polluting cars.",
+      "ctp6_title": "Switch Streetlights to Low-Energy LEDs",
+      "ctp6_desc": "This will reduce the city's overall energy consumption."
+    }
+  },
     cityMissionScreen: {
       title: "City Air Rescue",
       resources: {
@@ -219,7 +238,16 @@ export const translations = {
     "recommended": "AI Recommended!", // Add this key
     "cost": "Cost",
     "effects": "Effects"
-  },
+  }, "tutorial": {
+      "button_next": "Next",
+      "button_got_it": "Got It!",
+      "step1_text": "Welcome to the City! Your goal is to improve the city by lowering the <strong>AQI (Air Quality Index)</strong>.",
+      "step2_text": "You'll use <strong>Data Points</strong> and <strong>Energy</strong> to enact new city policies.",
+      "step3_text": "Click <strong>'Train AI'</strong> to teach the AI about good vs. bad policies and earn Data Points.",
+      "step5_text": "This is the list of available policies. Click <strong>Approve</strong> on a card to enact it.",
+      "step6_text": "<strong>'Deploy AI'</strong> to have the AI suggest a new, highly effective policy for you to approve!",
+      "step7_text": "Don't forget to visit <strong>'Upgrades'</strong> to build Solar Panels for more energy."
+    }
     },
     forestAITraining: {
       trainingComplete: "Training Complete!",
@@ -236,6 +264,19 @@ export const translations = {
         data: "Data",
       },
       endTraining: "End Training",
+        "descriptions": {
+      "desc_1": "Healthy canopy, vibrant green.",
+      "desc_2": "Leaves with brown spots and wilting.",
+      "desc_3": "Very dry, brown undergrowth, potential tinder.",
+      "desc_4": "Lush and green, diverse plant life.",
+      "desc_5": "Browning pine needles, signs of infestation.",
+      "desc_6": "Young trees showing new growth."
+    },
+    // New keys for the tutorial
+    "tutorial": {
+      "step4_text": "Label these images correctly to improve the AI's accuracy and earn Data Points.",
+      "button_lets_go": "Let's Go!"
+    }
     },
     forestMissionScreen: {
       actionsTitle: "Actions",
@@ -265,7 +306,17 @@ export const translations = {
     "diseased": "Diseased",
     "fire_risk": "Fire Risk",
     "plantable": "Plantable" // For the hover state on empty tiles
-  }
+  },// New keys for the tutorial steps
+    "tutorial": {
+      "button_next": "Next",
+      "button_got_it": "Got It!",
+      "step1_text": "Welcome to the Forest Mission! Your goal is to lower <strong>CO₂</strong> and temperature by restoring the forest.",
+      "step2_text": "You'll need <strong>Data Points</strong> and <strong>Energy</strong>. Get Data Points by training the AI.",
+      "step3_text": "Click <strong>'Train AI'</strong> to teach it to identify healthy and unhealthy trees.",
+      "step5_text": "Use DP and Energy to <strong>Deploy AI</strong>. It will automatically remove threats or plant new trees!",
+      "step6_text": "Click <strong>'Manage Forest'</strong> to open the menu and plant trees yourself. This is the best way to lower CO₂!",
+      "step7_text": "This is your forest. Click on empty tiles to plant the trees you select from the menu."
+    }
     },
     oceanMissionScreen: {
       oceanHealthLabel: "Ocean Health",
@@ -283,7 +334,21 @@ export const translations = {
         upgradesTitle: "View and purchase AI upgrades.",
         help: "Help",
         backToMissions: "Back to Missions",
-      },
+      }, // New keys for the footer
+    "showTutorial": "Show Tutorial",
+    "help": "Help",
+    "backToMissions": "Back to Missions",
+    // New keys for the tutorial steps
+    "tutorial": {
+      "button_next": "Next",
+      "button_got_it": "Got It!",
+      "step1_text": "Welcome to the Ocean Mission! Your goal is to restore <strong>Ocean Health</strong> to 100%.",
+      "step2_text": "To do this, you'll need <strong>Data Points (DP)</strong>, which you get from training me.",
+      "step3_text": "Click <strong>'Train AI'</strong> to start the trash sorting minigame.",
+      "step5_text": "Good work! Deploying the AI also costs <strong>Energy ⚡️</strong>.",
+      "step6_text": "When you have enough resources, <strong>'Deploy AI'</strong> to automatically collect trash and clean the ocean.",
+      "step7_text": "Visit <strong>'Upgrades'</strong> to get essential items like the <strong>Solar System</strong> for more energy."
+    }
     },
     sortTrashMinigame: {
       setup: "Setting up training...",
@@ -439,7 +504,70 @@ export const translations = {
       "description": "Convert logged forest tiles (stumps) directly into a burst of energy. Adds a new action button in the forest."
     }
   }
-},
+},"app": {
+    "initialDialogue": "Hi! I am Eco, your AI helper!",
+    "notifications": {
+      "unlockForest": "Complete the Ocean Mission to unlock the Forest Guardian mission.",
+      "incorrectSort": "Incorrect sort. AI Accuracy slightly affected.",
+      "deploySuccess": "AI successfully deployed! Ocean health +{value}.",
+      "deployFail": "Cannot deploy AI: ",
+      "deployFailDP": "Not enough Data Points. ",
+      "deployFailEnergy": "Not enough Energy.",
+      "upgradeOwned": "Upgrade already owned.",
+      "upgradeAfford": "Not enough Data Points for this upgrade.",
+      "oceanComplete": "Ocean Mission Complete! Forest Mission Unlocked!",
+      "noBiomass": "No logged tiles available to convert to biomass.",
+      "biomassSuccess": "Converted biomass! +{value} Energy.",
+      "plantSuccess": "Planted a {name} in sector ({x},{y}).",
+      "plantFail": "Not enough Data Points to plant a {name}.",
+      "forestTrainFail": "Not enough energy to start an AI training session.",
+      "forestTrainComplete": "AI training session complete!",
+      "forestDeployFail": "Not enough resources to deploy the Forest Warden AI.",
+      "forestScanLowAcc": "AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.",
+      "forestScanThreat": "AI scanned a section of the forest and neutralized a {name} threat!",
+      "forestScanNoThreat": "AI scanned {value} tiles and found no threats or empty space to plant.",
+      "forestScanPlant": "AI scanned {value} tiles and found no threats. Planting {count} new saplings.",
+      "cityPolicyFail": "Not enough resources to enact this policy!",
+      "cityPolicyDiscount": "AI Discount Applied! Enacted: {name}",
+      "cityPolicySuccess": "Policy enacted: {name}",
+      "cityTrainComplete": "Policy review training complete!",
+      "cityDeploySuccess": "AI Deployed! A new, optimized policy is now available for your review.",
+      "cityDeployRecommend": "AI analysis complete! A high-impact policy has been recommended with a discount.",
+      "cityDeployRecommendFail": "AI could not find an optimal policy, but the analysis cost has been paid.",
+      "cityDeployAccFail": "AI analysis failed: Accuracy too low. Partially refunded {dp} DP and {energy} Energy.",
+      "cityAIDupe": "AI has already provided its optimal policy solution."
+    },
+    "feedback": {
+      "minigameBonus": "Quick work! +{value} DP bonus! Minigame complete.",
+      "minigameEnd": "Minigame session ended.",
+      "minigameCorrect": "Correct! +{value} DP.",
+      "minigameIncorrect": "Oops! That was {type}.",
+      "forestTrainCorrect": "Correct! +{value} DP. AI Accuracy Increased!",
+      "forestTrainIncorrect": "Incorrect. AI Accuracy Decreased.",
+      "cityTrainCorrect": "Correct! +{value} DP. AI Accuracy Increased!",
+      "cityTrainIncorrect": "Incorrect. AI Accuracy Decreased."
+    },
+    "dialogue": {
+      "oceanWelcome": "Welcome to the Ocean Mission! Let's get to work.",
+      "oceanProgress": "We're making great progress!",
+      "oceanPolluted": "The ocean is heavily polluted.",
+      "oceanNeedDP": "We need more Data Points to deploy.",
+      "oceanNeedEnergy": "Energy reserves are low for deployment.",
+      "oceanReady": "Ready to improve ocean health!",
+      "oceanComplete": "Fantastic! The Ocean Mission is complete! A new challenge awaits!",
+      "minigameStart": "Training mode activated! Sort these items quickly and accurately.",
+      "minigameEnd": "Training session complete. We've gathered valuable data!",
+      "upgradeSort": "Efficient Sorting Algorithm purchased!",
+      "upgradeDeploy": "Efficient Deployment System purchased!",
+      "upgradeSensors": "Advanced Contaminant Sensors purchased! AI base accuracy increased.",
+      "upgradeSolar": "Solar Panels installed! You will now generate energy over time.",
+      "upgradeBiomass": "Biomass Generator constructed! You can now convert logged tiles into energy."
+    },
+    "modals": {
+      "historyTitle": "Notification History",
+      "historyEmpty": "No notifications yet."
+    }
+  }
   },
 
   kh: {
@@ -633,16 +761,35 @@ export const translations = {
         "ពិចារណាទិញ **បន្ទះសូឡា** ពីម៉ឺនុយ **ការអាប់ដេត** ដើម្បីបង្កើតថាមពលដោយស្វ័យប្រវត្តិទៅតាមពេលវេលា។",
       gotItButton: "យល់ហើយ",
     },
-    cityAITraining: {
-      trainingComplete: "វគ្គបណ្តុះបណ្តាលបានបញ្ចប់!",
-      returnToCity: "ត្រឡប់ទៅទីក្រុងវិញ",
-      title: "ការបណ្តុះបណ្តាល AI: ការត្រួតពិនិត្យគោលនយោបាយ",
-      subtitle: "តើនេះជាគំនិតល្អ ឬអាក្រក់សម្រាប់សុខភាពទីក្រុង?",
-      goodIdea: "គំនិតល្អ",
-      badIdea: "គំនិតអាក្រក់",
-      proposalLabel: "សំណើ",
-      dataLabel: "ទិន្នន័យ",
+  "cityAITraining": {
+    "title": "ការបណ្តុះបណ្តាល AI ទីក្រុង",
+    "subtitle": "ចាត់ថ្នាក់សំណើទីក្រុងទាំងនេះដើម្បីជួយបណ្តុះបណ្តាល AI។",
+    "goodIdea": "គំនិតល្អ",
+    "badIdea": "គំនិតមិនល្អ",
+    "proposalLabel": "សំណើ",
+    "dataLabel": "ទិន្នន័យ",
+    "trainingComplete": "ការបណ្តុះបណ្តាលបានបញ្ចប់!",
+    "returnToCity": "ត្រឡប់ទៅទីក្រុងវិញ",
+    "endTraining": "បញ្ចប់ការបណ្តុះបណ្តាល",
+    "tutorial": {
+      "step4_text": "ពិនិត្យមើលសំណើនិមួយៗ ហើយចាត់ថ្នាក់វាជា 'គំនិតល្អ' ឬ 'គំនិតមិនល្អ' ដើម្បីទទួលបានពិន្ទុទិន្នន័យ និងកែលម្អ AI។",
+      "button_lets_go": "តោះទៅ!"
     },
+    "proposals": {
+      "ctp1_title": "ជំនួសកន្លែងចតឡានដោយសួនច្បារ",
+      "ctp1_desc": "អ្នកអភិវឌ្ឍន៍ម្នាក់ចង់សាងសង់សួនសាធារណៈថ្មីមួយនៅកណ្តាលទីក្រុង។",
+      "ctp2_title": "សាងសង់ផ្លូវHigh-wayថ្មីឆ្លងកាត់ជាយក្រុង",
+      "ctp2_desc": "នឹងបង្កើនចរាចរណ៍ និងការបំពុលនៅក្នុងតំបន់លំនៅដ្ឋាន។",
+      "ctp3_title": "ចាក់កាកសំណល់ឧស្សាហកម្មចូលទន្លេ",
+      "ctp3_desc": "រោងចក្រមួយកំពុងស្នើវិធីថោកដើម្បីកម្ចាត់កាកសំណល់របស់ខ្លួន។",
+      "ctp4_title": "សហគមន៍ធ្វើជីកំប៉ុស្ត",
+      "ctp4_desc": "គំនិតផ្តួចផ្តើមទូទាំងទីក្រុងដើម្បីកាត់បន្ថយកាកសំណល់កន្លែងចាក់សំរាម។",
+      "ctp5_title": "លុបចោលស្តង់ដារបំភាយឧស្ម័នសម្រាប់រថយន្ត",
+      "ctp5_desc": "សំណើដើម្បីធ្វើឱ្យការកាន់កាប់រថយន្តចាស់ៗ ដែលបំពុលច្រើន កាន់តែថោក។",
+      "ctp6_title": "ប្តូរភ្លើងបំភ្លឺផ្លូវទៅជាអំពូល LED ដែលស៊ីភ្លើងតិច",
+      "ctp6_desc": "នឹងកាត់បន្ថយការប្រើប្រាស់ថាមពលសរុបរបស់ទីក្រុង។"
+    }
+  },
 
     cityMissionScreen: {
       title: "បេសកកម្មសង្គ្រោះខ្យល់ក្នុងទីក្រុង",
@@ -662,8 +809,17 @@ export const translations = {
     "approve": "យល់ព្រម",
     "recommended": "AI បានណែនាំ!", // Add the Khmer translation
     "cost": "តម្លៃ",
-    "effects": "ผลกระทบ"
-  },
+    "effects": "ផលទទួលបាន"
+  },  "tutorial": {
+      "button_next": "បន្ទាប់",
+      "button_got_it": "យល់ព្រម!",
+      "step1_text": "សូមស្វាគមន៍មកកាន់ទីក្រុង! គោលដៅរបស់អ្នកគឺកែលម្អទីក្រុងដោយបន្ថយ <strong>AQI (ជាតិពុលក្នុងខ្យល់)</strong>។",
+      "step2_text": "អ្នកនឹងប្រើ <strong>ពិន្ទុទិន្នន័យ</strong> និង <strong>ថាមពល</strong> ដើម្បីអនុម័តគោលការណ៏ក្នុងទីក្រុងថ្មី។",
+      "step3_text": "ចុច <strong>'បង្វឹក AI'</strong> ដើម្បីបង្រៀន AI អំពីគោលការណ៏ល្អ និងអាក្រក់ ហើយទទួលបានពិន្ទុទិន្នន័យ។",
+      "step5_text": "នេះគឺជាបញ្ជីនៃគោលការណ៏ដែលមាន។ ចុច <strong>អនុម័ត</strong> នៅលើកាតដើម្បីអនុវត្តវា។",
+      "step6_text": "<strong>'ដាក់ពង្រាយ AI'</strong> ដើម្បីឱ្យ AI ស្នើគោលការណ៏ថ្មីដែលមានប្រសិទ្ធភាពខ្ពស់សម្រាប់អ្នកដើម្បីអនុម័ត!",
+      "step7_text": "កុំភ្លេចចូលទៅកាន់ <strong>'ការដំឡើងកំណែ'</strong> ដើម្បីសាងសង់បន្ទះសូឡាសម្រាប់ថាមពលបន្ថែម។"
+    }
     },
     forestAITraining: {
       trainingComplete: "ការបណ្តុះបណ្តាលបានបញ្ចប់!",
@@ -680,6 +836,19 @@ export const translations = {
         data: "ទិន្នន័យ",
       },
       endTraining: "បញ្ចប់ការបណ្តុះបណ្តាល",
+        "descriptions": {
+      "desc_1": "គ្រប់ដណ្ដប់ដោយដើមឈើបៃតង, ពណ៌បៃតងរស់រវើក។",
+      "desc_2": "ស្លឹកមានស្នាមអុចៗពណ៌ត្នោត និងស្រពោន។",
+      "desc_3": "រុក្ខជាតិក្រោមដីស្ងួតខ្លាំង, អាចបង្កជាភ្លើង។",
+      "desc_4": "ខៀវស្រងាត់, មានជីវិតរុក្ខជាតិចម្រុះ។",
+      "desc_5": "ស្លឹកស្រល់ប្រែពណ៌ត្នោត, សញ្ញានៃភាពទទួលការបំផ្លាញដោយសត្វល្អិត។",
+      "desc_6": "កូនឈើបង្ហាញពីការលូតលាស់ថ្មី។"
+    },
+    // New keys for the tutorial
+    "tutorial": {
+      "step4_text": "ដាក់ស្លាករូបភាពទាំងនេះឱ្យត្រឹមត្រូវ ដើម្បីបង្កើនភាពត្រឹមត្រូវរបស់ AI និងទទួលបានពិន្ទុទិន្នន័យ។",
+      "button_lets_go": "តោះទៅ!"
+    }
     },
     forestMissionScreen: {
       actionsTitle: "សកម្មភាព",
@@ -709,7 +878,16 @@ export const translations = {
     "diseased": "មានជំងឺ",
     "fire_risk": "ហានិភ័យភ្លើង",
     "plantable": "អាចដាំបាន"
-  }
+  },"tutorial": {
+      "button_next": "បន្ទាប់",
+      "button_got_it": "យល់ព្រម!",
+      "step1_text": "សូមស្វាគមន៍មកកាន់បេសកកម្មព្រៃឈើ! គោលដៅរបស់អ្នកគឺបន្ថយ <strong>CO₂</strong> និងសីតុណ្ហភាពដោយការស្តារព្រៃឈើឡើងវិញ។",
+      "step2_text": "អ្នកនឹងត្រូវការ <strong>ពិន្ទុទិន្នន័យ</strong> និង <strong>ថាមពល</strong>។ ទទួលបានពិន្ទុទិន្នន័យតាមរយៈការបង្វឹក AI។",
+      "step3_text": "ចុច <strong>'បង្វឹក AI'</strong> ដើម្បីបង្រៀនវាឱ្យស្គាល់ដើមឈើដែលមានសុខភាពល្អ និងមិនល្អ។",
+      "step5_text": "ប្រើ DP និងថាមពលដើម្បី <strong>ដាក់ពង្រាយ AI</strong>។ វានឹងដកចេញនូវការគំរាមកំហែង ឬដាំដើមឈើថ្មីដោយស្វ័យប្រវត្តិ!",
+      "step6_text": "ចុច <strong>'គ្រប់គ្រងព្រៃឈើ'</strong> ដើម្បីបើកម៉ឺនុយ និងដាំដើមឈើដោយខ្លួនឯង។ នេះជាវិធីល្អបំផុតដើម្បីបន្ថយ CO₂!",
+      "step7_text": "នេះជាព្រៃឈើរបស់អ្នក។ ចុចលើក្រឡាទទេដើម្បីដាំដើមឈើដែលអ្នកជ្រើសរើសពីម៉ឺនុយ។"
+    }
     },
     oceanMissionScreen: {
       oceanHealthLabel: "ស្ថានភាពមហាសមុទ្រ",
@@ -731,7 +909,21 @@ export const translations = {
         upgradesTitle: "មើល និងទិញការធ្វើឲ្យប្រសើរឡើងសម្រាប់ AI។",
         help: "ជំនួយ",
         backToMissions: "ត្រឡប់ទៅបេសកកម្ម",
-      },
+      }, // New keys for the footer
+    "showTutorial": "បង្ហាញការណែនាំ",
+    "help": "ជំនួយ",
+    "backToMissions": "ត្រឡប់ទៅបេសកកម្ម",
+    // New keys for the tutorial steps
+    "tutorial": {
+      "button_next": "បន្ទាប់",
+      "button_got_it": "យល់ព្រម!",
+      "step1_text": "សូមស្វាគមន៍មកកាន់បេសកកម្មមហាសមុទ្រ! គោលដៅរបស់អ្នកគឺដើម្បីស្តារ <strong>សុខភាពមហាសមុទ្រ</strong> ឱ្យដល់ 100% ឡើងវិញ។",
+      "step2_text": "ដើម្បីធ្វើដូចនេះ អ្នកនឹងត្រូវការ <strong>ពិន្ទុទិន្នន័យ (DP)</strong> ដែលអ្នកទទួលបានពីការបង្វឹកខ្ញុំ។",
+      "step3_text": "ចុច <strong>'បង្វឹក AI'</strong> ដើម្បីចាប់ផ្តើមល្បែងតម្រៀបសំរាម។",
+      "step5_text": "ធ្វើបានល្អ! ការដាក់ពង្រាយ AI ក៏ត្រូវចំណាយ <strong>ថាមពល ⚡️</strong> ផងដែរ។",
+      "step6_text": "នៅពេលអ្នកមានធនធានគ្រប់គ្រាន់ សូម <strong>'ដាក់ពង្រាយ AI'</strong> ដើម្បីប្រមូលសំរាម និងសម្អាតមហាសមុទ្រដោយស្វ័យប្រវត្តិ។",
+      "step7_text": "ចូលទៅកាន់ <strong>'ការដំឡើងកំណែ'</strong> ដើម្បីទទួលបានរបស់សំខាន់ៗដូចជា <strong>ប្រព័ន្ធសូឡា</strong> សម្រាប់ថាមពលបន្ថែម។"
+    }
     },
     sortTrashMinigame: {
       setup: "កំពុងរៀបចំការបណ្តុះបណ្តាល...",
@@ -758,9 +950,9 @@ export const translations = {
         4: { name: "ថង់​ប្លា​ស្ទិ​ក" },
         5: { name: "សំបកចេក" },
         6: { name: "កាសែតចាស់" },
-        7: { name: "កែវបែក" },
+        7: { name: "បំបែងកែវ" },
         8: { name: "កំប៉ុងដែក" },
-        9: { name: "សំបកពង" },
+        9: { name: "សំបកស៊ុត" },
         10: { name: "ពែងស្នោ" },
       },
       treeTypes: {
@@ -888,6 +1080,69 @@ export const translations = {
         "description": "បំលែងក្បឿងព្រៃឈើដែលបានកាប់ (គល់ឈើ) ដោយផ្ទាល់ទៅជាថាមពលភ្លាមៗ។ បន្ថែមប៊ូតុងសកម្មភាពថ្មីនៅក្នុងព្រៃ។"
       }
     }
-  },
+  },"app": {
+    "initialDialogue": "សួស្តី! ខ្ញុំ Eco ជាជំនួយការ AI របស់អ្នក!",
+    "notifications": {
+      "unlockForest": "បំពេញបេសកកម្មមហាសមុទ្រដើម្បីដោះសោបេសកកម្មអ្នកការពារព្រៃឈើ។",
+      "incorrectSort": "ការតម្រៀបមិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI ត្រូវបានប៉ះពាល់បន្តិចបន្តួច។",
+      "deploySuccess": "AI ត្រូវបានដាក់ពង្រាយដោយជោគជ័យ! សុខភាពមហាសមុទ្រ +{value}។",
+      "deployFail": "មិនអាចដាក់ពង្រាយ AI បានទេ៖ ",
+      "deployFailDP": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់។ ",
+      "deployFailEnergy": "ថាមពលមិនគ្រប់គ្រាន់។",
+      "upgradeOwned": "ការដំឡើងកំណែត្រូវបានធ្វើរួចហើយ។",
+      "upgradeAfford": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់សម្រាប់ការដំឡើងកំណែនេះ។",
+      "oceanComplete": "បេសកកម្មមហាសមុទ្របានបញ្ចប់! បេសកកម្មព្រៃឈើត្រូវបានដោះសោ!",
+      "noBiomass": "គ្មានក្រឡាដែលបានកាប់ឈើដែលអាចបំប្លែងទៅជាជីវម៉ាស់បានទេ។",
+      "biomassSuccess": "បានបំប្លែងជីវម៉ាស់! +{value} ថាមពល។",
+      "plantSuccess": "បានដាំ {name} នៅក្នុងផ្នែក ({x},{y})។",
+      "plantFail": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់ដើម្បីដាំ {name}។",
+      "forestTrainFail": "ថាមពលមិនគ្រប់គ្រាន់ដើម្បីចាប់ផ្តើមវគ្គបណ្តុះបណ្តាល AI។",
+      "forestTrainComplete": "វគ្គបណ្តុះបណ្តាល AI បានបញ្ចប់!",
+      "forestDeployFail": "ធនធានមិនគ្រប់គ្រាន់ដើម្បីដាក់ពង្រាយ AI អោយថែរក្សាព្រៃឈើ។",
+      "forestScanLowAcc": "ការស្កេន AI បានបញ្ចប់៖ ភាពត្រឹមត្រូវទាបពេកមិនអាចស្កេនក្រឡាណាមួយបានទេ។ សូមបណ្តុះបណ្តាល AI។",
+      "forestScanThreat": "AI បានរកឃើញ និងបញ្ឈប់គ្រោះថ្នាក់ {name} នៅក្នុងព្រៃ!",
+      "forestScanNoThreat": "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់ ឬកន្លែងទទេដើម្បីដាំទេ។",
+      "forestScanPlant": "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់។ កំពុងដាំកូនឈើថ្មី {count} ដើម។",
+      "cityPolicyFail": "ធនធានមិនគ្រប់គ្រាន់ដើម្បីអនុម័តគោលការណ៏នេះ!",
+      "cityPolicyDiscount": "ការបញ្ចុះតម្លៃ AI ត្រូវបានអនុវត្ត! បានអនុម័ត៖ {name}",
+      "cityPolicySuccess": "គោលការណ៏ត្រូវបានអនុម័ត៖ {name}",
+      "cityTrainComplete": "ការបណ្តុះបណ្តាលពិនិត្យគោលការណ៏បានបញ្ចប់!",
+      "cityDeploySuccess": "AI ត្រូវបានដាក់ពង្រាយ! គោលការណ៏ថ្មីដែលត្រូវបានបង្កើនប្រសិទ្ធភាពឥឡូវនេះអាចរកបានសម្រាប់ការពិនិត្យរបស់អ្នក។",
+      "cityDeployRecommend": "ការវិភាគ AI បានបញ្ចប់! គោលការណ៏ដែលមានផលប៉ះពាល់ខ្ពស់ត្រូវបានណែនាំជាមួយនឹងការបញ្ចុះតម្លៃ។",
+      "cityDeployRecommendFail": "AI មិនអាចរកឃើញដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតទេ ប៉ុន្តែការចំណាយលើការវិភាគត្រូវបានបង់រួចហើយ។",
+      "cityDeployAccFail": "ការវិភាគ AI បរាជ័យ៖ ភាពត្រឹមត្រូវទាបពេក។ បានបង្វិលសង {dp} DP និង {energy} ថាមពលវិញមួយផ្នែក។",
+      "cityAIDupe": "AI បានផ្តល់ដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតរបស់ខ្លួនរួចហើយ។"
+    },
+    "feedback": {
+      "minigameBonus": "ធ្វើបានលឿន! ប្រាក់រង្វាន់ DP +{value}! ល្បែងតូចបានបញ្ចប់។",
+      "minigameEnd": "វគ្គល្បែងតូចបានបញ្ចប់។",
+      "minigameCorrect": "ត្រឹមត្រូវ! +{value} DP។",
+      "minigameIncorrect": "អូ! នោះជា {type}។",
+      "forestTrainCorrect": "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
+      "forestTrainIncorrect": "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។",
+      "cityTrainCorrect": "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
+      "cityTrainIncorrect": "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។"
+    },
+    "dialogue": {
+      "oceanWelcome": "សូមស្វាគមន៍មកកាន់បេសកកម្មមហាសមុទ្រ! តោះចាប់ផ្តើមការងារ។",
+      "oceanProgress": "យើងកំពុងរីកចម្រើនយ៉ាងខ្លាំង!",
+      "oceanPolluted": "មហាសមុទ្រត្រូវបានបំពុលយ៉ាងខ្លាំង។",
+      "oceanNeedDP": "យើងត្រូវការពិន្ទុទិន្នន័យបន្ថែមទៀតដើម្បីដាក់ពង្រាយ។",
+      "oceanNeedEnergy": "ទុនបម្រុងថាមពលទាបសម្រាប់ការដាក់ពង្រាយ។",
+      "oceanReady": "ត្រៀមខ្លួនដើម្បីកែលម្អសុខភាពមហាសមុទ្រ!",
+      "oceanComplete": "អស្ចារ្យណាស់! បេសកកម្មមហាសមុទ្របានបញ្ចប់! បញ្ហាប្រឈមថ្មីកំពុងរង់ចាំ!",
+      "minigameStart": "របៀបបណ្តុះបណ្តាលត្រូវបានដំណើរការ! តម្រៀបរបស់របរទាំងនេះឱ្យបានលឿន និងត្រឹមត្រូវ។",
+      "minigameEnd": "វគ្គបណ្តុះបណ្តាលបានបញ្ចប់។ យើងបានប្រមូលទិន្នន័យដ៏មានតម្លៃ!",
+      "upgradeSort": "ក្បួនដោះស្រាយការតម្រៀបប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
+      "upgradeDeploy": "ប្រព័ន្ធដាក់ពង្រាយប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
+      "upgradeSensors": "ឧបករណ៍ចាប់សញ្ញាបំពុលកម្រិតខ្ពស់ត្រូវបានទិញ! ភាពត្រឹមត្រូវមូលដ្ឋានរបស់ AI បានកើនឡើង។",
+      "upgradeSolar": "បន្ទះសូឡាត្រូវបានដំឡើង! ឥឡូវនេះអ្នកនឹងបង្កើតថាមពលតាមពេលវេលា។",
+      "upgradeBiomass": "ម៉ាស៊ីនបង្កើតជីវម៉ាស់ត្រូវបានសាងសង់! ឥឡូវនេះអ្នកអាចបំប្លែងក្រឡាដែលបានកាប់ឈើទៅជាថាមពល។"
+    },
+    "modals": {
+      "historyTitle": "ប្រវត្តិការជូនដំណឹង",
+      "historyEmpty": "មិនទាន់មានការជូនដំណឹងនៅឡើយទេ។"
+    }
+  }
   },
 };

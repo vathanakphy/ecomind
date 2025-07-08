@@ -24,16 +24,17 @@ export const BIOMASS_ENERGY_PER_STUMP = 25; // Energy generated per logged tile 
 
 
 export const TRASH_ITEMS_DATA = [
-  { id: 1, name: 'Plastic Bottle', type: 'Recycle', visual: '🥤' },
-  { id: 2, name: 'Apple Core', type: 'Compost', visual: '🍎' },
-  { id: 3, name: 'Fish Bones', type: 'Trash', visual: '🦴' },
-  { id: 4, name: 'Plastic Bag', type: 'Recycle', visual: '🛍️' },
-  { id: 5, name: 'Banana Peel', type: 'Compost', visual: '🍌' },
-  { id: 6, name: 'Old Newspaper', type: 'Recycle', visual: '📰' },
-  { id: 7, name: 'Broken Glass', type: 'Trash', visual: '🍾' },
-  { id: 8, name: 'Tin Can', type: 'Recycle', visual: '🥫' },
-  { id: 9, name: 'Egg Shells', type: 'Compost', visual: '🥚' },
-  { id: 10, name: 'Styrofoam Cup', type: 'Trash', visual: '🥡' },
+  // REMOVE the 'name' property. The 'id' is now the link to the translation.
+  { id: 1, type: 'Recycle', visual: '🥤' },
+  { id: 2, type: 'Compost', visual: '🍎' },
+  { id: 3, type: 'Trash', visual: '🦴' },
+  { id: 4, type: 'Recycle', visual: '🛍️' },
+  { id: 5, type: 'Compost', visual: '🍌' },
+  { id: 6, type: 'Recycle', visual: '📰' },
+  { id: 7, type: 'Trash', visual: '🍾' },
+  { id: 8, type: 'Recycle', visual: '🥫' },
+  { id: 9, type: 'Compost', visual: '🥚' },
+  { id: 10, type: 'Trash', visual: '🥡' },
 ];
 
 export const MINIGAME_DURATION_SECONDS = 30;
@@ -123,37 +124,37 @@ export const FOREST_AI_TRAINING_IMAGES = [
   {
     id: 1,
     visual: healthy_forest_drone,
-    description: 'Healthy canopy, vibrant green.',
+    descriptionKey: 'desc_1', // Use key
     correctLabel: 'Healthy'
   },
   {
     id: 2,
     visual: diseased_leaves,
-    description: 'Leaves with brown spots and wilting.',
+    descriptionKey: 'desc_2', // Use key
     correctLabel: 'Diseased'
   },
   {
     id: 3,
     visual: dry_underbrush,
-    description: 'Very dry, brown undergrowth, potential tinder.',
+    descriptionKey: 'desc_3', // Use key
     correctLabel: 'Fire Risk'
   },
   {
     id: 4,
     visual: lush_forest_floor,
-    description: 'Lush and green, diverse plant life.',
+    descriptionKey: 'desc_4', // Use key
     correctLabel: 'Healthy'
   },
   {
     id: 5,
     visual: pine_beetle_damage,
-    description: 'Browning pine needles, signs of infestation.',
+    descriptionKey: 'desc_5', // Use key
     correctLabel: 'Diseased'
   },
   {
     id: 6,
     visual: saplings_growing,
-    description: 'Young trees showing new growth.',
+    descriptionKey: 'desc_6', // Use key
     correctLabel: 'Healthy'
   }
 ];
@@ -223,46 +224,47 @@ export const CITY_TRAINING_PROPOSALS = [
     {
         id: 'ctp1',
         icon: '🌳',
-        title: 'Replace Parking Lot with Park',
-        description: 'A developer wants to build a new public park downtown.',
+        titleKey: 'ctp1_title',       // Use key for title
+        descriptionKey: 'ctp1_desc', // Use key for description
         correctAnswer: 'Good Idea'
     },
     {
         id: 'ctp2',
         icon: '🚗',
-        title: 'Build a New Highway Through Suburbs',
-        description: 'This would increase traffic and pollution in a residential area.',
+        titleKey: 'ctp2_title',       // Use key for title
+        descriptionKey: 'ctp2_desc', // Use key for description
         correctAnswer: 'Bad Idea'
     },
     {
         id: 'ctp3',
         icon: '💧',
-        title: 'Dump Industrial Waste in River',
-        description: 'A factory is proposing a cheaper way to get rid of its waste.',
+        titleKey: 'ctp3_title',       // Use key for title
+        descriptionKey: 'ctp3_desc', // Use key for description
         correctAnswer: 'Bad Idea'
     },
     {
         id: 'ctp4',
         icon: '♻️',
-        title: 'Community Composting Program',
-        description: 'A city-wide initiative to reduce landfill waste.',
+        titleKey: 'ctp4_title',       // Use key for title
+        descriptionKey: 'ctp4_desc', // Use key for description
         correctAnswer: 'Good Idea'
     },
     {
         id: 'ctp5',
         icon: '💨',
-        title: 'Remove Emission Standards for Cars',
-        description: 'A proposal to make it cheaper to own older, more polluting cars.',
+        titleKey: 'ctp5_title',       // Use key for title
+        descriptionKey: 'ctp5_desc', // Use key for description
         correctAnswer: 'Bad Idea'
     },
     {
         id: 'ctp6',
         icon: '💡',
-        title: 'Switch Streetlights to Low-Energy LEDs',
-        description: 'This will reduce the city\'s overall energy consumption.',
+        titleKey: 'ctp6_title',       // Use key for title
+        descriptionKey: 'ctp6_desc', // Use key for description
         correctAnswer: 'Good Idea'
     }
 ];
+
 export const DEPLOY_AI_CITY_DATA_COST = 200;
 export const DEPLOY_AI_CITY_ENERGY_COST = 80;
 

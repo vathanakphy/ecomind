@@ -32,9 +32,17 @@ const CityMissionScreen = (props) => {
   } = props;
   
   const navigate = useNavigate();
+  
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
   const [showGameGuide, setShowGameGuide] = useState(false);
   const { result, language } = useLanguage();
+   // --- FIX #1: Check for translations IMMEDIATELY after the hook ---
+  // This prevents the component from crashing before it can render a loading state.
+  if (!result.cityMissionScreen || !result.gameData) {
+    return <div className="screen">Loading...</div>; // A simple, safe loading state
+  }
+
+  
 
   // --- This is the correct way to manage the tutorial ---
   // It checks the 'mission' name from the prop passed by App.js
@@ -54,51 +62,64 @@ const CityMissionScreen = (props) => {
 
   // --- ALL a `tutorialStep` state and local handler functions have been REMOVED ---
   // App.js is now in control.
+    const text = result.cityMissionScreen;
+  const tutorialText = text?.tutorial; // Safely get the tutorial translations
 
   // This object defines the text and targets for each step of the City tutorial
-  const cityTutorialSteps = useMemo(() => ({
-    1: {
-      highlightId: 'tutorial-city-status',
-      text: "Welcome to the City! Your goal is to improve the city by lowering the <strong>AQI (Air Quality Index)</strong>.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    2: {
-      highlightId: 'tutorial-city-resources',
-      text: "You'll use <strong>Data Points</strong> and <strong>Energy</strong> to enact new city policies.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    3: {
-      highlightId: 'tutorial-city-train',
-      text: "Click <strong>'Train AI'</strong> to teach the AI about good vs. bad policies and earn Data Points.",
-      buttonText: null, // This forces the user to click the button
-      action: onStartCityTraining, // This calls the function in App.js
-    },
-    5: { // Step 4 happens on the training screen
-      highlightId: 'tutorial-city-decisions',
-      text: "This is the list of available policies. Click <strong>Approve</strong> on a card to enact it.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    6: {
-      highlightId: 'tutorial-city-deploy',
-      text: "<strong>'Deploy AI'</strong> to have the AI suggest a new, highly effective policy for you to approve!",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    7: {
-      highlightId: 'tutorial-city-upgrades',
-      text: "Don't forget to visit <strong>'Upgrades'</strong> to build Solar Panels for more energy.",
-      buttonText: "Got It!",
-      action: onEndTutorial,
+  const cityTutorialSteps = useMemo(() => {
+    if (!tutorialText) return {}; // Safety check
+
+    return {
+      1: {
+        highlightId: 'tutorial-city-status',
+        textKey: "step1_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      2: {
+        highlightId: 'tutorial-city-resources',
+        textKey: "step2_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      3: {
+        highlightId: 'tutorial-city-train',
+        textKey: "step3_text",
+        buttonTextKey: null,
+        action: onStartCityTraining,
+      },
+      5: {
+        highlightId: 'tutorial-city-decisions',
+        textKey: "step5_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      6: {
+        highlightId: 'tutorial-city-deploy',
+        textKey: "step6_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      7: {
+        highlightId: 'tutorial-city-upgrades',
+        textKey: "step7_text",
+        buttonTextKey: "button_got_it",
+        action: onEndTutorial,
+      }
     }
-  }), [onAdvanceStep, onEndTutorial, onStartCityTraining]);
+  }, [onAdvanceStep, onEndTutorial, onStartCityTraining, tutorialText]); // Add tutorialText dependency
+
+  // This check is now redundant because of the one at the top, but it's safe to keep.
+  if (!text || !tutorialText) {
+    return <div>{text.loading || 'Loading...'}</div>;
+  }
+
 
   if (!result) {
     return <div>Loading translations...</div>;
   }
-  const text = result.cityMissionScreen;
+
+
 
   const translatedCityDecisions = useMemo(() => {
     const decisionTranslations = result.gameData.cityDecisions;
@@ -127,6 +148,7 @@ const CityMissionScreen = (props) => {
           onNext={onAdvanceStep}
           onEnd={onEndTutorial}
           onForceAction={onStartCityTraining}
+          translations={tutorialText}
         />
       )}
       <div className="city-panel">

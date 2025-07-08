@@ -16,7 +16,11 @@ const CityAITrainingScreen = (props) => {
   } = props;
 
   const { result } = useLanguage();
+   if (!result.cityAITraining) {
+    return <div className="screen">Loading...</div>;
+  }
   const text = result.cityAITraining;
+  const tutorialText = text.tutorial;
 
   const shouldShowTutorial = tutorialInfo.mission === 'city' && tutorialInfo.step === 4;
   const [showTutorial, setShowTutorial] = useState(false);
@@ -25,14 +29,18 @@ const CityAITrainingScreen = (props) => {
     setShowTutorial(shouldShowTutorial);
   }, [shouldShowTutorial]);
 
-  const cityTutorialStep4 = useMemo(() => ({
-    4: {
-      highlightId: 'tutorial-city-training-area',
-      text: "Review each proposal and classify it as a 'Good Idea' or 'Bad Idea' to earn Data Points and improve the AI.",
-      buttonText: "Let's Go!",
-      action: () => setShowTutorial(false),
+const cityTutorialStep4 = useMemo(() => {
+    if (!tutorialText) return {};
+
+    return {
+      4: {
+        highlightId: 'tutorial-city-training-area',
+        textKey: "step4_text",
+        buttonTextKey: "button_lets_go",
+        action: () => setShowTutorial(false),
+      }
     }
-  }), []);
+  }, [tutorialText]);
 
   const currentItem = proposals[currentIndex];
 
@@ -60,8 +68,10 @@ const CityAITrainingScreen = (props) => {
       
       <div className="training-item-area city-proposal" id="tutorial-city-training-area">
         <div className="proposal-icon"><Icon type={currentItem.icon} /></div>
-        <h3>{currentItem.title}</h3>
-        <p className="training-description">{currentItem.description}</p>
+       <h3>{text.proposals[currentItem.titleKey]}</h3>
+        <p className="training-description">
+          {text.proposals[currentItem.descriptionKey]}
+        </p>
       </div>
 
       <div className="classification-buttons">
