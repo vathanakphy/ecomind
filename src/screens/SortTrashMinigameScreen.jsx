@@ -1,10 +1,10 @@
 // src/screens/SortTrashMinigameScreen.jsx
-import React, { useState, useEffect, useRef } from 'react'; // Import useEffect and useRef
+import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '../utils/language';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import TutorialOverlay from '../components/ui/TutorialOverlay';
-import { MINIGAME_DURATION_SECONDS } from '../constants/gameConstants'; // Import constant
+import { MINIGAME_DURATION_SECONDS } from '../constants/gameConstants';
 
 const SortTrashMinigameScreen = (props) => {
   const {
@@ -16,33 +16,42 @@ const SortTrashMinigameScreen = (props) => {
   const { result } = useLanguage();
   const text = result.sortTrashMinigame;
   
-  const shouldShowTutorial = tutorialInfo.mission === 'ocean';
-  const [showMinigameTutorial, setShowMinigameTutorial] = useState(shouldShowTutorial);
+  const [showMinigameTutorial, setShowMinigameTutorial] = useState(false);
 
-  // --- NEW: Timer state and logic now lives inside this component ---
+  useEffect(() => {
+    const shouldShow = tutorialInfo.mission === 'ocean' && tutorialInfo.step === 4;
+    setShowMinigameTutorial(shouldShow);
+  }, [tutorialInfo]);
+
+  // Define just the step needed for this screen
+  const oceanTutorialStep4 = useMemo(() => ({
+    4: {
+      highlightId: 'tutorial-minigame-area',
+      text: "Your job is simple: look at the item, and put it in the correct bin. Correct sorts earn us more <strong>Data Points</strong> and improve my accuracy!",
+      buttonText: "Let's Go!",
+      action: () => setShowMinigameTutorial(false),
+    }
+  }), []);
+
   const [timeLeft, setTimeLeft] = useState(MINIGAME_DURATION_SECONDS);
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // This effect will run the timer ONLY when the tutorial is not showing.
     if (!showMinigameTutorial && timeLeft > 0) {
       timerRef.current = setInterval(() => {
         setTimeLeft(t => t - 1);
       }, 1000);
     } else if (timeLeft <= 0) {
-      // When time runs out, end the game.
       clearInterval(timerRef.current);
       onEndMinigame(false);
     }
-
-    // This is a cleanup function to stop the timer if the component is removed.
     return () => clearInterval(timerRef.current);
-  }, [timeLeft, showMinigameTutorial, onEndMinigame]); // Dependencies
-  // --- End of new logic ---
+  }, [timeLeft, showMinigameTutorial, onEndMinigame]);
+
   const handleQuitMinigame = () => {
-      clearInterval(timerRef.current); // 1. Immediately stop the timer
-      onEndMinigame(false);          // 2. Then call the function to navigate back
-    };
+    clearInterval(timerRef.current);
+    onEndMinigame(false);
+  };
 
   const currentItem = minigameItems[currentItemIndex];
 
@@ -50,7 +59,7 @@ const SortTrashMinigameScreen = (props) => {
     return (
       <div className="screen sort-trash-minigame">
         <p>{minigameFeedback || text.setup}</p>
-      <Button onClick={handleQuitMinigame} className="minigame-quit-button">{text.endTraining}</Button>
+        <Button onClick={() => onEndMinigame(false)}>{text.returnToMission}</Button>
       </div>
     );
   }
@@ -58,11 +67,13 @@ const SortTrashMinigameScreen = (props) => {
   return (
     <div className="screen sort-trash-minigame">
       {showMinigameTutorial && (
-        <TutorialOverlay step={4} onEnd={() => setShowMinigameTutorial(false)} />
+        <TutorialOverlay 
+            steps={oceanTutorialStep4}
+            step={4} 
+            onEnd={() => setShowMinigameTutorial(false)} />
       )}
       
       <h2><Icon type="brain" /> {text.title}</h2>
-      {/* This now displays the local timeLeft state */}
       <div className="minigame-timer"><Icon type="clock" /> {text.timeLeft} {timeLeft}s</div>
       
       <div className="minigame-item-area" id="tutorial-minigame-area">
@@ -77,7 +88,7 @@ const SortTrashMinigameScreen = (props) => {
 
       {minigameFeedback && <p className={`minigame-feedback ${minigameFeedback.includes('Correct') ? 'correct' : ''}`}>{minigameFeedback}</p>}
       <p>{text.progress.item}: {currentItemIndex + 1} / {minigameItems.length} | {text.progress.data}: {dataPoints}</p>
-      <Button onClick={() => onEndMinigame(false)} className="minigame-quit-button">{text.endTraining}</Button>
+      <Button onClick={handleQuitMinigame} className="minigame-quit-button">{text.endTraining}</Button>
     </div>
   );
 };
