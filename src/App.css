@@ -1538,7 +1538,6 @@
   }
 
   .main-menu-header p {
-    font-family: 'Baloo 2', cursive;
     font-size: clamp(1rem, 4vw, 1.5rem);
     color: #3CB371;
     background-color: rgba(255, 255, 255, 0.5);
@@ -1576,7 +1575,6 @@
     padding: 18px 30px;
     border-radius: 50px;
     border: none;
-    font-family: 'Baloo 2', cursive;
     font-weight: 700;
     font-size: 1.5rem;
     color: white;
