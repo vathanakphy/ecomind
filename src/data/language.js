@@ -513,100 +513,101 @@ export const translations = {
         veryUnhealthy: "Very Unhealthy",
       },
     },
-    upgradePanel: {
-      title: "Upgrade Your AI's Green Brain!",
-      costLabel: "Cost",
-      buyButton: "BUY",
-      purchasedButton: "PURCHASED",
-      purchasedTooltip: "Already purchased",
-      buyTooltip: "Purchase this upgrade",
-      upgrades: {
-        sortSpeed: {
-          title: "Efficient Sorting Algorithm",
-          description: "Your AI learns faster from sorting. Earns +15 DP instead of +10 in minigame."
-        },
-        efficientDeployment: {
-          title: "Efficient Deployment",
-          description: "Your AI cleans 1.5x more effectively per deployment."
-        },
-        advancedSensors: {
-          title: "Advanced Contaminant Sensors",
-          description: "Improves AI's base learning and deployment precision. (+10 AI Accuracy on purchase, better learning rate, more effective deployment)."
-        },
-        solarPanels: {
-          title: "Solar Panel Installation",
-          description: "Build a renewable energy grid. Passively generates 5 Energy every few seconds."
-        },
-        biomassGenerator: {
-          title: "Biomass Generator",
-          description: "Convert logged forest tiles (stumps) directly into a burst of energy. Adds a new action button in the forest."
-        }
-      }
-    }, 
-    app: {
-      initialDialogue: "Hi! I am Eco, your AI helper!",
-      notifications: {
-        unlockForest: "Complete the Ocean Mission to unlock the Forest Guardian mission.",
-        incorrectSort: "Incorrect sort. AI Accuracy slightly affected.",
-        deploySuccess: "AI successfully deployed! Ocean health +{value}.",
-        deployFail: "Cannot deploy AI: ",
-        deployFailDP: "Not enough Data Points. ",
-        deployFailEnergy: "Not enough Energy.",
-        upgradeOwned: "Upgrade already owned.",
-        upgradeAfford: "Not enough Data Points for this upgrade.",
-        oceanComplete: "Ocean Mission Complete! Forest Mission Unlocked!",
-        noBiomass: "No logged tiles available to convert to biomass.",
-        biomassSuccess: "Converted biomass! +{value} Energy.",
-        plantSuccess: "Planted a {name} in sector ({x},{y}).",
-        plantFail: "Not enough Data Points to plant a {name}.",
-        forestTrainFail: "Not enough energy to start an AI training session.",
-        forestTrainComplete: "AI training session complete!",
-        forestDeployFail: "Not enough resources to deploy the Forest Warden AI.",
-        forestScanLowAcc: "AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.",
-        forestScanThreat: "AI scanned a section of the forest and neutralized a {name} threat!",
-        forestScanNoThreat: "AI scanned {value} tiles and found no threats or empty space to plant.",
-        forestScanPlant: "AI scanned {value} tiles and found no threats. Planting {count} new saplings.",
-        cityPolicyFail: "Not enough resources to enact this policy!",
-        cityPolicyDiscount: "AI Discount Applied! Enacted: {name}",
-        cityPolicySuccess: "Policy enacted: {name}",
-        cityTrainComplete: "Policy review training complete!",
-        cityDeploySuccess: "AI Deployed! A new, optimized policy is now available for your review.",
-        cityDeployRecommend: "AI analysis complete! A high-impact policy has been recommended with a discount.",
-        cityDeployRecommendFail: "AI could not find an optimal policy, but the analysis cost has been paid.",
-        cityDeployAccFail: "AI analysis failed: Accuracy too low. Partially refunded {dp} DP and {energy} Energy.",
-        cityAIDupe: "AI has already provided its optimal policy solution."
-      },
-      feedback: {
-        minigameBonus: "Quick work! +{value} DP bonus! Minigame complete.",
-        minigameEnd: "Minigame session ended.",
-        minigameCorrect: "Correct! +{value} DP.",
-        minigameIncorrect: "Oops! That was {type}.",
-        forestTrainCorrect: "Correct! +{value} DP. AI Accuracy Increased!",
-        forestTrainIncorrect: "Incorrect. AI Accuracy Decreased.",
-        cityTrainCorrect: "Correct! +{value} DP. AI Accuracy Increased!",
-        cityTrainIncorrect: "Incorrect. AI Accuracy Decreased."
-      },
-      dialogue: {
-        oceanWelcome: "Welcome to the Ocean Mission! Let's get to work.",
-        oceanProgress: "We're making great progress!",
-        oceanPolluted: "The ocean is heavily polluted.",
-        oceanNeedDP: "We need more Data Points to deploy.",
-        oceanNeedEnergy: "Energy reserves are low for deployment.",
-        oceanReady: "Ready to improve ocean health!",
-        oceanComplete: "Fantastic! The Ocean Mission is complete! A new challenge awaits!",
-        minigameStart: "Training mode activated! Sort these items quickly and accurately.",
-        minigameEnd: "Training session complete. We've gathered valuable data!",
-        upgradeSort: "Efficient Sorting Algorithm purchased!",
-        upgradeDeploy: "Efficient Deployment System purchased!",
-        upgradeSensors: "Advanced Contaminant Sensors purchased! AI base accuracy increased.",
-        upgradeSolar: "Solar Panels installed! You will now generate energy over time.",
-        upgradeBiomass: "Biomass Generator constructed! You can now convert logged tiles into energy."
-      },
-      modals: {
-        historyTitle: "Notification History",
-        historyEmpty: "No notifications yet."
-      }
+    "upgradePanel": {
+  "title": "Upgrade Your AI's Green Brain!",
+  "costLabel": "Cost",
+  "buyButton": "BUY",
+  "purchasedButton": "PURCHASED",
+  "purchasedTooltip": "Already purchased",
+  "buyTooltip": "Purchase this upgrade",
+  "upgrades": {
+    "sortSpeed": {
+      "title": "Efficient Sorting Algorithm",
+      "description": "Your AI learns faster from sorting. Earns +15 DP instead of +10 in minigame."
+    },
+    "efficientDeployment": {
+      "title": "Efficient Deployment",
+      "description": "Your AI cleans 1.5x more effectively per deployment."
+    },
+    "advancedSensors": {
+      "title": "Advanced Contaminant Sensors",
+      "description": "Improves AI's base learning and deployment precision. (+10 AI Accuracy on purchase, better learning rate, more effective deployment)."
+    },
+    "solarPanels": {
+      "title": "Solar Panel Installation",
+      "description": "Build a renewable energy grid. Passively generates 5 Energy every few seconds."
+    },
+    "biomassGenerator": {
+      "title": "Biomass Generator",
+      "description": "Convert logged forest tiles (stumps) directly into a burst of energy. Adds a new action button in the forest."
     }
+  }
+},"app": {
+    "initialDialogue": "Hi! I am Eco, your AI helper!",
+    "notifications": {
+      "unlockForest": "Complete the Ocean Mission to unlock the Forest Guardian mission.",
+      "incorrectSort": "Incorrect sort. AI Accuracy slightly affected.",
+      "deploySuccess": "AI successfully deployed! Ocean health +{value}.",
+      "deployFail": "Cannot deploy AI: ",
+      "deployFailDP": "Not enough Data Points. ",
+      "deployFailEnergy": "Not enough Energy.",
+      "upgradeOwned": "Upgrade already owned.",
+      "upgradeAfford": "Not enough Data Points for this upgrade.",
+      "oceanComplete": "Ocean Mission Complete! Forest Mission Unlocked!",
+      "noBiomass": "No logged tiles available to convert to biomass.",
+      "biomassSuccess": "Converted biomass! +{value} Energy.",
+      "plantSuccess": "Planted a {name} in sector ({x},{y}).",
+      "plantFail": "Not enough Data Points to plant a {name}.",
+      "forestTrainFail": "Not enough energy to start an AI training session.",
+      "forestTrainComplete": "AI training session complete!",
+      "forestDeployFail": "Not enough resources to deploy the Forest Warden AI.",
+      "forestScanLowAcc": "AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.",
+      "forestScanThreat": "AI scanned a section of the forest and neutralized a {name} threat!",
+      "forestScanNoThreat": "AI scanned {value} tiles and found no threats or empty space to plant.",
+      "forestScanPlant": "AI scanned {value} tiles and found no threats. Planting {count} new saplings.",
+      "cityPolicyFail": "Not enough resources to enact this policy!",
+      "cityPolicyDiscount": "AI Discount Applied! Enacted: {name}",
+      "cityPolicySuccess": "Policy enacted: {name}",
+      "cityTrainComplete": "Policy review training complete!",
+      "cityDeploySuccess": "AI Deployed! A new, optimized policy is now available for your review.",
+      "cityDeployRecommend": "AI analysis complete! A high-impact policy has been recommended with a discount.",
+      "cityDeployRecommendFail": "AI could not find an optimal policy, but the analysis cost has been paid.",
+      "cityDeployAccFail": "AI analysis failed: Accuracy too low. Partially refunded {dp} DP and {energy} Energy.",
+      "cityAIDupe": "AI has already provided its optimal policy solution."
+    },
+    "feedback": {
+      "minigameBonus": "Quick work! +{value} DP bonus! Minigame complete.",
+      "minigameEnd": "Minigame session ended.",
+      "minigameCorrect": "Correct! +{value} DP.",
+      "minigameIncorrect": "Oops! That was {type}.",
+      "forestTrainCorrect": "Correct! +{value} DP. AI Accuracy Increased!",
+      "forestTrainIncorrect": "Incorrect. AI Accuracy Decreased.",
+      "cityTrainCorrect": "Correct! +{value} DP. AI Accuracy Increased!",
+      "cityTrainIncorrect": "Incorrect. AI Accuracy Decreased."
+    },
+    "dialogue": {
+      "oceanWelcome": "Welcome to the Ocean Mission! Let's get to work.",
+      "oceanProgress": "We're making great progress!",
+      "oceanPolluted": "The ocean is heavily polluted.",
+      "oceanNeedDP": "We need more Data Points to deploy.",
+      "oceanNeedEnergy": "Energy reserves are low for deployment.",
+      "oceanReady": "Ready to improve ocean health!",
+      "oceanComplete": "Fantastic! The Ocean Mission is complete! A new challenge awaits!",
+      "minigameStart": "Training mode activated! Sort these items quickly and accurately.",
+      "minigameEnd": "Training session complete. We've gathered valuable data!",
+      "upgradeSort": "Efficient Sorting Algorithm purchased!",
+      "upgradeDeploy": "Efficient Deployment System purchased!",
+      "upgradeSensors": "Advanced Contaminant Sensors purchased! AI base accuracy increased.",
+      "upgradeSolar": "Solar Panels installed! You will now generate energy over time.",
+      "upgradeBiomass": "Biomass Generator constructed! You can now convert logged tiles into energy."
+    },
+    "modals": {
+      "historyTitle": "Notification History",
+      "historyEmpty": "No notifications yet."
+    }
+  },CityMap:{
+    cityMap:'AQI City Map',
+  }
   },
 
   kh: {
@@ -1125,100 +1126,100 @@ export const translations = {
         unhealthy: "មិនល្អចំពោះសុខភាព",
         veryUnhealthy: "គ្រោះថ្នាក់ខ្លាំង",
       },
-    }, 
-    upgradePanel: {
-      title: "ដំឡើងកំណែAI's Green Brain​របស់អ្នក!",
-      costLabel: "តម្លៃ",
-      buyButton: "ទិញ",
-      purchasedButton: "បានទិញរួចហើយ",
-      purchasedTooltip: "បានទិញរួចហើយ",
-      buyTooltip: "ទិញការដំឡើងកំណែនេះ",
-      upgrades: {
-        sortSpeed: {
-          title: "ក្បួនដោះស្រាយការតម្រៀបប្រកបដោយប្រសិទ្ធភាព",
-          description: "AI របស់អ្នករៀនលឿនជាងមុនពីការតម្រៀប។ ទទួលបាន +15 DP ជំនួសឱ្យ +10 នៅក្នុង minigame។"
-        },
-        efficientDeployment: {
-          title: "ការដាក់ពង្រាយប្រកបដោយប្រសិទ្ធភាព",
-          description: "AI របស់អ្នកសម្អាតបាន 1.5 ដង កាន់តែមានប្រសិទ្ធភាពរាល់ពេលដាក់ពង្រាយ។"
-        },
-        advancedSensors: {
-          title: "ឧបករណ៍ចាប់សញ្ញាបំពុលកម្រិតខ្ពស់",
-          description: "បង្កើនការរៀនមូលដ្ឋានរបស់ AI និងភាពជាក់លាក់នៃការដាក់ពង្រាយ។ (+10 ភាពត្រឹមត្រូវរបស់ AI នៅពេលទិញ, អត្រារៀនសូត្រកាន់តែប្រសើរ, ការដាក់ពង្រាយកាន់តែមានប្រសិទ្ធភាព)។"
-        },
-        solarPanels: {
-          title: "ការដំឡើងបន្ទះស្រូបពន្លឺព្រះអាទិត្យ",
-          description: "បង្កើតបណ្ដាញថាមពលកកើតឡើងវិញ។ បង្កើតថាមពល 5 ដោយអសកម្មរៀងរាល់ពីរបីវិនាទីម្តង។"
-        },
-        biomassGenerator: {
-          title: "ម៉ាស៊ីនផលិតថាមពលពីកាកសំណល់",
-          description: "បំលែងក្បឿងព្រៃឈើដែលបានកាប់ (គល់ឈើ) ដោយផ្ទាល់ទៅជាថាមពលភ្លាមៗ។ បន្ថែមប៊ូតុងសកម្មភាពថ្មីនៅក្នុងព្រៃ។"
-        }
-      }
-    }, 
-    app: {
-      initialDialogue: "សួស្តី! ខ្ញុំ Eco ជាជំនួយការ AI របស់អ្នក!",
-      notifications: {
-        unlockForest: "បំពេញបេសកកម្មមហាសមុទ្រដើម្បីដោះសោបេសកកម្មអ្នកការពារព្រៃឈើ។",
-        incorrectSort: "ការតម្រៀបមិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI ត្រូវបានប៉ះពាល់បន្តិចបន្តួច។",
-        deploySuccess: "AI ត្រូវបានដាក់ពង្រាយដោយជោគជ័យ! សុខភាពមហាសមុទ្រ +{value}។",
-        deployFail: "មិនអាចដាក់ពង្រាយ AI បានទេ៖ ",
-        deployFailDP: "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់។ ",
-        deployFailEnergy: "ថាមពលមិនគ្រប់គ្រាន់។",
-        upgradeOwned: "ការដំឡើងកំណែត្រូវបានធ្វើរួចហើយ។",
-        upgradeAfford: "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់សម្រាប់ការដំឡើងកំណែនេះ។",
-        oceanComplete: "បេសកកម្មមហាសមុទ្របានបញ្ចប់! បេសកកម្មព្រៃឈើត្រូវបានដោះសោ!",
-        noBiomass: "គ្មានក្រឡាដែលបានកាប់ឈើដែលអាចបំប្លែងទៅជាជីវម៉ាស់បានទេ។",
-        biomassSuccess: "បានបំប្លែងជីវម៉ាស់! +{value} ថាមពល។",
-        plantSuccess: "បានដាំ {name} នៅក្នុងផ្នែក ({x},{y})។",
-        plantFail: "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់ដើម្បីដាំ {name}។",
-        forestTrainFail: "ថាមពលមិនគ្រប់គ្រាន់ដើម្បីចាប់ផ្តើមវគ្គបណ្តុះបណ្តាល AI។",
-        forestTrainComplete: "វគ្គបណ្តុះបណ្តាល AI បានបញ្ចប់!",
-        forestDeployFail: "ធនធានមិនគ្រប់គ្រាន់ដើម្បីដាក់ពង្រាយ AI អោយថែរក្សាព្រៃឈើ។",
-        forestScanLowAcc: "ការស្កេន AI បានបញ្ចប់៖ ភាពត្រឹមត្រូវទាបពេកមិនអាចស្កេនក្រឡាណាមួយបានទេ។ សូមបណ្តុះបណ្តាល AI។",
-        forestScanThreat: "AI បានរកឃើញ និងបញ្ឈប់គ្រោះថ្នាក់ {name} នៅក្នុងព្រៃ!",
-        forestScanNoThreat: "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់ ឬកន្លែងទទេដើម្បីដាំទេ។",
-        forestScanPlant: "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់។ កំពុងដាំកូនឈើថ្មី {count} ដើម។",
-        cityPolicyFail: "ធនធានមិនគ្រប់គ្រាន់ដើម្បីអនុម័តគោលការណ៏នេះ!",
-        cityPolicyDiscount: "ការបញ្ចុះតម្លៃ AI ត្រូវបានអនុវត្ត! បានអនុម័ត៖ {name}",
-        cityPolicySuccess: "គោលការណ៏ត្រូវបានអនុម័ត៖ {name}",
-        cityTrainComplete: "ការបណ្តុះបណ្តាលពិនិត្យគោលការណ៏បានបញ្ចប់!",
-        cityDeploySuccess: "AI ត្រូវបានដាក់ពង្រាយ! គោលការណ៏ថ្មីដែលត្រូវបានបង្កើនប្រសិទ្ធភាពឥឡូវនេះអាចរកបានសម្រាប់ការពិនិត្យរបស់អ្នក។",
-        cityDeployRecommend: "ការវិភាគ AI បានបញ្ចប់! គោលការណ៏ដែលមានផលប៉ះពាល់ខ្ពស់ត្រូវបានណែនាំជាមួយនឹងការបញ្ចុះតម្លៃ។",
-        cityDeployRecommendFail: "AI មិនអាចរកឃើញដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតទេ ប៉ុន្តែការចំណាយលើការវិភាគត្រូវបានបង់រួចហើយ។",
-        cityDeployAccFail: "ការវិភាគ AI បរាជ័យ៖ ភាពត្រឹមត្រូវទាបពេក។ បានបង្វិលសង {dp} DP និង {energy} ថាមពលវិញមួយផ្នែក។",
-        cityAIDupe: "AI បានផ្តល់ដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតរបស់ខ្លួនរួចហើយ។"
+    }, "upgradePanel": {
+    "title": "ដំឡើងកំណែAI's Green Brain​របស់អ្នក!",
+    "costLabel": "តម្លៃ",
+    "buyButton": "ទិញ",
+    "purchasedButton": "បានទិញរួចហើយ",
+    "purchasedTooltip": "បានទិញរួចហើយ",
+    "buyTooltip": "ទិញការដំឡើងកំណែនេះ",
+    "upgrades": {
+      "sortSpeed": {
+        "title": "ក្បួនដោះស្រាយការតម្រៀបប្រកបដោយប្រសិទ្ធភាព",
+        "description": "AI របស់អ្នករៀនលឿនជាងមុនពីការតម្រៀប។ ទទួលបាន +15 DP ជំនួសឱ្យ +10 នៅក្នុង minigame។"
       },
-      feedback: {
-        minigameBonus: "ធ្វើបានលឿន! ប្រាក់រង្វាន់ DP +{value}! ល្បែងតូចបានបញ្ចប់។",
-        minigameEnd: "វគ្គល្បែងតូចបានបញ្ចប់។",
-        minigameCorrect: "ត្រឹមត្រូវ! +{value} DP។",
-        minigameIncorrect: "អូ! នោះជា {type}។",
-        forestTrainCorrect: "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
-        forestTrainIncorrect: "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។",
-        cityTrainCorrect: "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
-        cityTrainIncorrect: "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។"
+      "efficientDeployment": {
+        "title": "ការដាក់ពង្រាយប្រកបដោយប្រសិទ្ធភាព",
+        "description": "AI របស់អ្នកសម្អាតបាន 1.5 ដង កាន់តែមានប្រសិទ្ធភាពរាល់ពេលដាក់ពង្រាយ។"
       },
-      dialogue: {
-        oceanWelcome: "សូមស្វាគមន៍មកកាន់បេសកកម្មមហាសមុទ្រ! តោះចាប់ផ្តើមការងារ។",
-        oceanProgress: "យើងកំពុងរីកចម្រើនយ៉ាងខ្លាំង!",
-        oceanPolluted: "មហាសមុទ្រត្រូវបានបំពុលយ៉ាងខ្លាំង។",
-        oceanNeedDP: "យើងត្រូវការពិន្ទុទិន្នន័យបន្ថែមទៀតដើម្បីដាក់ពង្រាយ។",
-        oceanNeedEnergy: "ទុនបម្រុងថាមពលទាបសម្រាប់ការដាក់ពង្រាយ។",
-        oceanReady: "ត្រៀមខ្លួនដើម្បីកែលម្អសុខភាពមហាសមុទ្រ!",
-        oceanComplete: "អស្ចារ្យណាស់! បេសកកម្មមហាសមុទ្របានបញ្ចប់! បញ្ហាប្រឈមថ្មីកំពុងរង់ចាំ!",
-        minigameStart: "របៀបបណ្តុះបណ្តាលត្រូវបានដំណើរការ! តម្រៀបរបស់របរទាំងនេះឱ្យបានលឿន និងត្រឹមត្រូវ។",
-        minigameEnd: "វគ្គបណ្តុះបណ្តាលបានបញ្ចប់។ យើងបានប្រមូលទិន្នន័យដ៏មានតម្លៃ!",
-        upgradeSort: "ក្បួនដោះស្រាយការតម្រៀបប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
-        upgradeDeploy: "ប្រព័ន្ធដាក់ពង្រាយប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
-        upgradeSensors: "ឧបករណ៍ចាប់សញ្ញាបំពុលកម្រិតខ្ពស់ត្រូវបានទិញ! ភាពត្រឹមត្រូវមូលដ្ឋានរបស់ AI បានកើនឡើង។",
-        upgradeSolar: "បន្ទះសូឡាត្រូវបានដំឡើង! ឥឡូវនេះអ្នកនឹងបង្កើតថាមពលតាមពេលវេលា។",
-        upgradeBiomass: "ម៉ាស៊ីនបង្កើតជីវម៉ាស់ត្រូវបានសាងសង់! ឥឡូវនេះអ្នកអាចបំប្លែងក្រឡាដែលបានកាប់ឈើទៅជាថាមពល។"
+      "advancedSensors": {
+        "title": "ឧបករណ៍ចាប់សញ្ញាបំពុលកម្រិតខ្ពស់",
+        "description": "បង្កើនការរៀនមូលដ្ឋានរបស់ AI និងភាពជាក់លាក់នៃការដាក់ពង្រាយ។ (+10 ភាពត្រឹមត្រូវរបស់ AI នៅពេលទិញ, អត្រារៀនសូត្រកាន់តែប្រសើរ, ការដាក់ពង្រាយកាន់តែមានប្រសិទ្ធភាព)។"
       },
-      modals: {
-        historyTitle: "ប្រវត្តិការជូនដំណឹង",
-        historyEmpty: "មិនទាន់មានការជូនដំណឹងនៅឡើយទេ។"
+      "solarPanels": {
+        "title": "ការដំឡើងបន្ទះស្រូបពន្លឺព្រះអាទិត្យ",
+        "description": "បង្កើតបណ្ដាញថាមពលកកើតឡើងវិញ។ បង្កើតថាមពល 5 ដោយអសកម្មរៀងរាល់ពីរបីវិនាទីម្តង។"
+      },
+      "biomassGenerator": {
+        "title": "ម៉ាស៊ីនផលិតថាមពលពីកាកសំណល់",
+        "description": "បំលែងក្បឿងព្រៃឈើដែលបានកាប់ (គល់ឈើ) ដោយផ្ទាល់ទៅជាថាមពលភ្លាមៗ។ បន្ថែមប៊ូតុងសកម្មភាពថ្មីនៅក្នុងព្រៃ។"
       }
     }
+  },"app": {
+    "initialDialogue": "សួស្តី! ខ្ញុំ Eco ជាជំនួយការ AI របស់អ្នក!",
+    "notifications": {
+      "unlockForest": "បំពេញបេសកកម្មមហាសមុទ្រដើម្បីដោះសោបេសកកម្មអ្នកការពារព្រៃឈើ។",
+      "incorrectSort": "ការតម្រៀបមិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI ត្រូវបានប៉ះពាល់បន្តិចបន្តួច។",
+      "deploySuccess": "AI ត្រូវបានដាក់ពង្រាយដោយជោគជ័យ! សុខភាពមហាសមុទ្រ +{value}។",
+      "deployFail": "មិនអាចដាក់ពង្រាយ AI បានទេ៖ ",
+      "deployFailDP": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់។ ",
+      "deployFailEnergy": "ថាមពលមិនគ្រប់គ្រាន់។",
+      "upgradeOwned": "ការដំឡើងកំណែត្រូវបានធ្វើរួចហើយ។",
+      "upgradeAfford": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់សម្រាប់ការដំឡើងកំណែនេះ។",
+      "oceanComplete": "បេសកកម្មមហាសមុទ្របានបញ្ចប់! បេសកកម្មព្រៃឈើត្រូវបានដោះសោ!",
+      "noBiomass": "គ្មានក្រឡាដែលបានកាប់ឈើដែលអាចបំប្លែងទៅជាជីវម៉ាស់បានទេ។",
+      "biomassSuccess": "បានបំប្លែងជីវម៉ាស់! +{value} ថាមពល។",
+      "plantSuccess": "បានដាំ {name} នៅក្នុងផ្នែក ({x},{y})។",
+      "plantFail": "ពិន្ទុទិន្នន័យមិនគ្រប់គ្រាន់ដើម្បីដាំ {name}។",
+      "forestTrainFail": "ថាមពលមិនគ្រប់គ្រាន់ដើម្បីចាប់ផ្តើមវគ្គបណ្តុះបណ្តាល AI។",
+      "forestTrainComplete": "វគ្គបណ្តុះបណ្តាល AI បានបញ្ចប់!",
+      "forestDeployFail": "ធនធានមិនគ្រប់គ្រាន់ដើម្បីដាក់ពង្រាយ AI អោយថែរក្សាព្រៃឈើ។",
+      "forestScanLowAcc": "ការស្កេន AI បានបញ្ចប់៖ ភាពត្រឹមត្រូវទាបពេកមិនអាចស្កេនក្រឡាណាមួយបានទេ។ សូមបណ្តុះបណ្តាល AI។",
+      "forestScanThreat": "AI បានរកឃើញ និងបញ្ឈប់គ្រោះថ្នាក់ {name} នៅក្នុងព្រៃ!",
+      "forestScanNoThreat": "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់ ឬកន្លែងទទេដើម្បីដាំទេ។",
+      "forestScanPlant": "AI បានស្កេនក្រឡា {value} ហើយមិនបានរកឃើញការគ្រោះថ្នាក់។ កំពុងដាំកូនឈើថ្មី {count} ដើម។",
+      "cityPolicyFail": "ធនធានមិនគ្រប់គ្រាន់ដើម្បីអនុម័តគោលការណ៏នេះ!",
+      "cityPolicyDiscount": "ការបញ្ចុះតម្លៃ AI ត្រូវបានអនុវត្ត! បានអនុម័ត៖ {name}",
+      "cityPolicySuccess": "គោលការណ៏ត្រូវបានអនុម័ត៖ {name}",
+      "cityTrainComplete": "ការបណ្តុះបណ្តាលពិនិត្យគោលការណ៏បានបញ្ចប់!",
+      "cityDeploySuccess": "AI ត្រូវបានដាក់ពង្រាយ! គោលការណ៏ថ្មីដែលត្រូវបានបង្កើនប្រសិទ្ធភាពឥឡូវនេះអាចរកបានសម្រាប់ការពិនិត្យរបស់អ្នក។",
+      "cityDeployRecommend": "ការវិភាគ AI បានបញ្ចប់! គោលការណ៏ដែលមានផលប៉ះពាល់ខ្ពស់ត្រូវបានណែនាំជាមួយនឹងការបញ្ចុះតម្លៃ។",
+      "cityDeployRecommendFail": "AI មិនអាចរកឃើញដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតទេ ប៉ុន្តែការចំណាយលើការវិភាគត្រូវបានបង់រួចហើយ។",
+      "cityDeployAccFail": "ការវិភាគ AI បរាជ័យ៖ ភាពត្រឹមត្រូវទាបពេក។ បានបង្វិលសង {dp} DP និង {energy} ថាមពលវិញមួយផ្នែក។",
+      "cityAIDupe": "AI បានផ្តល់ដំណោះស្រាយគោលការណ៏ដ៏ល្អបំផុតរបស់ខ្លួនរួចហើយ។"
+    },
+    "feedback": {
+      "minigameBonus": "ធ្វើបានលឿន! ប្រាក់រង្វាន់ DP +{value}! ល្បែងតូចបានបញ្ចប់។",
+      "minigameEnd": "វគ្គល្បែងតូចបានបញ្ចប់។",
+      "minigameCorrect": "ត្រឹមត្រូវ! +{value} DP។",
+      "minigameIncorrect": "អូ! នោះជា {type}។",
+      "forestTrainCorrect": "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
+      "forestTrainIncorrect": "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។",
+      "cityTrainCorrect": "ត្រឹមត្រូវ! +{value} DP។ ភាពត្រឹមត្រូវរបស់ AI បានកើនឡើង!",
+      "cityTrainIncorrect": "មិនត្រឹមត្រូវ។ ភាពត្រឹមត្រូវរបស់ AI បានថយចុះ។"
+    },
+    "dialogue": {
+      "oceanWelcome": "សូមស្វាគមន៍មកកាន់បេសកកម្មមហាសមុទ្រ! តោះចាប់ផ្តើមការងារ។",
+      "oceanProgress": "យើងកំពុងរីកចម្រើនយ៉ាងខ្លាំង!",
+      "oceanPolluted": "មហាសមុទ្រត្រូវបានបំពុលយ៉ាងខ្លាំង។",
+      "oceanNeedDP": "យើងត្រូវការពិន្ទុទិន្នន័យបន្ថែមទៀតដើម្បីដាក់ពង្រាយ។",
+      "oceanNeedEnergy": "ទុនបម្រុងថាមពលទាបសម្រាប់ការដាក់ពង្រាយ។",
+      "oceanReady": "ត្រៀមខ្លួនដើម្បីកែលម្អសុខភាពមហាសមុទ្រ!",
+      "oceanComplete": "អស្ចារ្យណាស់! បេសកកម្មមហាសមុទ្របានបញ្ចប់! បញ្ហាប្រឈមថ្មីកំពុងរង់ចាំ!",
+      "minigameStart": "របៀបបណ្តុះបណ្តាលត្រូវបានដំណើរការ! តម្រៀបរបស់របរទាំងនេះឱ្យបានលឿន និងត្រឹមត្រូវ។",
+      "minigameEnd": "វគ្គបណ្តុះបណ្តាលបានបញ្ចប់។ យើងបានប្រមូលទិន្នន័យដ៏មានតម្លៃ!",
+      "upgradeSort": "ក្បួនដោះស្រាយការតម្រៀបប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
+      "upgradeDeploy": "ប្រព័ន្ធដាក់ពង្រាយប្រកបដោយប្រសិទ្ធភាពត្រូវបានទិញ!",
+      "upgradeSensors": "ឧបករណ៍ចាប់សញ្ញាបំពុលកម្រិតខ្ពស់ត្រូវបានទិញ! ភាពត្រឹមត្រូវមូលដ្ឋានរបស់ AI បានកើនឡើង។",
+      "upgradeSolar": "បន្ទះសូឡាត្រូវបានដំឡើង! ឥឡូវនេះអ្នកនឹងបង្កើតថាមពលតាមពេលវេលា។",
+      "upgradeBiomass": "ម៉ាស៊ីនបង្កើតជីវម៉ាស់ត្រូវបានសាងសង់! ឥឡូវនេះអ្នកអាចបំប្លែងក្រឡាដែលបានកាប់ឈើទៅជាថាមពល។"
+    },
+    "modals": {
+      "historyTitle": "ប្រវត្តិការជូនដំណឹង",
+      "historyEmpty": "មិនទាន់មានការជូនដំណឹងនៅឡើយទេ។"
+    }
+  },CityMap:{
+    cityMap:'ផែនទីនៃទីក្រុង AQI',
+  }
   },
 };

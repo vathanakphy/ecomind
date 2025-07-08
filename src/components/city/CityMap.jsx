@@ -1,5 +1,6 @@
 // src/components/city/CityMap.jsx
 import React from 'react';
+import { useLanguage } from '../../utils/language';
 
 // --- UPDATED: This helper now returns an object with both class and text ---
 const getAqiInfoForMap = (aqi) => {
@@ -16,31 +17,36 @@ const getAqiInfoForMap = (aqi) => {
   }
   return { className: 'aqi-red', statusText: 'Hazardous' };
 };
+ 
+const CityMap = ({ districts }) => {
+  const { result } = useLanguage();
+  // Guard clause: Don't render if translations are not yet loaded
+  if (!result) {
+    return null; // or a loading skeleton
+  }
+  // Get the specific text object for this component
+  const text = result.CityMap;
 
-
-const CityMap = ({ districts }) => (    
-  <div className="city-map-card">
-    <h3>AQI City Map</h3>
-    <div className="city-grid">
-      {districts.map((district) => {
-        // --- UPDATED: Call the helper here to get the info object ---
-        const aqiInfo = getAqiInfoForMap(district.aqi);
-        
-        return (
-          <div 
-            key={district.id} 
-            // The class is now set from the info object
-            className={`district-tile ${aqiInfo.className}`} 
-            title={`AQI: ${Math.round(district.aqi)}`}
-          >
-            {/* --- UPDATED: Display both the name and the status text --- */}
-            <span className="district-name">{district.name}</span>
-            <span className="district-status">{aqiInfo.statusText}</span>
-          </div>
-        );
-      })}
+  return (
+    <div className="city-map-card">
+      <h3>{text.cityMap}</h3>
+      <div className="city-grid">
+        {districts.map((district) => {
+          const aqiInfo = getAqiInfoForMap(district.aqi);
+          return (
+            <div 
+              key={district.id} 
+              className={`district-tile ${aqiInfo.className}`} 
+              title={`AQI: ${Math.round(district.aqi)}`}
+            >
+              <span className="district-name">{district.name}</span>
+              <span className="district-status">{aqiInfo.statusText}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default CityMap;
