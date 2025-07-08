@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
-import { background_music } from './data/music';
 
 // --- Components and Utils ---
 import { playSound } from './utils/audio';
@@ -10,7 +9,7 @@ import Modal from './components/ui/Modal';
 import Button from './components/ui/Button';
 import Icon from './components/ui/Icon';
 import { useLanguage } from './utils/language';
-
+import { musicTracks } from './data/music'
 // --- Screens ---
 import MainMenuScreen from './screens/MainMenuScreen';
 import MissionSelectScreen from './screens/MissionSelectScreen';
@@ -68,8 +67,19 @@ function App() {
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
   const [aiMood, setAiMood] = useState('neutralAI');
   const [aiDialogue, setAiDialogue] = useState('Hi! I am Eco, your AI helper!');
-  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
+  const [currentTrackSrc, setCurrentTrackSrc] = useState(musicTracks[0].src); // Set initial track
+  const handleMusicChange = (newTrackSrc) => {
+    setCurrentTrackSrc(newTrackSrc);
+  };
+   useEffect(() => {
+    const audio = audioRef.current;
+    if (audio && isMusicPlaying) {
+        audio.load(); // Load the new source
+        audio.play().catch(e => console.error("Audio play failed:", e));
+    }
+  }, [currentTrackSrc]); // Re-run when the track source changes
 
 
   // --- NOTIFICATION STATE ---
@@ -650,7 +660,7 @@ function App() {
   // --- JSX RENDER ---
   return (
     <div className="App">
-    <audio ref={audioRef} src={background_music.sonic_mania} loop />
+      <audio ref={audioRef} src={currentTrackSrc} loop />
       {/* --- UI OVERLAYS --- */}
       <div className="ui-top-bar">
         {/* Mobile-only icon to open history */}
@@ -675,7 +685,16 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="/" element={<MainMenuScreen onAddNotification={addNotification} aiMood={aiMood} />} />
+        <Route path="/" element={
+          <MainMenuScreen 
+            onAddNotification={addNotification} 
+            aiMood={aiMood}
+            musicTracks={musicTracks}
+            currentTrackSrc={currentTrackSrc}
+            onMusicChange={handleMusicChange}
+          />
+        } />
+
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
         
         {/* Ocean Mission Routes */}
