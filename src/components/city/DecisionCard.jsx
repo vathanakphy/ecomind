@@ -2,17 +2,17 @@
 import { AI_RECOMMENDATION_DISCOUNT } from '../../constants/gameConstants'; // Import discount
 import Icon from '../ui/Icon';
 import Button from '../ui/Button';
-export default function DecisionCard ({ decision, onApprove, dataPoints, energy, isRecommended })  {
+export default function DecisionCard ({ decision, onApprove, dataPoints, energy, isRecommended,text })  {
   // Apply discount for display purposes if recommended
   const displayCostDP = isRecommended ? decision.costDP * (1 - AI_RECOMMENDATION_DISCOUNT) : decision.costDP;
   const displayCostEnergy = isRecommended ? decision.costEnergy * (1 - AI_RECOMMENDATION_DISCOUNT) : decision.costEnergy;
 
   const canAfford = dataPoints >= displayCostDP && energy >= displayCostEnergy;
-
+const cardText = text || {};
   return (
     // --- ADD CONDITIONAL CLASS FOR HIGHLIGHTING ---
     <div className={`decision-card ${!canAfford ? 'disabled' : ''} ${isRecommended ? 'recommended-by-ai' : ''}`}>
-      {isRecommended && <div className="ai-recommend-banner">AI Recommended!</div>}
+      {isRecommended && <div className="ai-recommend-banner"> {cardText.recommended || 'AI Recommended!'}</div>}
       {/* ... icon and content ... */}
       <div className="decision-content">
         <h4>{decision.title}</h4>
@@ -27,7 +27,7 @@ export default function DecisionCard ({ decision, onApprove, dataPoints, energy,
         </div>
       </div>
       <Button onClick={() => onApprove(decision)} disabled={!canAfford} className="approve-button">
-        APPROVE
+        {cardText.approve || 'APPROVE'}
       </Button>
     </div>
   );

@@ -1,27 +1,39 @@
 // src/components/ui/GameGuideCity.jsx
 import React from 'react';
+import { useLanguage } from '../../utils/language'; // Import the hook
 import Modal from './Modal';
 import Icon from '../ui/Icon';
 
 const GameGuideCity = ({ show, onClose }) => {
+  // 1. Get the translation data
+  const { result } = useLanguage();
+
+  // 2. Add a guard clause to prevent rendering before translations are loaded
+  if (!result) {
+    return null; // Or a loading spinner inside the modal
+  }
+  const text = result.gameGuideCity;
+
   return (
-    <Modal show={show} onClose={onClose} title={<>🏙️ City Air Rescue Guide</>}>
-      <p><strong>Your Goal:</strong> Clean the city's air by lowering the Average Air Quality (AQI) as much as possible!</p>
+    // 3. Use the translated text for the title
+    <Modal show={show} onClose={onClose} title={<>🏙️ {text.title}</>}>
+      {/* 4. Replace all hardcoded strings with values from the `text` object */}
+      <p><strong>{text.goalTitle}</strong> {text.goalDescription}</p>
       <ol>
         <li>
-          <strong>Check the Map & Status:</strong> The left panel shows you which districts are polluted and your city's overall health.
+          <strong>{text.step1Title}</strong> {text.step1Description}
         </li>
         <li>
-          <strong><Icon type="🧠" /> Train AI:</strong> Click "Train AI" to play a minigame where you review policy ideas. This is your main way to earn <strong>Data Points (DP)</strong> for free!
+          <strong><Icon type="🧠" /> {text.step2Title}</strong> {text.step2Description}
         </li>
         <li>
-          <strong>Enact Policies:</strong> The right panel shows a list of policies. Use your DP and <strong>Energy</strong> to "Approve" them. Each policy has different effects on your city's AQI, Economy, and Happiness.
+          <strong>{text.step3Title}</strong> {text.step3Description}
         </li>
         <li>
-          <strong><Icon type="wrench" /> Manage Resources:</strong> Use the "Upgrades" button to buy permanent improvements, like Solar Panels for energy generation.
+          <strong><Icon type="wrench" /> {text.step4Title}</strong> {text.step4Description}
         </li>
       </ol>
-      <p>Balance the environment and the economy to become a successful city manager!</p>
+      <p>{text.conclusion}</p>
     </Modal>
   );
 };
