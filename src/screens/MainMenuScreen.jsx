@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import Modal from '../components/ui/Modal';
 import LanguageFlagSelector from '../utils/LanguageSelection';
+import ecomind from '../assets/ecomind.png'
 
 const MainMenuScreen = ({ onAddNotification, aiMood }) => {
   const [showHowToPlayModal, setShowHowToPlayModal] = useState(false);
@@ -27,7 +28,8 @@ const MainMenuScreen = ({ onAddNotification, aiMood }) => {
         {/* Title Section */}
         <header className="main-menu-header">
           <h1>
-            <Icon type="leaf" /> {menu.title}
+            <img src={ecomind} style={{ width: '100px' }} alt="Ecoming" />
+            {menu.title}
           </h1>
           <p>{menu.subtitle}</p>
         </header>
