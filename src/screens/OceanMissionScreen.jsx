@@ -25,6 +25,7 @@ const OceanMissionScreen = (props) => {
   const navigate = useNavigate();
   const { result } = useLanguage();
   const text = result.oceanMissionScreen;
+   const tutorialText = text?.tutorial; // Safely get the nested tutorial text
 
   // This checks if the 'ocean' tutorial is the one that's active.
   const isTutorialActive = tutorialInfo.mission === 'ocean';
@@ -41,53 +42,65 @@ const OceanMissionScreen = (props) => {
   }, [isTutorialActive]);
 
   // --- NEW: Define the specific steps for the Ocean Mission tutorial ---
-  const oceanTutorialSteps = useMemo(() => ({
-    1: {
-      highlightId: 'tutorial-health-bar',
-      text: "Welcome to the Ocean Mission! Your goal is to restore <strong>Ocean Health</strong> to 100%.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    2: {
-      highlightId: 'tutorial-data-points',
-      text: "To do this, you'll need <strong>Data Points (DP)</strong>, which you get from training me.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    3: {
-      highlightId: 'tutorial-train-button',
-      text: "Click <strong>'Train AI'</strong> to start the trash sorting minigame.",
-      buttonText: null, // This forces the user to click the button
-      action: onStartMinigame,
-    },
-    5: { // Step 4 happens on the minigame screen
-      highlightId: 'tutorial-energy-counter',
-      text: "Good work! Deploying the AI also costs <strong>Energy ⚡️</strong>.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    6: {
-      highlightId: 'tutorial-deploy-button',
-      text: "When you have enough resources, <strong>'Deploy AI'</strong> to automatically collect trash and clean the ocean.",
-      buttonText: "Next",
-      action: onAdvanceStep,
-    },
-    7: {
-      highlightId: 'tutorial-upgrades-button',
-      text: "Visit <strong>'Upgrades'</strong> to get essential items like the <strong>Solar System</strong> for more energy.",
-      buttonText: "Got It!",
-      action: onEndTutorial,
+ const oceanTutorialSteps = useMemo(() => {
+    // If translations haven't loaded, return an empty object to prevent errors
+    if (!tutorialText) return {};
+
+    return {
+      1: {
+        highlightId: 'tutorial-health-bar',
+        textKey: "step1_text", // Use key
+        buttonTextKey: "button_next", // Use key
+        action: onAdvanceStep,
+      },
+      2: {
+        highlightId: 'tutorial-data-points',
+        textKey: "step2_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      3: {
+        highlightId: 'tutorial-train-button',
+        textKey: "step3_text",
+        buttonTextKey: null, // This remains null
+        action: onStartMinigame,
+      },
+      5: {
+        highlightId: 'tutorial-energy-counter',
+        textKey: "step5_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      6: {
+        highlightId: 'tutorial-deploy-button',
+        textKey: "step6_text",
+        buttonTextKey: "button_next",
+        action: onAdvanceStep,
+      },
+      7: {
+        highlightId: 'tutorial-upgrades-button',
+        textKey: "step7_text",
+        buttonTextKey: "button_got_it",
+        action: onEndTutorial,
+      }
     }
-  }), [onAdvanceStep, onEndTutorial, onStartMinigame]);
+  // Add `tutorialText` to the dependency array so it updates on language change
+  }, [onAdvanceStep, onEndTutorial, onStartMinigame, tutorialText]); 
+
+  
 
   const healthPercentage = Math.max(0, Math.min(MAX_OCEAN_HEALTH, oceanHealth));
   const pollutionOpacity = Math.max(0.1, (100 - healthPercentage) / 100);
+  // Add a safety check for when translations are still loading
+  if (!text) {
+    return <div className="screen">Loading...</div>;}
 
   return (
     <div className="screen ocean-mission-screen">
       {/* This now passes the ocean-specific steps to the overlay */}
       {isTutorialActive && (
         <TutorialOverlay
+          translations={tutorialText} 
           steps={oceanTutorialSteps}
           step={tutorialInfo.step}
           onNext={onAdvanceStep}
@@ -134,12 +147,14 @@ const OceanMissionScreen = (props) => {
       </div>
       <div className="ocean-footer-buttons">
         <Button onClick={onStartTutorial} className="help-button">
-          <Icon type="help" /> Show Tutorial
+          <Icon type="help" /> {text.showTutorial}
         </Button>
         <Button onClick={() => setShowGameGuide(true)} className="help-button">
-          <Icon type="help" /> Help
+          <Icon type="help" /> {text.help}
         </Button>
-        <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
+        <Button onClick={() => navigate('/missions')} className="back-button-mission">
+          {text.backToMissions}
+        </Button>
       </div>
       
      <UpgradePanel 

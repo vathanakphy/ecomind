@@ -24,39 +24,17 @@ export const BIOMASS_ENERGY_PER_STUMP = 25; // Energy generated per logged tile 
 
 
 export const TRASH_ITEMS_DATA = [
-  // Original Items
-  { id: 1, name: 'Plastic Bottle', type: 'Recycle', visual: '🥤' },
-  { id: 2, name: 'Apple Core', type: 'Compost', visual: '🍎' },
-  { id: 3, name: 'Fish Bones', type: 'Trash', visual: '🦴' },
-  { id: 4, name: 'Plastic Bag', type: 'Recycle', visual: '🛍️' },
-  { id: 5, name: 'Banana Peel', type: 'Compost', visual: '🍌' },
-  { id: 6, name: 'Old Newspaper', type: 'Recycle', visual: '📰' },
-  { id: 7, name: 'Broken Glass', type: 'Trash', visual: '🍾' },
-  { id: 8, name: 'Tin Can', type: 'Recycle', visual: '🥫' },
-  { id: 9, name: 'Egg Shells', type: 'Compost', visual: '🥚' },
-  { id: 10, name: 'Styrofoam Cup', type: 'Trash', visual: '🥡' },
-  
-  // New Items
-  { id: 11, name: 'Cardboard Box', type: 'Recycle', visual: '📦' },
-  { id: 12, name: 'Coffee Grounds', type: 'Compost', visual: '☕️' },
-  { id: 13, name: 'Greasy Pizza Box', type: 'Trash', visual: '🍕' },
-  { id: 14, name: 'Glass Jar', type: 'Recycle', visual: '🫙' },
-  { id: 15, name: 'Yard Trimmings', type: 'Compost', visual: '🍃' },
-  { id: 16, name: 'Batteries', type: 'Trash', visual: '🔋' },
-  { id: 17, name: 'Milk Carton', type: 'Recycle', visual: '🥛' },
-  { id: 18, name: 'Vegetable Scraps', type: 'Compost', visual: '🥕' },
-  { id: 19, name: 'Chip Bag', type: 'Trash', visual: '🍟' },
-  { id: 20, name: 'Junk Mail', type: 'Recycle', visual: '✉️' },
-  { id: 21, name: 'Tea Bag', type: 'Compost', visual: '🫖' },
-  { id: 22, name: 'Plastic Cutlery', type: 'Trash', visual: '🍴' },
-  { id: 23, name: 'Aluminum Foil (Clean)', type: 'Recycle', visual: '✨' },
-  { id: 24, name: 'Bread Crusts', type: 'Compost', visual: '🍞' },
-  { id: 25, name: 'Light Bulb', type: 'Trash', visual: '💡' },
-  { id: 26, name: 'Shampoo Bottle', type: 'Recycle', visual: '🧴' },
-  { id: 27, name: 'Corn Cob', type: 'Compost', visual: '🌽' },
-  { id: 28, name: 'Used Face Mask', type: 'Trash', visual: '😷' },
-  { id: 29, name: 'Cereal Box', type: 'Recycle', visual: '🥣' },
-  { id: 30, name: 'Old Plastic Toy', type: 'Trash', visual: '🧸' },
+  // REMOVE the 'name' property. The 'id' is now the link to the translation.
+  { id: 1, type: 'Recycle', visual: '🥤' },
+  { id: 2, type: 'Compost', visual: '🍎' },
+  { id: 3, type: 'Trash', visual: '🦴' },
+  { id: 4, type: 'Recycle', visual: '🛍️' },
+  { id: 5, type: 'Compost', visual: '🍌' },
+  { id: 6, type: 'Recycle', visual: '📰' },
+  { id: 7, type: 'Trash', visual: '🍾' },
+  { id: 8, type: 'Recycle', visual: '🥫' },
+  { id: 9, type: 'Compost', visual: '🥚' },
+  { id: 10, type: 'Trash', visual: '🥡' },
 ];
 
 export const MINIGAME_DURATION_SECONDS = 30;
@@ -143,6 +121,8 @@ export const TREE_TYPES = [
 export const FOREST_AI_TRAINING_IMAGES = [
   {
     id: 1,
+    visual: healthy_forest_drone,
+    descriptionKey: 'desc_1', // Use key
     visual: 'https://res.cloudinary.com/dokut37k6/image/upload/v1751987169/healthy-forest-drone_g50e6u.png',
     description: 'Drone footage shows a dense, closed canopy with vibrant, uniform green coloration across the upper branches.',
     correctLabel: 'Healthy'
@@ -533,6 +513,7 @@ export const CITY_TRAINING_PROPOSALS = [
       correctAnswer: 'Bad Idea'
   }
 ];
+
 export const DEPLOY_AI_CITY_DATA_COST = 200;
 export const DEPLOY_AI_CITY_ENERGY_COST = 80;
 

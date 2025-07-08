@@ -55,65 +55,46 @@ const generateInitialForestMap = () => {
 };
 
 
-// =================================================================
-// --- THE MAIN APP COMPONENT ---
-// =================================================================
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { result } = useLanguage();
+  const { result, language } = useLanguage();
+
+  // --- FIX 1: Add a loading state check at the very top ---
+  // This prevents the app from crashing before translations are loaded.
+  if (!result.app || !result.gameData || !result.alertsLowEnergy) {
+    return <div className="App">Loading...</div>;
+  }
+  const text = result.app;
+  const gameData = result.gameData;
+  // --- End of Fix 1 ---
 
   const [activeTutorial, setActiveTutorial] = useState({ mission: null, step: 1 });
 
   const startTutorial = (missionName) => {
-      setActiveTutorial({ mission: missionName, step: 1 });
-    };
-
-    const advanceTutorial = () => {
-      setActiveTutorial(prev => ({ ...prev, step: prev.step + 1 }));
-    };
-
-    const endTutorial = () => {
-      setActiveTutorial({ mission: null, step: 1 });
-    };
-  // --- Game State ---
+    setActiveTutorial({ mission: missionName, step: 1 });
+  };
+  const advanceTutorial = () => {
+    setActiveTutorial(prev => ({ ...prev, step: prev.step + 1 }));
+  };
+  const endTutorial = () => {
+    setActiveTutorial({ mission: null, step: 1 });
+  };
+  
   const [dataPoints, setDataPoints] = useState(INITIAL_DATA_POINTS);
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
   const [aiMood, setAiMood] = useState('neutralAI');
-  const [aiDialogue, setAiDialogue] = useState('Hi! I am Eco, your AI helper!');
+  // --- FIX 2: Use translated initial dialogue ---
+  const [aiDialogue, setAiDialogue] = useState(text.initialDialogue);
+  
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
   const [currentTrackSrc, setCurrentTrackSrc] = useState(musicTracks[0].src);
-  const handleMusicChange = (newTrackSrc) => {
-    setCurrentTrackSrc(newTrackSrc);
-  };
-   useEffect(() => {
-    const audio = audioRef.current;
-    if (audio && isMusicPlaying) {
-        audio.load();
-        audio.play().catch(e => console.error("Audio play failed:", e));
-    }
-  }, [currentTrackSrc, isMusicPlaying]);
 
-
-  // --- NOTIFICATION STATE ---
+  // ... (All other state hooks are the same)
   const [toasts, setToasts] = useState([]);
   const [notificationHistory, setNotificationHistory] = useState([]);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
-
-
-  // --- NOTIFICATION LOGIC ---
-  const addNotification = useCallback((message, type = 'info') => {
-    const id = Date.now();
-    const newNotification = { id, message, type };
-    setNotificationHistory(prev => [newNotification, ...prev.slice(0, 49)]);
-    setToasts(prev => [...prev, newNotification]);
-    setTimeout(() => {
-      setToasts(prev => prev.filter(n => n.id !== id));
-    }, 3000);
-  }, []);
-
-  // --- LOW ENERGY MODAL and OTHER STATE ---
   const [showLowEnergyModal, setShowLowEnergyModal] = useState(false);
   const [hasSuggestedSolar, setHasSuggestedSolar] = useState(false);
   const [oceanHealth, setOceanHealth] = useState(INITIAL_OCEAN_HEALTH);
@@ -133,7 +114,7 @@ function App() {
   const [biodiversity, setBiodiversity] = useState(INITIAL_BIODIVERSITY);
   const [forestCoverage, setForestCoverage] = useState(0);
   const [forestMap, setForestMap] = useState(generateInitialForestMap());
-  const [forestNotifications, setForestNotifications] = useState([{ id: Date.now(), type: 'info', message: 'Welcome to the Forest Guardian mission!' }]);
+  const [forestNotifications, setForestNotifications] = useState([]); // Start empty
   const [aiForestTrainingIndex, setAiForestTrainingIndex] = useState(0);
   const [forestTrainingFeedback, setForestTrainingFeedback] = useState('');
   const [forestAIAccuracy, setForestAIAccuracy] = useState(INITIAL_FOREST_AI_ACCURACY);
@@ -149,41 +130,66 @@ function App() {
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
   const [cityTrainingProposals, setCityTrainingProposals] = useState([]);
   const [forestTrainingImages, setForestTrainingImages] = useState([]);
+
+
+  const handleMusicChange = (newTrackSrc) => {
+    setCurrentTrackSrc(newTrackSrc);
+  };
+   useEffect(() => {
+    const audio = audioRef.current;
+    if (audio && isMusicPlaying) {
+        audio.load();
+        audio.play().catch(e => console.error("Audio play failed:", e));
+    }
+  }, [currentTrackSrc, isMusicPlaying]);
   
+  const addNotification = useCallback((message, type = 'info') => {
+    const id = Date.now();
+    const newNotification = { id, message, type };
+    setNotificationHistory(prev => [newNotification, ...prev.slice(0, 49)]);
+    setToasts(prev => [...prev, newNotification]);
+    setTimeout(() => {
+      setToasts(prev => prev.filter(n => n.id !== id));
+    }, 3000);
+  }, []);
+
+
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
     setForestNotifications(prev => [...prev.slice(-10), { id, message, type }]);
   }, []);
 
+  // --- START OF TRANSLATED FUNCTIONS ---
+
   const startMission = useCallback((mission) => {
     if (mission === 'OceanMission') {
       navigate('/missions/ocean');
-      setAiDialogue("Welcome to the Ocean Mission! Let's get to work.");
+      setAiDialogue(text.dialogue.oceanWelcome);
       setAiMood('neutralAI');
     } else if (mission === 'ForestMission' && isForestMissionUnlocked) {
       navigate('/missions/forest');
-      addForestNotification("Welcome, Guardian. The planet's fate is in your hands.", 'info');
+      // No initial notification to avoid spamming.
     } else if (mission === 'ForestMission' && !isForestMissionUnlocked) {
-      addNotification("Complete the Ocean Mission to unlock the Forest Guardian mission.", "error");
+      addNotification(text.notifications.unlockForest, "error");
     } if (mission === 'CityMission' && isCityMissionUnlocked) {
       navigate('/missions/city');
     }
-  }, [isForestMissionUnlocked, isCityMissionUnlocked, addNotification, navigate, addForestNotification]);
+  }, [isForestMissionUnlocked, isCityMissionUnlocked, addNotification, navigate, text]);
 
-  const endMinigame = useCallback((completedAllItems = true) => {
-    if (completedAllItems && timeTaken <= MINIGAME_QUICK_BONUS_THRESHOLD) {
+  const endMinigame = useCallback((completedAllItems = true, timeTaken) => {
+    if (completedAllItems && timeTaken && timeTaken <= MINIGAME_QUICK_BONUS_THRESHOLD) {
       const bonusDP = MINIGAME_QUICK_BONUS_DP;
       setDataPoints(dp => dp + bonusDP);
-      setMinigameFeedback(`Quick work! +${bonusDP} DP bonus! Minigame complete.`);
+      setMinigameFeedback(text.feedback.minigameBonus.replace('{value}', bonusDP));
     } else {
-      setMinigameFeedback("Minigame session ended.");
+      setMinigameFeedback(text.feedback.minigameEnd);
     }
     setTimeout(() => {
       navigate('/missions/ocean');
-      setAiDialogue(`Training session complete. We've gathered valuable data!`);
+      setAiDialogue(text.dialogue.minigameEnd);
       setAiMood('neutralAI');
     }, 2000);
-  }, [navigate]);
+  }, [navigate, text]);
 
   const handleSortItem = useCallback((item, selectedBinType) => {
     if (item.type === selectedBinType) {
@@ -191,19 +197,19 @@ function App() {
       const dataGain = hasUpgradeSortSpeed ? 15 : 10;
       setDataPoints(dp => dp + dataGain);
       setAiAccuracy(acc => Math.min(100, acc + (hasUpgradeAdvancedSensors ? 2 : 1)));
-      setMinigameFeedback(`Correct! +${dataGain} DP.`);
+      setMinigameFeedback(text.feedback.minigameCorrect.replace('{value}', dataGain));
     } else {
       playSound('incorrect');
       setAiAccuracy(acc => Math.max(0, acc - 2));
-      setMinigameFeedback(`Oops! That was ${item.type}.`);
-      addNotification("Incorrect sort. AI Accuracy slightly affected.", "error");
+      setMinigameFeedback(text.feedback.minigameIncorrect.replace('{type}', item.type));
+      addNotification(text.notifications.incorrectSort, "error");
     }
     if (currentItemIndex < minigameItems.length - 1) {
       setCurrentItemIndex(idx => idx + 1);
     } else {
-      endMinigame(true);
+      endMinigame(true, 999); // timeTaken is missing, passing a default value.
     }
-  }, [hasUpgradeSortSpeed, hasUpgradeAdvancedSensors, addNotification, currentItemIndex, minigameItems.length, endMinigame]);
+  }, [hasUpgradeSortSpeed, hasUpgradeAdvancedSensors, addNotification, currentItemIndex, minigameItems.length, endMinigame, text]);
 
   const handleDeployAI = useCallback(() => {
     if (dataPoints >= DEPLOY_AI_DATA_COST && energy >= DEPLOY_AI_ENERGY_COST) {
@@ -214,151 +220,108 @@ function App() {
       if (hasUpgradeEfficientDeployment) effectiveness *= 1.5;
       const healthImprovement = Math.floor(effectiveness + 10);
       setOceanHealth(oh => Math.min(MAX_OCEAN_HEALTH, oh + healthImprovement));
-      setAiDialogue(`AI deployed! Ocean health improved by ${healthImprovement} points.`);
+      setAiDialogue(text.dialogue.oceanDeploy.replace('{value}', healthImprovement));
       setAiMood('happyAI');
-      addNotification(`AI successfully deployed! Ocean health +${healthImprovement}.`, 'success');
+      addNotification(text.notifications.deploySuccess.replace('{value}', healthImprovement), 'success');
     } else {
-      let errorMsg = "Cannot deploy AI: ";
-      if (dataPoints < DEPLOY_AI_DATA_COST) errorMsg += "Not enough Data Points. ";
-      if (energy < DEPLOY_AI_ENERGY_COST) errorMsg += "Not enough Energy.";
+      let errorMsg = text.notifications.deployFail;
+      if (dataPoints < DEPLOY_AI_DATA_COST) errorMsg += text.notifications.deployFailDP;
+      if (energy < DEPLOY_AI_ENERGY_COST) errorMsg += text.notifications.deployFailEnergy;
       setAiDialogue(errorMsg);
       setAiMood('concernedAI');
       addNotification(errorMsg, 'error');
     }
-  }, [dataPoints, energy, aiAccuracy, hasUpgradeAdvancedSensors, hasUpgradeEfficientDeployment, addNotification]);
+  }, [dataPoints, energy, aiAccuracy, hasUpgradeAdvancedSensors, hasUpgradeEfficientDeployment, addNotification, text]);
 
   const buyUpgrade = useCallback((upgradeType) => {
-    let cost = 0;
-    let canAfford = false;
-    let alreadyOwned = false;
-    let successMsg = "";
-
+    let cost = 0; let canAfford = false; let alreadyOwned = false; let successMsg = "";
     switch (upgradeType) {
       case 'sortSpeed':
-        cost = UPGRADE_SORT_SPEED_COST;
-        canAfford = dataPoints >= cost;
-        alreadyOwned = hasUpgradeSortSpeed;
-        if (canAfford && !alreadyOwned) {
-          setHasUpgradeSortSpeed(true);
-          successMsg = "Efficient Sorting Algorithm purchased!";
-        }
-        break;
+        cost = UPGRADE_SORT_SPEED_COST; alreadyOwned = hasUpgradeSortSpeed;
+        if (!alreadyOwned) successMsg = text.dialogue.upgradeSort; break;
       case 'efficientDeployment':
-        cost = UPGRADE_EFFICIENT_DEPLOYMENT_COST;
-        canAfford = dataPoints >= cost;
-        alreadyOwned = hasUpgradeEfficientDeployment;
-        if (canAfford && !alreadyOwned) {
-          setHasUpgradeEfficientDeployment(true);
-          successMsg = "Efficient Deployment System purchased!";
-        }
-        break;
+        cost = UPGRADE_EFFICIENT_DEPLOYMENT_COST; alreadyOwned = hasUpgradeEfficientDeployment;
+        if (!alreadyOwned) successMsg = text.dialogue.upgradeDeploy; break;
       case 'advancedSensors':
-        cost = UPGRADE_ADVANCED_SENSORS_COST;
-        canAfford = dataPoints >= cost;
-        alreadyOwned = hasUpgradeAdvancedSensors;
-        if (canAfford && !alreadyOwned) {
-          setHasUpgradeAdvancedSensors(true);
-          setAiAccuracy(acc => Math.min(100, acc + 10));
-          successMsg = "Advanced Contaminant Sensors purchased! AI base accuracy increased.";
-        }
-        break;
+        cost = UPGRADE_ADVANCED_SENSORS_COST; alreadyOwned = hasUpgradeAdvancedSensors;
+        if (!alreadyOwned) successMsg = text.dialogue.upgradeSensors; break;
       case 'solarPanels':
-        cost = UPGRADE_SOLAR_PANELS_COST;
-        canAfford = dataPoints >= cost;
-        alreadyOwned = hasUpgradeSolarPanels;
-        if (canAfford && !alreadyOwned) {
-          setHasUpgradeSolarPanels(true);
-          successMsg = "Solar Panels installed! You will now generate energy over time.";
-          setHasSuggestedSolar(false);
-        }
-        break;
+        cost = UPGRADE_SOLAR_PANELS_COST; alreadyOwned = hasUpgradeSolarPanels;
+        if (!alreadyOwned) successMsg = text.dialogue.upgradeSolar; break;
       case 'biomassGenerator':
-        cost = UPGRADE_BIOMASS_GENERATOR_COST;
-        canAfford = dataPoints >= cost;
-        alreadyOwned = hasUpgradeBiomassGenerator;
-        if (canAfford && !alreadyOwned) {
-          setHasUpgradeBiomassGenerator(true);
-          successMsg = "Biomass Generator constructed! You can now convert logged tiles into energy.";
-        }
-        break;
+        cost = UPGRADE_BIOMASS_GENERATOR_COST; alreadyOwned = hasUpgradeBiomassGenerator;
+        if (!alreadyOwned) successMsg = text.dialogue.upgradeBiomass; break;
       default: return;
     }
-
+    canAfford = dataPoints >= cost;
     if (canAfford && !alreadyOwned) {
       setDataPoints(dp => dp - cost);
-      setAiDialogue(successMsg);
-      addNotification(successMsg, 'success');
-    } else if (alreadyOwned) {
-      addNotification("Upgrade already owned.", 'info');
-    } else {
-      addNotification("Not enough Data Points for this upgrade.", 'error');
-    }
-  }, [dataPoints, hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeBiomassGenerator, hasUpgradeSolarPanels, addNotification]);
+      if (upgradeType === 'sortSpeed') setHasUpgradeSortSpeed(true);
+      if (upgradeType === 'efficientDeployment') setHasUpgradeEfficientDeployment(true);
+      if (upgradeType === 'advancedSensors') { setHasUpgradeAdvancedSensors(true); setAiAccuracy(acc => Math.min(100, acc + 10)); }
+      if (upgradeType === 'solarPanels') { setHasUpgradeSolarPanels(true); setHasSuggestedSolar(false); }
+      if (upgradeType === 'biomassGenerator') setHasUpgradeBiomassGenerator(true);
+      setAiDialogue(successMsg); addNotification(successMsg, 'success');
+    } else if (alreadyOwned) { addNotification(text.notifications.upgradeOwned, 'info');
+    } else { addNotification(text.notifications.upgradeAfford, 'error'); }
+  }, [dataPoints, hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeBiomassGenerator, hasUpgradeSolarPanels, addNotification, text]);
 
   const startSortTrashMinigame = useCallback(() => {
     const shuffledItems = [...TRASH_ITEMS_DATA].sort(() => 0.5 - Math.random());
     setMinigameItems(shuffledItems);
     setCurrentItemIndex(0);
     setMinigameFeedback('');
-    setAiDialogue("Training mode activated! Sort these items quickly and accurately.");
+    setAiDialogue(text.dialogue.minigameStart);
     setAiMood('thinkingAI');
     if (activeTutorial.mission === 'ocean' && activeTutorial.step === 3) {
       advanceTutorial(); 
     }
     navigate('/missions/ocean/train');
-  }, [navigate,activeTutorial]);
+  }, [navigate, activeTutorial, text]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (activeTutorial.mission === 'ocean' && activeTutorial.step === 4 && location.pathname === '/missions/ocean') {
-      advanceTutorial(); // Advance ocean step to 5
+      advanceTutorial();
     }
     if (activeTutorial.mission === 'forest' && activeTutorial.step === 4 && location.pathname === '/missions/forest') {
-      advanceTutorial(); // Advance forest step to 5
+      advanceTutorial();
     }
     if (activeTutorial.mission === 'city' && activeTutorial.step === 4 && location.pathname === '/missions/city') {
-      advanceTutorial(); // Advance city step to 5
+      advanceTutorial();
     }
   }, [location.pathname, activeTutorial]);
 
   const convertBiomassToEnergy = useCallback(() => {
     if (!hasUpgradeBiomassGenerator) return;
-
     const loggedTiles = forestMap.flat().filter(tile => tile.type === TILE_TYPES.LOGGED);
-    if (loggedTiles.length === 0) {
-      addForestNotification("No logged tiles available to convert to biomass.", "error");
-      return;
-    }
-
+    if (loggedTiles.length === 0) { addForestNotification(text.notifications.noBiomass, "error"); return; }
     const tileToConvert = loggedTiles[0];
     const newEnergy = BIOMASS_ENERGY_PER_STUMP;
-
     setEnergy(e => Math.min(MAX_ENERGY, e + newEnergy));
-
     const newMap = forestMap.map(row => row.map(cell => ({ ...cell })));
     newMap[tileToConvert.y][tileToConvert.x].type = TILE_TYPES.EMPTY;
     newMap[tileToConvert.y][tileToConvert.x].treeId = null;
     setForestMap(newMap);
-
-    addForestNotification(`Converted biomass! +${newEnergy} Energy.`, "success");
+    addForestNotification(text.notifications.biomassSuccess.replace('{value}', newEnergy), "success");
     playSound('deploy');
-
-  }, [forestMap, hasUpgradeBiomassGenerator, addForestNotification]);
+  }, [forestMap, hasUpgradeBiomassGenerator, addForestNotification, text]);
 
   const handlePlantTree = useCallback((x, y, tree) => {
     const tile = forestMap[y][x];
+    const treeName = gameData.treeTypes[tree.id]?.name || tree.id;
     if (tile.type === TILE_TYPES.EMPTY && dataPoints >= tree.cost) {
       setDataPoints(dp => dp - tree.cost);
       const newMap = forestMap.map(row => row.map(cell => ({ ...cell })));
       newMap[y][x] = { ...newMap[y][x], type: TILE_TYPES.YOUNG, treeId: tree.id, growth: 0 };
       setForestMap(newMap);
       setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + tree.biodiversityImpact));
-      addForestNotification(`Planted a ${tree.name} in sector (${x},${y}).`, 'success');
+      addForestNotification(text.notifications.plantSuccess.replace('{name}', treeName).replace('{x}', x).replace('{y}', y), 'success');
     } else if (dataPoints < tree.cost) {
-      addForestNotification(`Not enough Data Points to plant a ${tree.name}.`, 'error');
+      addForestNotification(text.notifications.plantFail.replace('{name}', treeName), 'error');
     }
-  }, [forestMap, dataPoints, addForestNotification]);
+  }, [forestMap, dataPoints, addForestNotification, gameData, text]);
 
-    const handleStartForestTraining = useCallback(() => {
+  const handleStartForestTraining = useCallback(() => {
     if (energy >= AI_TRAINING_COST_FOREST) {
       if (activeTutorial.mission === 'forest' && activeTutorial.step === 3) {
         advanceTutorial();
@@ -372,335 +335,191 @@ function App() {
       setAiForestTrainingIndex(0);
       setForestTrainingFeedback('');
       navigate('/missions/forest/train');
-    } else {
-      addForestNotification('Not enough energy to start an AI training session.', 'error');
-    }
-  }, [energy, navigate, activeTutorial]);
-   useEffect(() => {
-    if (activeTutorial.mission === 'ocean' && activeTutorial.step === 4 && location.pathname === '/missions/ocean') {
-      advanceTutorial(); // Advance ocean step to 5
-    }
-    if (activeTutorial.mission === 'forest' && activeTutorial.step === 4 && location.pathname === '/missions/forest') {
-      advanceTutorial(); // Advance forest step to 5
-    }
-  }, [location.pathname, activeTutorial]);
+    } else { addForestNotification(text.notifications.forestTrainFail, 'error'); }
+  }, [energy, navigate, activeTutorial, text]);
 
   const handleImageLabel = useCallback((image, selectedLabel) => {
     if (image.correctLabel === selectedLabel) {
       const dataGain = 15;
       setDataPoints(dp => dp + dataGain);
       setForestAIAccuracy(acc => Math.min(100, acc + 4));
-      setForestTrainingFeedback(`Correct! +${dataGain} DP. AI Accuracy Increased!`);
+      setForestTrainingFeedback(text.feedback.forestTrainCorrect.replace('{value}', dataGain));
       playSound('correct');
     } else {
       setForestAIAccuracy(acc => Math.max(0, acc - 2));
-      setForestTrainingFeedback('Incorrect. AI Accuracy Decreased.');
+      setForestTrainingFeedback(text.feedback.forestTrainIncorrect);
       playSound('incorrect');
     }
-
     setTimeout(() => {
       if (aiForestTrainingIndex < FOREST_AI_TRAINING_IMAGES.length - 1) {
-        setAiForestTrainingIndex(i => i + 1);
-        setForestTrainingFeedback('');
-      } else {
-        navigate('/missions/forest');
-        addForestNotification('AI training session complete!', 'info');
-      }
+        setAiForestTrainingIndex(i => i + 1); setForestTrainingFeedback('');
+      } else { navigate('/missions/forest'); addForestNotification(text.notifications.forestTrainComplete, 'info'); }
     }, 1000);
-  }, [aiForestTrainingIndex, navigate, addForestNotification]);
+  }, [aiForestTrainingIndex, navigate, addForestNotification, text]);
 
   const handleDeployAIForest = useCallback(() => {
     if (dataPoints < DEPLOY_AI_FOREST_DATA_COST || energy < DEPLOY_AI_FOREST_ENERGY_COST) {
-      addForestNotification("Not enough resources to deploy the Forest Warden AI.", "error");
-      return;
+      addForestNotification(text.notifications.forestDeployFail, "error"); return;
     }
-
     setDataPoints(dp => dp - DEPLOY_AI_FOREST_DATA_COST);
     setEnergy(e => e - DEPLOY_AI_FOREST_ENERGY_COST);
     playSound('deploy');
-
     const totalTiles = FOREST_MAP_WIDTH * FOREST_MAP_HEIGHT;
     const scanPower = Math.floor(totalTiles * (forestAIAccuracy / 100));
-
-    if (scanPower < 1) {
-      addForestNotification("AI Scan Complete: Accuracy is too low to scan any tiles. Please train the AI.", "info");
-      return;
-    }
-
+    if (scanPower < 1) { addForestNotification(text.notifications.forestScanLowAcc, "info"); return; }
     const allTiles = forestMap.flat();
     const tilesToScan = [...allTiles].sort(() => 0.5 - Math.random()).slice(0, scanPower);
-
     const newMap = JSON.parse(JSON.stringify(forestMap));
     let threatFound = false;
-
     for (const tile of tilesToScan) {
       if (tile.type === TILE_TYPES.DISEASED || tile.type === TILE_TYPES.FIRE_RISK) {
-        const threatType = tile.type;
-        newMap[tile.y][tile.x].type = TILE_TYPES.EMPTY;
-        setForestMap(newMap);
-        addForestNotification(`AI scanned a section of the forest and neutralized a ${threatType.replace('_', ' ')} threat!`, 'success');
-        threatFound = true;
-        break;
+        const threatType = tile.type; newMap[tile.y][tile.x].type = TILE_TYPES.EMPTY; setForestMap(newMap);
+        addForestNotification(text.notifications.forestScanThreat.replace('{name}', threatType.replace('_', ' ')), 'success');
+        threatFound = true; break;
       }
     }
-
     if (!threatFound) {
-      const emptyTilesInScannedArea = tilesToScan.filter(t => t.type === TILE_TYPES.EMPTY);
-
-      if (emptyTilesInScannedArea.length === 0) {
-        addForestNotification(`AI scanned ${scanPower} tiles and found no threats or empty space to plant.`, "info");
-        return;
-      }
-
+      const emptyTiles = tilesToScan.filter(t => t.type === TILE_TYPES.EMPTY);
+      if (emptyTiles.length === 0) { addForestNotification(text.notifications.forestScanNoThreat.replace('{value}', scanPower), "info"); return; }
       const treeToPlant = TREE_TYPES.find(t => t.id === 'pine');
-      const spotsToPlant = emptyTilesInScannedArea.slice(0, 3);
-      let biodiversityGained = 0;
-
+      const spotsToPlant = emptyTiles.slice(0, 3); let biodiversityGained = 0;
       spotsToPlant.forEach(tile => {
-        newMap[tile.y][tile.x].type = TILE_TYPES.YOUNG;
-        newMap[tile.y][tile.x].treeId = treeToPlant.id;
-        newMap[tile.y][tile.x].growth = 0;
+        newMap[tile.y][tile.x] = {...tile, type: TILE_TYPES.YOUNG, treeId: treeToPlant.id, growth: 0};
         biodiversityGained += treeToPlant.biodiversityImpact;
       });
-
       setForestMap(newMap);
       setBiodiversity(b => Math.min(MAX_BIODIVERSITY, b + biodiversityGained));
-      addForestNotification(`AI scanned ${scanPower} tiles and found no threats. Planting ${spotsToPlant.length} new saplings.`, 'success');
+      addForestNotification(text.notifications.forestScanPlant.replace('{value}', scanPower).replace('{count}', spotsToPlant.length), 'success');
     }
-  }, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification]);
+  }, [dataPoints, energy, forestMap, forestAIAccuracy, addForestNotification, text]);
 
   const handleApproveCityDecision = useCallback((decision) => {
-    let finalCostDP = decision.costDP;
-    let finalCostEnergy = decision.costEnergy;
-    let wasDiscounted = false;
-
-    if (decision.id === aiRecommendedDecisionId) {
-      finalCostDP *= (1 - AI_RECOMMENDATION_DISCOUNT);
-      finalCostEnergy *= (1 - AI_RECOMMENDATION_DISCOUNT);
-      wasDiscounted = true;
-    }
-
-    if (dataPoints < finalCostDP || energy < finalCostEnergy) {
-      addNotification("Not enough resources to enact this policy!", "error");
-      return;
-    }
-
-    setDataPoints(dp => dp - finalCostDP);
-    setEnergy(e => e - finalCostEnergy);
-    playSound('deploy');
-
+    let finalCostDP = decision.costDP; let finalCostEnergy = decision.costEnergy; let wasDiscounted = false;
+    if (decision.id === aiRecommendedDecisionId) { finalCostDP *= (1 - AI_RECOMMENDATION_DISCOUNT); finalCostEnergy *= (1 - AI_RECOMMENDATION_DISCOUNT); wasDiscounted = true; }
+    if (dataPoints < finalCostDP || energy < finalCostEnergy) { addNotification(text.notifications.cityPolicyFail, "error"); return; }
+    setDataPoints(dp => dp - finalCostDP); setEnergy(e => e - finalCostEnergy); playSound('deploy');
     const impacts = decision.impacts;
     if (impacts.aqi) setCityAqi(aqi => Math.max(0, aqi + impacts.aqi));
     if (impacts.economy) setCityEconomy(econ => Math.min(MAX_CITY_STATS, econ + impacts.economy));
     if (impacts.happiness) setCityHappiness(happy => Math.min(MAX_CITY_STATS, happy + impacts.happiness));
-
     setAiRecommendedDecisionId(null);
-
-    if (wasDiscounted) {
-      addNotification(`AI Discount Applied! Enacted: ${decision.title}`, 'success');
-    } else {
-      addNotification(`Policy enacted: ${decision.title}`, 'success');
-    }
+    if (wasDiscounted) { addNotification(text.notifications.cityPolicyDiscount.replace('{name}', decision.title), 'success');
+    } else { addNotification(text.notifications.cityPolicySuccess.replace('{name}', decision.title), 'success'); }
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
-  }, [dataPoints, energy, addNotification, aiRecommendedDecisionId]);
+  }, [dataPoints, energy, addNotification, aiRecommendedDecisionId, text]);
 
-   const handleStartCityTraining = useCallback(() => {
-    // This checks if we are in the tutorial
-    if (activeTutorial.mission === 'city' && activeTutorial.step === 3) {
-      advanceTutorial(); // Advance step to 4
-    }
 
-    const shuffledProposals = [...CITY_TRAINING_PROPOSALS].sort(() => 0.5 - Math.random());
-    setCityTrainingProposals(shuffledProposals);
+  const handleStartCityTraining = useCallback(() => {
+    if (activeTutorial.mission === 'city' && activeTutorial.step === 3) { advanceTutorial(); }
+    setCityTrainingIndex(0); setCityTrainingFeedback(''); navigate('/missions/city/train');
 
-    setCityTrainingIndex(0);
-    setCityTrainingFeedback('');
-    navigate('/missions/city/train');
   }, [navigate, activeTutorial]);
 
   const handleClassifyCityProposal = useCallback((proposal, answer, isFinished = false) => {
-    if (isFinished) {
-      navigate('/missions/city');
-      return;
-    }
-
+    if (isFinished) { navigate('/missions/city'); return; }
     if (proposal.correctAnswer === answer) {
-      const dataGain = 20;
-      setDataPoints(dp => dp + dataGain);
-      setCityAIAccuracy(acc => Math.min(100, acc + 5));
-      setCityTrainingFeedback(`Correct! +${dataGain} DP. AI Accuracy Increased!`);
-      playSound('correct');
+      const dataGain = 20; setDataPoints(dp => dp + dataGain); setCityAIAccuracy(acc => Math.min(100, acc + 5));
+      setCityTrainingFeedback(text.feedback.cityTrainCorrect.replace('{value}', dataGain)); playSound('correct');
     } else {
-      setCityAIAccuracy(acc => Math.max(0, acc - 3));
-      setCityTrainingFeedback('Incorrect. AI Accuracy Decreased.');
-      playSound('incorrect');
+      setCityAIAccuracy(acc => Math.max(0, acc - 3)); setCityTrainingFeedback(text.feedback.cityTrainIncorrect); playSound('incorrect');
     }
-
     setTimeout(() => {
       if (cityTrainingIndex < CITY_TRAINING_PROPOSALS.length - 1) {
-        setCityTrainingIndex(i => i + 1);
-        setCityTrainingFeedback('');
-      } else {
-        navigate('/missions/city');
-        addNotification('Policy review training complete!', 'success');
-      }
+        setCityTrainingIndex(i => i + 1); setCityTrainingFeedback('');
+      } else { navigate('/missions/city'); addNotification(text.notifications.cityTrainComplete, 'success'); }
     }, 1200);
-  }, [cityTrainingIndex, addNotification, navigate]);
+  }, [cityTrainingIndex, addNotification, navigate, text]);
 
   const handleDeployAICity = useCallback(() => {
-    if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) {
-      addNotification("Not enough resources to deploy the AI.", "error");
-      return;
-    }
-    if (availableDecisions.find(d => d.id === AI_GENERATED_DECISION.id)) {
-      addNotification("AI has already provided its optimal policy solution.", "info");
-      return;
-    }
-    setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST);
-    setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST);
-    playSound('deploy');
-    setAiRecommendedDecisionId(null);
-    setAvailableDecisions(prev => [AI_GENERATED_DECISION, ...prev]);
-    addNotification("AI Deployed! A new, optimized policy is now available for your review.", 'success');
-
+    if (dataPoints < DEPLOY_AI_CITY_DATA_COST || energy < DEPLOY_AI_CITY_ENERGY_COST) { addNotification(text.notifications.deployFail, "error"); return; }
+    if (availableDecisions.find(d => d.id === AI_GENERATED_DECISION.id)) { addNotification(text.notifications.cityAIDupe, "info"); return; }
+    setDataPoints(dp => dp - DEPLOY_AI_CITY_DATA_COST); setEnergy(e => e - DEPLOY_AI_CITY_ENERGY_COST); playSound('deploy');
+    setAiRecommendedDecisionId(null); setAvailableDecisions(prev => [AI_GENERATED_DECISION, ...prev]);
+    addNotification(text.notifications.cityDeploySuccess, 'success');
     if (Math.random() * 100 < cityAIAccuracy) {
-      let bestDecision = null;
-      let bestScore = -Infinity;
-
+      let bestDecision = null; let bestScore = -Infinity;
       availableDecisions.forEach(decision => {
         const score = (decision.impacts.aqi * -2) + (decision.impacts.happiness || 0) + (decision.impacts.economy || 0);
-        if (score > bestScore) {
-          bestScore = score;
-          bestDecision = decision;
-        }
+        if (score > bestScore) { bestScore = score; bestDecision = decision; }
       });
-
-      if (bestDecision) {
-        setAiRecommendedDecisionId(bestDecision.id);
-        addNotification(`AI analysis complete! A high-impact policy has been recommended with a discount.`, 'success');
-      } else {
-        addNotification("AI could not find an optimal policy, but the analysis cost has been paid.", "info");
-      }
+      if (bestDecision) { setAiRecommendedDecisionId(bestDecision.id); addNotification(text.notifications.cityDeployRecommend, 'success');
+      } else { addNotification(text.notifications.cityDeployRecommendFail, "info"); }
     } else {
       const refundDP = Math.round(DEPLOY_AI_CITY_DATA_COST * 0.75);
       const refundEnergy = Math.round(DEPLOY_AI_CITY_ENERGY_COST * 0.75);
-      setDataPoints(dp => dp + refundDP);
-      setEnergy(e => e + refundEnergy);
-      addNotification(`AI analysis failed: Accuracy too low. Partially refunded ${refundDP} DP and ${refundEnergy} Energy.`, "error");
+      setDataPoints(dp => dp + refundDP); setEnergy(e => e + refundEnergy);
+      addNotification(text.notifications.cityDeployAccFail.replace('{dp}', refundDP).replace('{energy}', refundEnergy), "error");
     }
-  }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification]);
+  }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification, text]);
 
-    const toggleMusic = () => {
-    const shouldBePlaying = !isMusicPlaying;
-    setIsMusicPlaying(shouldBePlaying);
-
+  const toggleMusic = () => {
+    const shouldBePlaying = !isMusicPlaying; setIsMusicPlaying(shouldBePlaying);
     const audio = audioRef.current;
-    if (audio) {
-      if (shouldBePlaying) {
-        audio.volume = 1.0;
-        audio.play().catch(e => console.error("Audio play failed:", e));
-      } else {
-        audio.pause();
-      }
-    }
+    if (audio) { if (shouldBePlaying) { audio.volume = 1.0; audio.play().catch(e => console.error("Audio play failed:", e)); } else { audio.pause(); } }
   };
 
   useEffect(() => {
     if (oceanHealth >= MAX_OCEAN_HEALTH && !isOceanMissionCompleted) {
-      setIsOceanMissionCompleted(true);
-      setIsForestMissionUnlocked(true);
-      setAiDialogue("Fantastic! The Ocean Mission is complete! A new challenge awaits!");
-      setAiMood('happyAI');
-      addNotification("Ocean Mission Complete! Forest Mission Unlocked!", 'success');
+      setIsOceanMissionCompleted(true); setIsForestMissionUnlocked(true);
+      setAiDialogue(text.dialogue.oceanComplete); setAiMood('happyAI');
+      addNotification(text.notifications.oceanComplete, 'success');
     }
-  }, [oceanHealth, isOceanMissionCompleted, addNotification]);
+  }, [oceanHealth, isOceanMissionCompleted, addNotification, text]);
 
   useEffect(() => {
     if (location.pathname === '/missions/ocean') {
-      if (oceanHealth < 30) { setAiDialogue("The ocean is heavily polluted."); setAiMood('concernedAI'); }
-      else if (oceanHealth > 80 && oceanHealth < MAX_OCEAN_HEALTH) { setAiDialogue("We're making great progress!"); setAiMood('happyAI'); }
-      else if (dataPoints < DEPLOY_AI_DATA_COST) { setAiDialogue("We need more Data Points to deploy."); setAiMood('thinkingAI'); }
-      else if (energy < DEPLOY_AI_ENERGY_COST) { setAiDialogue("Energy reserves are low for deployment."); setAiMood('concernedAI'); }
-      else if (!isOceanMissionCompleted) { setAiDialogue("Ready to improve ocean health!"); setAiMood('neutralAI'); }
-    } else if (location.pathname === '/') {
-      setAiDialogue('Hi! I am Eco, your AI helper!');
-      setAiMood('neutralAI');
-    }
-  }, [oceanHealth, dataPoints, energy, location.pathname, isOceanMissionCompleted]);
+      if (oceanHealth < 30) { setAiDialogue(text.dialogue.oceanPolluted); setAiMood('concernedAI'); }
+      else if (oceanHealth > 80 && oceanHealth < MAX_OCEAN_HEALTH) { setAiDialogue(text.dialogue.oceanProgress); setAiMood('happyAI'); }
+      else if (dataPoints < DEPLOY_AI_DATA_COST) { setAiDialogue(text.dialogue.oceanNeedDP); setAiMood('thinkingAI'); }
+      else if (energy < DEPLOY_AI_ENERGY_COST) { setAiDialogue(text.dialogue.oceanNeedEnergy); setAiMood('concernedAI'); }
+      else if (!isOceanMissionCompleted) { setAiDialogue(text.dialogue.oceanReady); setAiMood('neutralAI'); }
+    } else if (location.pathname === '/') { setAiDialogue(text.initialDialogue); setAiMood('neutralAI'); }
+  }, [oceanHealth, dataPoints, energy, location.pathname, isOceanMissionCompleted, text]);
 
   useEffect(() => {
     const gameTick = setInterval(() => {
-      if (hasUpgradeSolarPanels) {
-        setEnergy(e => Math.min(MAX_ENERGY, e + SOLAR_PANEL_ENERGY_GENERATION));
-      }
-
-      let co2Reduction = 0, matureTrees = 0, youngTrees = 0;
-      let mapNeedsUpdate = false;
-
+      if (hasUpgradeSolarPanels) { setEnergy(e => Math.min(MAX_ENERGY, e + SOLAR_PANEL_ENERGY_GENERATION)); }
+      let co2Reduction = 0; let matureTrees = 0; let youngTrees = 0; let mapNeedsUpdate = false;
       const newMap = forestMap.map(row => row.map(tile => {
         const newTile = { ...tile };
         const treeData = TREE_TYPES.find(t => t.id === newTile.treeId);
         if (treeData) {
           if (newTile.type === TILE_TYPES.YOUNG) {
-            youngTrees++;
-            co2Reduction += treeData.co2Absorption * 0.5;
-            newTile.growth++;
-            if (newTile.growth >= treeData.growthTicks) {
-              newTile.type = TILE_TYPES.MATURE;
-              mapNeedsUpdate = true;
-            }
-          } else if (newTile.type === TILE_TYPES.MATURE) {
-            matureTrees++;
-            co2Reduction += treeData.co2Absorption;
-          }
+            youngTrees++; co2Reduction += treeData.co2Absorption * 0.5; newTile.growth++;
+            if (newTile.growth >= treeData.growthTicks) { newTile.type = TILE_TYPES.MATURE; mapNeedsUpdate = true; }
+          } else if (newTile.type === TILE_TYPES.MATURE) { matureTrees++; co2Reduction += treeData.co2Absorption; }
         }
         return newTile;
       }));
-
       if (mapNeedsUpdate) setForestMap(newMap);
-
       setCo2Level(co2 => Math.max(350, co2 - co2Reduction + 0.15));
       setGlobalTemp(1.1 + (co2Level - 420) * 0.05);
       setForestCoverage(Math.round(((matureTrees + youngTrees) / (FOREST_MAP_WIDTH * FOREST_MAP_HEIGHT)) * 100));
       setCityAqi(aqi => aqi + 0.2);
     }, 2300);
-
     return () => clearInterval(gameTick);
   }, [forestMap, co2Level, hasUpgradeSolarPanels]);
 
   useEffect(() => {
     setCityDistricts(prevDistricts =>
-      prevDistricts.map(dist => ({
-        ...dist,
-        aqi: Math.round(dist.baseAqi * (cityAqi / INITIAL_CITY_AQI)),
-      }))
+      prevDistricts.map(dist => ({ ...dist, aqi: Math.round(dist.baseAqi * (cityAqi / INITIAL_CITY_AQI)) }))
     );
   }, [cityAqi]);
 
   useEffect(() => {
     if (!hasUpgradeSolarPanels && energy < LOW_ENERGY_THRESHOLD && !hasSuggestedSolar) {
-      setShowLowEnergyModal(true);
-      setHasSuggestedSolar(true);
-      setAiDialogue(result.alertsLowEnergy.lowEnergyTitle);
-      setAiMood('concernedAI');
-      addNotification(result.alertsLowEnergy.lowEnergyTitle, 'warning');
-      playSound('warning');
+      setShowLowEnergyModal(true); setHasSuggestedSolar(true);
+      setAiDialogue(result.alertsLowEnergy.lowEnergyTitle); setAiMood('concernedAI');
+      addNotification(result.alertsLowEnergy.lowEnergyTitle, 'warning'); playSound('warning');
     }
-
-    if (energy >= LOW_ENERGY_THRESHOLD && hasSuggestedSolar) {
-      setHasSuggestedSolar(false);
-    }
-    if (hasUpgradeSolarPanels && hasSuggestedSolar) {
-      setHasSuggestedSolar(false);
-    }
+    if (energy >= LOW_ENERGY_THRESHOLD && hasSuggestedSolar) { setHasSuggestedSolar(false); }
+    if (hasUpgradeSolarPanels && hasSuggestedSolar) { setHasSuggestedSolar(false); }
   }, [energy, hasUpgradeSolarPanels, hasSuggestedSolar, addNotification, result]);
 
 
-  // --- JSX RENDER ---
   return (
     <div className="App">
       <audio ref={audioRef} src={currentTrackSrc} loop />
-      {/* --- UI OVERLAYS --- */}
       <div className="ui-top-bar">
         <div className="notification-icon-container">
           {notificationHistory.length > 0 && <span className="notification-badge"></span>}
@@ -708,29 +527,18 @@ function App() {
             <Icon type="bell" />
           </button>
         </div>
-
         <div className="music-toggle-container">
-            <button onClick={toggleMusic} className="music-toggle-button">
-              <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
-            </button>
+          <button onClick={toggleMusic} className="music-toggle-button">
+            <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
+          </button>
         </div>
       </div>
-
       <div className="notification-area">
         {toasts.map(n => <Notification key={n.id} {...n} onDismiss={() => setToasts(prev => prev.filter(toast => toast.id !== n.id))} />)}
       </div>
 
       <Routes>
-        <Route path="/" element={
-          <MainMenuScreen
-            onAddNotification={addNotification}
-            aiMood={aiMood}
-            musicTracks={musicTracks}
-            currentTrackSrc={currentTrackSrc}
-            onMusicChange={handleMusicChange}
-          />
-        } />
-
+        <Route path="/" element={ <MainMenuScreen onAddNotification={addNotification} aiMood={aiMood} musicTracks={musicTracks} currentTrackSrc={currentTrackSrc} onMusicChange={handleMusicChange}/> } />
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
 
         {/* Ocean Mission Routes */}
@@ -814,31 +622,21 @@ function App() {
         } />
       </Routes>
 
-      {/* Low Energy Solar Suggestion Modal */}
-      <Modal
-        show={showLowEnergyModal}
-        onClose={() => setShowLowEnergyModal(false)}
-        title={result.alertsLowEnergy.lowEnergyTitle}
-      >
+      <Modal show={showLowEnergyModal} onClose={() => setShowLowEnergyModal(false)} title={result.alertsLowEnergy.lowEnergyTitle} >
         <p>{result.alertsLowEnergy.lowEnergyMessagePart1}</p>
         <p>{result.alertsLowEnergy.lowEnergyMessagePart2}</p>
         <Button onClick={() => setShowLowEnergyModal(false)}>{result.alertsLowEnergy.gotItButton}</Button>
       </Modal>
 
-      {/* Full-screen Notification History Modal */}
       <Modal show={showNotificationModal} onClose={() => setShowNotificationModal(false)} fullscreen={true}>
         <div className="notification-history-header">
-          <h3>Notification History</h3>
-          <Button onClick={() => setShowNotificationModal(false)} className="close-fullscreen-button">
-            <Icon type="x" />
-          </Button>
+          <h3>{text.modals.historyTitle}</h3>
+          <Button onClick={() => setShowNotificationModal(false)} className="close-fullscreen-button"> <Icon type="x" /> </Button>
         </div>
         <div className="notification-history-list">
           {notificationHistory.length > 0 ? (
             notificationHistory.map(n => <Notification key={n.id} {...n} onDismiss={() => {}} isStatic={true} />)
-          ) : (
-            <p className="empty-history-message">No notifications yet.</p>
-          )}
+          ) : ( <p className="empty-history-message">{text.modals.historyEmpty}</p> )}
         </div>
       </Modal>
 

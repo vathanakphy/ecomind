@@ -54,7 +54,9 @@ const SortTrashMinigameScreen = (props) => {
   };
 
   const currentItem = minigameItems[currentItemIndex];
-
+if (!text || !result.gameData) {
+    return <div className="screen">Loading...</div>;
+  };
   if (!currentItem) {
     return (
       <div className="screen sort-trash-minigame">
@@ -62,7 +64,7 @@ const SortTrashMinigameScreen = (props) => {
         <Button onClick={() => onEndMinigame(false)}>{text.returnToMission}</Button>
       </div>
     );
-  }
+  };
 
   return (
     <div className="screen sort-trash-minigame">
@@ -78,11 +80,14 @@ const SortTrashMinigameScreen = (props) => {
       
       <div className="minigame-item-area" id="tutorial-minigame-area">
         <p>{text.instruction}</p>
-        <div className="item-to-sort">{currentItem.visual} {currentItem.name}</div>
+         <div className="item-to-sort">
+          {currentItem.visual} {result.gameData?.trashItems?.[currentItem.id]?.name}
+        </div>
+
         <div className="sorting-bins">
-            <Button onClick={() => onSortItem(currentItem, 'Recycle')}><Icon type="recycle" /> {text.buttons.recycle}</Button>
-            <Button onClick={() => onSortItem(currentItem, 'Compost')}><Icon type="compost" /> {text.buttons.compost}</Button>
-            <Button onClick={() => onSortItem(currentItem, 'Trash')}><Icon type="trash" /> {text.buttons.trash}</Button>
+          <Button onClick={() => onSortItem(currentItem, 'Recycle')}><Icon type="recycle" /> {text.buttons.recycle}</Button>
+          <Button onClick={() => onSortItem(currentItem, 'Compost')}><Icon type="compost" /> {text.buttons.compost}</Button>
+          <Button onClick={() => onSortItem(currentItem, 'Trash')}><Icon type="trash" /> {text.buttons.trash}</Button>
         </div>
       </div>
 
