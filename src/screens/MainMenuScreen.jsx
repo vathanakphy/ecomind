@@ -55,29 +55,36 @@ const MainMenuScreen = ({ onAddNotification, aiMood, musicTracks, currentTrackSr
         <p>{menu.goal}</p>
       </Modal>
 
-      <Modal show={showSettingsModal} onClose={() => setShowSettingsModal(false)} title={menu.settings}>
-        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <label><strong>Choose Language:</strong></label><br />
-          <LanguageFlagSelector 
-            language={language}
-            setLanguage={setLanguage}
-          />  
-        </div>
-        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
-          <label><strong>Choose Music:</strong></label><br />
-          <select
-            className="music-selector" // You may want to add a style for this in your CSS
-            value={currentTrackSrc}
-            onChange={(e) => onMusicChange(e.target.value)}
-          >
-            {musicTracks.map((track) => (
-              <option key={track.src} value={track.src}>
-                {track.name}
-              </option>
-            ))}
-          </select>
+      <Modal
+        show={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        title={menu.settings}
+      >
+        <div className="settings-modal-content">
+          {/* Language Selector */}
+          <div className="settings-section">
+            <label className="settings-label">🌐 Choose Language:</label>
+            <LanguageFlagSelector language={language} setLanguage={setLanguage} />
+          </div>
+
+          {/* Music Selector */}
+          <div className="settings-section">
+            <label className="settings-label">🎵 Choose Music:</label>
+            <select
+              className="music-selector"
+              value={currentTrackSrc}
+              onChange={(e) => onMusicChange(e.target.value)}
+            >
+              {musicTracks.map((track) => (
+                <option key={track.src} value={track.src}>
+                  {track.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </Modal>
+
     </div>
   );
 };

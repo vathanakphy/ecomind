@@ -148,7 +148,7 @@ function App() {
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
   const [cityTrainingProposals, setCityTrainingProposals] = useState([]);
-
+  const [forestTrainingImages, setForestTrainingImages] = useState([]);
   
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
@@ -360,10 +360,15 @@ function App() {
 
     const handleStartForestTraining = useCallback(() => {
     if (energy >= AI_TRAINING_COST_FOREST) {
-      // Check if we are on the correct step of the FOREST tutorial
       if (activeTutorial.mission === 'forest' && activeTutorial.step === 3) {
-        advanceTutorial(); // Advance step to 4 before navigating
+        advanceTutorial();
       }
+
+      // --- NEW: Randomization Logic for Forest Images ---
+      const shuffledImages = [...FOREST_AI_TRAINING_IMAGES].sort(() => 0.5 - Math.random());
+      setForestTrainingImages(shuffledImages);
+      // --- End of New Logic ---
+
       setAiForestTrainingIndex(0);
       setForestTrainingFeedback('');
       navigate('/missions/forest/train');
@@ -767,7 +772,7 @@ function App() {
         } />
         <Route path="/missions/forest/train" element={
           <ForestAITrainingScreen
-            trainingImages={FOREST_AI_TRAINING_IMAGES}
+            trainingImages={forestTrainingImages}
             currentImageIndex={aiForestTrainingIndex}
             onImageLabel={handleImageLabel}
             onEndTraining={() => navigate('/missions/forest')}

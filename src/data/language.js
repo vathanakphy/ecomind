@@ -168,19 +168,19 @@ export const translations = {
       },
     },
     "gameGuideCity": {
-  "title": "City Air Rescue Guide",
-  "goalTitle": "Your Goal:",
-  "goalDescription": "Clean the city's air by lowering the Average Air Quality (AQI) as much as possible!",
-  "step1Title": "Check the Map & Status:",
-  "step1Description": "The left panel shows you which districts are polluted and your city's overall health.",
-  "step2Title": "Train AI:",
-  "step2Description": "Click \"Train AI\" to play a minigame where you review policy ideas. This is your main way to earn Data Points (DP) for free!",
-  "step3Title": "Enact Policies:",
-  "step3Description": "The right panel shows a list of policies. Use your DP and Energy to \"Approve\" them. Each policy has different effects on your city's AQI, Economy, and Happiness.",
-  "step4Title": "Manage Resources:",
-  "step4Description": "Use the \"Upgrades\" button to buy permanent improvements, like Solar Panels for energy generation.",
-  "conclusion": "Balance the environment and the economy to become a successful city manager!"
-},
+    "title": "City Air Rescue Guide",
+    "goalTitle": "Your Goal:",
+    "goalDescription": "Clean the city's air by lowering the Average Air Quality (AQI) as much as possible!",
+    "step1Title": "Check the Map & Status:",
+    "step1Description": "The left panel shows you which districts are polluted and your city's overall health.",
+    "step2Title": "Train AI:",
+    "step2Description": "Click \"Train AI\" to play a minigame where you review policy ideas. This is your main way to earn Data Points (DP) for free!",
+    "step3Title": "Enact Policies:",
+    "step3Description": "The right panel shows a list of policies. Use your DP and Energy to \"Approve\" them. Each policy has different effects on your city's AQI, Economy, and Happiness.",
+    "step4Title": "Manage Resources:",
+    "step4Description": "Use the \"Upgrades\" button to buy permanent improvements, like Solar Panels for energy generation.",
+    "conclusion": "Balance the environment and the economy to become a successful city manager!"
+  },
     alertsLowEnergy: {
       lowEnergyTitle:
         "Low Energy Alert! purchasing Solar Panels from the Upgrades ",
