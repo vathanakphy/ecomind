@@ -1463,3 +1463,34 @@
     font-size: 3rem; /* increase size on smaller screens */
   }
 }
+.game-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+  font-family: 'Baloo 2', cursive;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #2980b9;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  min-width: 200px;        /* Let it grow for longer text */
+  max-width: 250px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Fix icon sizing */
+.game-button .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  width: 24px;
+  height: 24px;
+}
