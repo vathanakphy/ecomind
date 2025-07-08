@@ -63,3 +63,31 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* --- UI Overlays --- */
+.ui-top-bar {
+  position: fixed; /* Or 'absolute' if you prefer */
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between; /* Pushes items to opposite ends */
+  align-items: center;
+  padding: 1rem;
+  z-index: 1000; /* Ensures it stays on top of other content */
+  pointer-events: none; /* Allows clicks to pass through the bar itself */
+}
+
+.notification-icon-container,
+.music-toggle-container {
+  pointer-events: all; /* Makes only the buttons clickable */
+}
+
+.music-toggle-button {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}

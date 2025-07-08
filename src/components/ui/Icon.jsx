@@ -30,6 +30,10 @@ const Icon = ({ type, className = '' }) => {
     x: '❌',
     'x-circle': '❌',
 
+    // --- ADD THESE TWO LINES ---
+    musicOn: '🎵',
+    musicOff: '🔇',
+
     // Game Specific
     brain: '🧠',
     compost: '🍂',
@@ -40,7 +44,7 @@ const Icon = ({ type, className = '' }) => {
     sadFish: '😟🐠',
     seedling: '🌱',
     trash: '🗑️',
-    
+    city:'🏙️',
     // AI Moods
     happyAI: '😊',
     concernedAI: '😟',
