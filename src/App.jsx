@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
 
+
 // --- Components and Utils ---
 import { playSound } from './utils/audio';
 import Notification from './components/ui/Notification';
@@ -146,8 +147,9 @@ function App() {
   const [cityTrainingFeedback, setCityTrainingFeedback] = useState('');
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
+  const [cityTrainingProposals, setCityTrainingProposals] = useState([]);
 
-
+  
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
     setForestNotifications(prev => [...prev.slice(-10), { id, message, type }]);
@@ -497,11 +499,15 @@ function App() {
     setAvailableDecisions(prev => prev.filter(d => d.id !== decision.id));
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId]);
 
-  const handleStartCityTraining = useCallback(() => {
-    // Check if we are on the correct step of the CITY tutorial
+   const handleStartCityTraining = useCallback(() => {
+    // This checks if we are in the tutorial
     if (activeTutorial.mission === 'city' && activeTutorial.step === 3) {
       advanceTutorial(); // Advance step to 4
     }
+
+    const shuffledProposals = [...CITY_TRAINING_PROPOSALS].sort(() => 0.5 - Math.random());
+    setCityTrainingProposals(shuffledProposals);
+
     setCityTrainingIndex(0);
     setCityTrainingFeedback('');
     navigate('/missions/city/train');
@@ -792,7 +798,7 @@ function App() {
         } />
         <Route path="/missions/city/train" element={
           <CityAITrainingScreen
-            proposals={CITY_TRAINING_PROPOSALS}
+            proposals={cityTrainingProposals}
             currentIndex={cityTrainingIndex}
             onClassify={handleClassifyCityProposal}
             feedback={cityTrainingFeedback}
