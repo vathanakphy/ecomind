@@ -71,9 +71,9 @@ const OceanMissionScreen = (props) => {
       </div>
       <div className="ocean-footer-buttons">
         <Button onClick={() => setShowGameGuide(true)} className="help-button">
-          <Icon type="help" /> Help
+          <Icon type="help" /> {text.buttons.help}
         </Button>
-        <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
+        <Button onClick={() => navigate('/missions')} className="back-button-mission">{text.buttons.backToMissions}</Button>
       </div>
       
      <UpgradePanel 
