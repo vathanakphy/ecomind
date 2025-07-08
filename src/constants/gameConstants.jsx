@@ -121,8 +121,6 @@ export const TREE_TYPES = [
 export const FOREST_AI_TRAINING_IMAGES = [
   {
     id: 1,
-    visual: healthy_forest_drone,
-    descriptionKey: 'desc_1', // Use key
     visual: 'https://res.cloudinary.com/dokut37k6/image/upload/v1751987169/healthy-forest-drone_g50e6u.png',
     description: 'Drone footage shows a dense, closed canopy with vibrant, uniform green coloration across the upper branches.',
     correctLabel: 'Healthy'
