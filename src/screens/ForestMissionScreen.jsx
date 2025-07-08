@@ -5,6 +5,7 @@ import { useLanguage } from '../utils/language'; // Import the language hook
 import TopHud from '../components/game/forest/TopHud';
 import ForestMap from '../components/game/forest/ForestMap';
 import PlantingMenu from '../components/game/forest/PlantingMenu';
+// import NotificationLog from '../components/game/forest/NotificationLog';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import UpgradePanel from '../components/game/UpgradePanel';
@@ -51,6 +52,7 @@ const ForestMissionScreen = (props) => {
 
   const handleSelectTree = (tree) => {
     setSelectedTree(tree);
+     setIsPlanting(false) 
   };
   
   const handleTileClick = (x, y) => {
@@ -66,8 +68,8 @@ const ForestMissionScreen = (props) => {
         co2Level={co2Level} globalTemp={globalTemp} biodiversity={biodiversity} forestCoverage={forestCoverage}
       />
       <div className="forest-main-content">
-        <div className="left-sidebar">
-          <h3>{text.actionsTitle}</h3> {/* Translated */}
+        <div className="forest-action-panel">
+          <h3>Actions</h3>
           <div className="resource-counters vertical">
             <span title={text.resources.dataPoints}><Icon type="data" /> {dataPoints} DP</span> {/* Translated */}
             <span title={text.resources.energy}><Icon type="energy" /> {energy} ⚡️</span> {/* Translated */}
@@ -112,7 +114,10 @@ const ForestMissionScreen = (props) => {
       </div>
       {isPlanting && (
         <PlantingMenu
-          onSelectTree={handleSelectTree} selectedTree={selectedTree} dataPoints={dataPoints}
+          onSelectTree={handleSelectTree}
+          selectedTree={selectedTree}
+          dataPoints={dataPoints}
+          onClose={handleTogglePlanting}  // <-- ADD THIS LINE
         />
       )}
       <UpgradePanel

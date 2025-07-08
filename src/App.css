@@ -1,1403 +1,1627 @@
-/* Optional: Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap');
-
-body {
-  margin: 0;
-  font-family: var(--font-family);
-  background-color: var(--neutral-light-gray);
-  color: var(--text-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  text-align: center;
-}
-
-.App {
-  width: 100%;
-  height: 100%;
-  /* max-width: 1200px;   */
-  /* min-height: 90vh;
-  max-height: 95vh; */
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto; /* Allow scrolling if content overflows */
-}
-
-.screen {
-  width: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-h1, h2, h3 {
-  color: var(--primary-blue);
-  margin-top: 0;
-}
-
-h1 { font-size: 2.5em; }
-h2 { font-size: 1.8em; }
-h3 { font-size: 1.4em; }
-
-.icon {
-  margin-right: 8px;
-  font-size: 1.2em;
-}
-
-/* --- Buttons --- */
-.game-button {
-  background-color: var(--primary-blue);
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  border-radius: 25px; /* Rounded corners */
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  min-width: 150px;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.game-button:hover:not(:disabled) {
-  background-color: #2980b9; /* Darker blue */
-  transform: translateY(-2px);
-}
-
-.game-button:active:not(:disabled) {
-  transform: translateY(1px);
-}
-
-.game-button:disabled {
-  background-color: #bdc3c7; /* Light gray for disabled */
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.play-button {
-  background-color: var(--bright-green);
-  font-size: 1.5em;
-  padding: 15px 40px;
-}
-.play-button:hover:not(:disabled) {
-  background-color: #27ae60; /* Darker green */
-}
-
-
-/* --- Main Menu --- */
-.main-menu-screen .planet-background {
-  background-color: var(--primary-blue); /* Placeholder for actual image */
-  color: white;
-  padding: 40px 20px;
-  border-radius: 10px;
-  width: 90%;
-  margin-bottom: 20px;
-}
-.main-menu-screen .ai-helper-corner {
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  font-size: 1.2em;
-  color: var(--bright-green);
-}
-.menu-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 60%;
-  max-width: 300px;
-}
-
-/* --- Mission Select --- */
-.mission-select-screen .mission-cards-container {
-  display: flex;
-  flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
-  gap: 20px;
-  justify-content: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
-.mission-card {
-  background-color: var(--neutral-light-gray);
-  border: 2px solid var(--primary-blue);
-  border-radius: 10px;
-  padding: 20px;
-  width: clamp(200px, 40%, 280px); /* Responsive width */
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.mission-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-}
-.mission-card h3 { margin-top: 0; color: var(--primary-blue); }
-.mission-card.locked {
-  border-color: #95a5a6;
-  background-color: #ecf0f1;
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-.mission-card.locked h3 { color: #7f8c8d; }
-.mission-card.locked:hover { transform: none; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-
-
-/* --- Ocean Mission --- */
-.ocean-mission-screen {
-  position: relative;
-}
-.environment-view {
-  width: 100%;
-  height: 250px; /* Adjust as needed */
-  background-color: var(--primary-blue); /* Default clean ocean */
-  border-radius: 10px;
-  margin-bottom: 15px;
-  position: relative;
-  overflow: hidden;
-  transition: background-color 1s ease, opacity 1s ease;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  font-size: 2em;
-}
-.pollution-item, .clean-item {
-  animation: float 3s ease-in-out infinite alternate;
-}
-.oil-slick {
-  width: 80px; height: 30px; background-color: #333; opacity: 0.5; border-radius: 50%;
-}
-@keyframes float {
-  from { transform: translateY(0px); }
-  to { transform: translateY(-10px); }
-}
-
-.ai-helper-mission {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--neutral-light-gray);
-  padding: 10px;
-  border-radius: 8px;
-  width: 90%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.ai-avatar { font-size: 2em; }
-.dialogue-box {
-  flex-grow: 1;
-  text-align: left;
-  background-color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
-.main-ui-dashboard {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
-  padding: 15px;
-  border-radius: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.status-bar { width: 100%; }
-.progress-bar-container {
-  width: 100%;
-  height: 25px;
-  background-color: #e0e0e0;
-  border-radius: 12.5px;
-  overflow: hidden;
-  margin-top: 5px;
-}
-.progress-bar-fill {
-  height: 100%;
-  background-color: var(--bright-green); /* Default to green */
-  border-radius: 12.5px 0 0 12.5px; /* Keep left round, right might be flat if not 100% */
-  transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  line-height: 25px;
-}
-.resource-counters {
-  display: flex;
-  justify-content: space-around;
-  font-size: 1.1em;
-  font-weight: bold;
-}
-.resource-counters span {
-  background-color: var(--neutral-light-gray);
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-.action-buttons-mission {
-  display: flex;
-  justify-content: space-around;
-  gap: 10px;
-  flex-wrap: wrap; /* Allow buttons to wrap */
-}
-.back-button-mission {
-  margin-top: 15px;
-  background-color: var(--accent-orange);
-}
-.back-button-mission:hover:not(:disabled) {
-  background-color: #d35400; /* Darker orange */
-}
-
-/* --- Sort Trash Minigame --- */
-.sort-trash-minigame {
-  background-color: #e8f6fd; /* Light blue techy background */
-}
-.minigame-item-area {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
-  width: 80%;
-}
-.item-to-sort {
-  font-size: 2.5em; /* Make item visual prominent */
-  margin-top: 10px;
-  font-weight: bold;
-}
-.sorting-bins {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  width: 100%;
-}
-.sorting-bins .game-button {
-  flex-grow: 1; /* Make bins take up available space */
-  max-width: 200px;
-}
-.minigame-feedback {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-top: 15px;
-  min-height: 1.5em; /* Reserve space to prevent layout shift */
-}
-.minigame-feedback.correct { color: var(--bright-green); }
-.minigame-feedback.incorrect { color: var(--warning-red); }
-.minigame-quit-button {
-  margin-top: 20px;
-  background-color: var(--warning-red);
-}
-.minigame-quit-button:hover:not(:disabled) {
-  background-color: #c0392b;
-}
-
-
-/* --- Upgrade Panel (Popup) --- */
-.popup-overlay {
-  position: fixed; /* Use fixed for true overlay */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it's on top */
-}
-.upgrade-panel {
-  background-color: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-  overflow-y: auto;
-  text-align: left;
-}
-.upgrade-panel h3 { text-align: center; margin-bottom: 20px; }
-.upgrade-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.upgrade-item {
-  background-color: var(--neutral-light-gray);
-  padding: 15px;
-  border-radius: 8px;
-  border-left: 5px solid var(--sunny-yellow);
-}
-.upgrade-item h4 { margin-top: 0; color: var(--neutral-dark-gray); }
-.upgrade-item p { margin-bottom: 10px; }
-.upgrade-item .game-button { width: 100%; margin-top: 10px; }
-.upgrade-item.purchased {
-  border-left-color: var(--bright-green);
-  opacity: 0.8;
-}
-.upgrade-item.purchased .game-button {
-  background-color: var(--bright-green);
-}
-.upgrade-panel > .game-button { /* Close button styling */
-  display: block;
-  margin: 20px auto 0;
-  background-color: var(--accent-orange);
-}
-.upgrade-panel > .game-button:hover:not(:disabled) {
-  background-color: #d35400;
-}
-
-/* ... (previous CSS rules remain the same) ... */
-
-/* --- General Enhancements --- */
-.animated-ai .icon {
-  display: inline-block; /* Allows transform */
-  animation: subtleBob 1.5s ease-in-out infinite;
-}
-@keyframes subtleBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
-/* --- Modal --- */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 15px; /* Ensure modal is not edge-to-edge on small screens */
-  box-sizing: border-box;
-}
-.modal-content {
-  background-color: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  width: 90%;
-  max-width: 600px; /* Increased max-width for HowToPlay */
-  max-height: 90vh;
-  overflow-y: auto;
-  text-align: left; /* Better for lists and paragraphs */
-}
-.modal-content h3 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: var(--primary-blue);
-}
-.modal-content ol {
-  padding-left: 20px;
-  margin-bottom: 15px;
-}
-.modal-content li {
-  margin-bottom: 8px;
-}
-.modal-close-button { /* Specific styling for modal close button */
-  display: block;
-  margin: 20px auto 0;
-  background-color: var(--accent-orange);
-}
-.modal-close-button:hover:not(:disabled) {
-  background-color: #d35400;
-}
-
-/* --- Mission Select Enhancements --- */
-.mission-card.completed {
-  border-left: 5px solid var(--bright-green);
-  background-color: #e8f8f5; /* Lighter green tint */
-}
-.mission-card.completed h3 .icon.check {
-  color: var(--bright-green);
-  margin-left: 5px;
-}
-
-/* --- Ocean Mission Environment View Enhancements --- */
-.ocean-view {
-  background: linear-gradient(to bottom, var(--primary-blue) 0%, #1abc9c 100%); /* Nicer gradient */
-  position: relative;
-}
-.ocean-view::before { /* Water surface shimmer */
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 30px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0));
-  opacity: var(--pollution-opacity, 0.5); /* Tie to pollution */
-  animation: shimmer 5s linear infinite;
-}
-@keyframes shimmer {
-  0% { transform: translateX(-20%); }
-  100% { transform: translateX(20%); }
-}
-
-.pollution-item, .clean-item {
-  position: absolute; /* Allows better placement */
-  font-size: 1.5em; /* Slightly smaller for more items */
-  opacity: var(--pollution-opacity, 1); /* Tie to pollution for pollution items */
-  transition: opacity 0.5s ease;
-}
-.clean-item {
-  opacity: calc(1 - var(--pollution-opacity, 0)); /* Inverse opacity for clean items */
-}
-
-/* Example placements for items - adjust as needed */
-.pollution-item.plastic-bottle { top: 20%; left: 15%; }
-.pollution-item.plastic-bag { top: 50%; left: 70%; }
-.pollution-item.oil-slick { top: 70%; left: 30%; width: 60px; height: 20px; background-color: #222; opacity: calc(var(--pollution-opacity, 1) * 0.7) !important; border-radius: 50%; }
-.pollution-item.tire { top: 80%; left: 5%; font-size: 1.8em; }
-
-.clean-item.happy-fish { top: 30%; left: 60%; font-size: 2em; }
-.clean-item.coral { top: 65%; left: 20%; color: #ff7f50; font-size: 1.8em; transform: rotate(-15deg); } /* Coral color */
-.clean-item.sun-rays {
-  top: 10%; left: 50%; transform: translateX(-50%);
-  font-size: 3em; color: var(--sunny-yellow);
-  opacity: calc( (1 - var(--pollution-opacity, 0)) * 0.7); /* Make sunrays appear when cleaner */
-}
-
-
-/* --- AI Helper Enhancements --- */
-.ai-helper-mission .ai-avatar .icon {
-  font-size: 1.5em; /* Make AI avatar icon a bit bigger */
-  transition: transform 0.3s ease;
-}
-.ai-helper-mission .ai-avatar .icon.happyAI { color: var(--bright-green); transform: scale(1.1); }
-.ai-helper-mission .ai-avatar .icon.concernedAI { color: var(--accent-orange); }
-.ai-helper-mission .ai-avatar .icon.thinkingAI { animation: thinkingPulse 1s infinite; }
-
-@keyframes thinkingPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* --- Notification System --- */
-.notification-area {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 2000;
-  overflow-y: scroll;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: auto; /* Fit content */
-  max-width: 300px;
-}
-.notification {
-  background-color: var(--neutral-dark-gray);
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  animation: slideInNotification 0.3s ease-out;
-}
-.notification.notification-success { background-color: var(--bright-green); }
-.notification.notification-error { background-color: var(--warning-red); }
-.notification.notification-info { background-color: var(--primary-blue); }
-
-.notification-dismiss {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.2em;
-  cursor: pointer;
-  margin-left: auto;
-  padding: 0 5px;
-}
-@keyframes slideInNotification {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-/* --- Sort Trash Minigame Enhancements --- */
-.minigame-timer {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: var(--primary-blue);
-  margin-bottom: 10px;
-  background-color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
-/* Tooltip (Simple, can be enhanced with JS library for complex ones) */
-[title] {
-  position: relative; /* Needed for more complex tooltip styling if you go that route */
-}
-/* For very simple browser default tooltips, this is often enough.
-   If you want custom tooltips, you'd add ::after pseudo-elements and more CSS. */
-
-
-/* Ensure Upgrade Panel is scrollable if content overflows */
-.upgrade-panel { /* This was in the JSX, ensure it's here too for modal content */
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.upgrade-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-/* App.css */
-
-/* --- Forest Mission Screen --- */
-.forest-mission-screen {
-  display: flex;
-  flex-direction: column;
-  background: #e8f5e9; /* Light green background */
-  color: #1b5e20; /* Dark green text */
-  height: 100vh;
-  overflow: hidden;
-}
-
-.forest-hud {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(5px);
-  border-bottom: 2px solid #a5d6a7;
-  font-size: 1.1em;
-  flex-shrink: 0;
-}
-
-.hud-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hud-item .progress-bar-container.small {
-  width: 100px;
-  height: 12px;
-}
-
-.forest-main-content {
-  display: flex;
-  flex-grow: 1;
-  overflow: hidden;
-}
-
-.left-sidebar {
-  width: 200px;
-  padding: 15px;
-  background: #c8e6c9;
-  border-right: 2px solid #a5d6a7;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-.left-sidebar h3 {
-  margin-top: 0;
-  text-align: center;
-}
-
-.left-sidebar .game-button.active {
-  background-color: #66bb6a;
-  box-shadow: 0 2px #388e3c;
-}
-
-.forest-map-container {
-  flex-grow: 1;
-  padding: 20px;
-  display: grid;
-  place-items: center;
-  overflow: auto;
-}
-
-.forest-map-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-width, 15), 40px);
-  gap: 3px;
-}
-
-.tile {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #a5d6a7;
-  border-radius: 4px;
-  display: grid;
-  place-items: center;
-  font-size: 1.5em;
-  transition: all 0.2s ease;
-}
-
-.tile-empty { background: #fbe9e7; }
-.tile-young { background: #c8e6c9; }
-.tile-mature { background: #81c784; }
-.tile-fire { background: #ff7043; animation: fire-flicker 0.5s infinite alternate; }
-.tile-logged { background: #8d6e63; }
-
-.tile.plantable:hover {
-  background-color: #a5d6a7;
-  cursor: pointer;
-  transform: scale(1.1);
-}
-
-@keyframes fire-flicker {
-  from { box-shadow: 0 0 10px #ffab91; }
-  to { box-shadow: 0 0 15px #ff7043; }
-}
-
-.planting-menu {
-  position: absolute;
-  bottom: 50px;
-  left: 220px;
-  background: white;
-  border: 2px solid #81c784;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  width: 300px;
-  z-index: 10;
-}
-.planting-menu ul { list-style: none; padding: 0; margin: 0; }
-.planting-menu li { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 4px; cursor: pointer; }
-.planting-menu li:hover { background: #e8f5e9; }
-.planting-menu li.selected { background: #a5d6a7; font-weight: bold; }
-.planting-menu li.disabled { opacity: 0.5; cursor: not-allowed; }
-.planting-menu .tree-visual { font-size: 1.5em; }
-.planting-menu .tree-info { flex-grow: 1; display: flex; flex-direction: column; }
-.planting-menu .tree-cost { font-weight: bold; }
-
-.notification-log-container {
-  height: 50px;
-  background: #37474f;
-  color: #eceff1;
-  padding: 5px 10px;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.9em;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-.notification-log { list-style: none; padding: 0; margin: 0; }
-.log-entry.log-success { color: #a5d6a7; }
-.log-entry.log-error { color: #ef9a9a; }
-.log-entry.log-info { color: #90caf9; }
-
-
-/* --- Forest AI Training Screen --- */
-.ai-training-screen {
-  padding: 2rem;
-  text-align: center;
-}
-.training-item-area {
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 2px dashed #a5d6a7;
-  border-radius: 8px;
-  max-width: 500px;
-}
-.training-image-placeholder {
-  width: 100%;
-  height: 200px;
-  background: #e0e0e0;
-  display: grid;
-  place-items: center;
-  font-style: italic;
-  color: #757575;
-  border-radius: 4px;
-}
-.training-description {
-  margin-top: 1rem;
-  font-size: 1.1em;
-}
-.classification-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-body.planting-cursor,
-body.planting-cursor .tile.plantable {
-  /* Use a custom image or a standard cursor */
-  /* For a simple crosshair: */
-  cursor: crosshair;
-  /* For a custom sapling cursor (make sure you have sapling.png in public/): */
-  /* cursor: url('/sapling.png') 16 32, auto; */
-}
-
-
-/* --- Styles for Vertical Resource Counters --- */
-.resource-counters.vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  align-items: flex-start;
-}
-.resource-counters.vertical span {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-
-
-/* --- Styles for Plantable Tiles --- */
-.tile.plantable {
-  background-color: #a5d6a7; /* Light green to indicate possible action */
-  box-shadow: 0 0 10px 2px #66bb6a; /* Add a glow */
-}
-
-.tile.plantable:hover {
-  transform: scale(1.1);
-  border-color: #388e3c;
-}
-
-.tile .tile-visual {
-    transition: transform 0.2s ease-in-out;
-}
-
-.tile.plantable:hover .tile-visual {
-    transform: scale(1.5);
-}
-
-/* ======================================================= */
-/* MEDIA QUERIES FOR TABLET & DESKTOP                      */
-/* ======================================================= */
-
-/* --- Tablet Styles (up to 1024px) --- */
-@media (min-width: 768px) {
-  .App {
-    padding: 20px;
-    border-radius: 15px;
-    min-height: 90vh;
-    max-height: 95vh;
+  /* Optional: Import Google Font */
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap');
+
+  body {
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--neutral-light-gray);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
   }
+
+  .App {
+    width: 100%;
+    height: 100%;
+    /* max-width: 1200px;   */
+    /* min-height: 90vh;
+    max-height: 95vh; */
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+  }
+
+  .screen {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  h1, h2, h3 {
+    color: var(--primary-blue);
+    margin-top: 0;
+  }
+
   h1 { font-size: 2.5em; }
   h2 { font-size: 1.8em; }
   h3 { font-size: 1.4em; }
 
-  /* Main Menu */
-  .main-menu-screen .planet-background { width: 90%; }
-
-  /* Mission Select */
-  .mission-select-screen .mission-cards-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .mission-card {
-    width: clamp(250px, 40%, 300px);
+  .icon {
+    margin-right: 8px;
+    font-size: 1.2em;
   }
 
-  /* Ocean Mission */
-  .environment-view { height: 250px; }
-  .ai-helper-mission { flex-direction: row; }
-  .dialogue-box { text-align: left; }
-  .resource-counters {
-    flex-direction: row;
-    justify-content: space-around;
-    font-size: 1.1em;
-  }
-  .action-buttons-mission {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-
-  /* Minigames */
-  .sorting-bins, .classification-buttons {
-    flex-direction: row;
-  }
-  .sorting-bins .game-button, .classification-buttons .game-button {
-    width: auto;
-    flex-grow: 1;
-    max-width: 200px;
-  }
-
-  /* Forest Mission */
-  .forest-mission-screen {
-    height: 100vh;
-    overflow: hidden;
-  }
-  .forest-hud {
-    flex-direction: row;
-    font-size: 1.1em;
-  }
-  .forest-main-content {
-    flex-direction: row;
-  }
-  .left-sidebar {
-    width: 220px;
-    border-right: 2px solid #a5d6a7;
-    border-bottom: none;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-  }
-  .resource-counters.vertical {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .forest-map-grid {
-    grid-template-columns: repeat(var(--grid-width, 15), 40px);
-    gap: 3px;
-  }
-  .tile {
-    width: 40px;
-    height: 40px;
-    font-size: 1.5em;
-  }
-  .planting-menu {
-    position: absolute;
-    bottom: 50px;
-    left: 240px; /* Adjust based on sidebar width */
-    width: 300px;
-    border-radius: 8px;
-  }
-  .notification-log-container {
-    height: 50px;
-    position: static;
-  }
-  
-}
-
-.forest-map-container {
-  flex-grow: 1;
-  padding: 10px; /* Reduced padding to give more space */
-  display: flex; /* Use flexbox for centering */
-  justify-content: center;
-  align-items: center;
-  overflow: hidden; /* Hide anything that overflows */
-  width: 100%;
-}
-
-.forest-map-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-width, 15), 40px); /* Default desktop size */
-  gap: 3px;
-  /* This allows the scaling to originate from the center */
-  transform-origin: center center;
-  transition: transform 0.3s ease-in-out;
-}
-
-.tile {
-  width: 40px; /* Default desktop size */
-  height: 40px; /* Default desktop size */
-  border: 1px solid #a5d6a7;
-  border-radius: 4px;
-  display: grid;
-  place-items: center;
-  font-size: 1.5em; /* Default desktop size */
-  transition: all 0.2s ease;
-}
-
-/* --- Desktop Styles (Optional, for very large screens) --- */
-@media (min-width: 1200px) {
-  /* You can add specific styles for very large monitors here if needed */
-  /* For example, increase font size or spacing */
-}
-.custom-select-container {
-  position: relative;
-  width: 180px; /* Adjust width as needed */
-  font-family: Arial, sans-serif;
-  font-size: 1rem;
-  margin-top: 0.5rem; /* Matches your original style */
-}
-
-.selected-item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
-  justify-content: space-between; /* To push arrow to the right */
-  gap: 8px; /* Space between flag and text */
-}
-
-.flag-icon {
-  width: 20px; /* Adjust flag size */
-  height: auto;
-  margin-right: 5px; /* Space between flag and text within the selected item */
-  vertical-align: middle;
-}
-
-.arrow {
-  margin-left: auto; /* Pushes the arrow to the far right */
-  font-size: 0.7em;
-}
-
-.options-list {
-  position: absolute;
-  top: 100%; /* Position right below the selected item */
-  left: 0;
-  right: 0;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  background-color: #fff;
-  list-style: none; /* Remove bullet points */
-  padding: 0;
-  margin: 0;
-  max-height: 200px; /* Max height for scrollable list */
-  overflow-y: auto; /* Enable scrolling if too many options */
-  z-index: 100; /* Ensure it's above other content */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.option-item {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0.8rem;
-  cursor: pointer;
-  gap: 8px; /* Space between flag and text */
-}
-
-.option-item:hover {
-  background-color: #f0f0f0;
-}
-
-.option-item.selected {
-  background-color: #e0e0e0; /* Highlight selected item in the list */
-  font-weight: bold;
-}
-
-/* Specific styling for flag within options if needed */
-.option-item .flag-icon {
-  margin-right: 5px; /* Space between flag and text within each option */
-}
-
-/* src/App.css or another global stylesheet */
-
-.game-guide-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000; /* Ensure it's on top of everything */
-  padding: 20px;
-}
-
-.game-guide-content {
-  background-color: #f4f4f9; /* A light, clean background */
-  color: #333;
-  padding: 25px 35px;
-  border-radius: 12px;
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto; /* Allow scrolling if content is long */
-  position: relative;
-  box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-  border: 1px solid #ddd;
-}
-
-.game-guide-content h2 {
-  margin-top: 0;
-  color: #2c3e50;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-}
-
-.guide-section {
-  margin-bottom: 20px;
-}
-
-.guide-section h4 {
-  margin-bottom: 10px;
-  color: #34495e;
-}
-
-.guide-section ul, .guide-section ol {
-  padding-left: 20px;
-  line-height: 1.6;
-}
-
-.game-guide-content .close-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
+  /* --- Buttons --- */
+  .game-button {
+  background-color: #3498db; /* A friendly blue */
+  color: white;
   border: none;
-  font-size: 1.5rem;
-  color: #777;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: bold;
   cursor: pointer;
-  padding: 5px;
-  line-height: 1;
-}
-.game-guide-content .close-button:hover {
-  color: #333;
-}
-
-/* Helper class for styling icons in text */
-.icon-text {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background-color: #e9e9f2;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* --- Main Panel Styles --- */
-.panel-container {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  /* min-height: 100vh; */
-  background: linear-gradient(135deg, #4facfe, #00f2fe);  
-  padding: 2rem;
 }
 
-.city-panel {
-  width: 100%;
-  max-width: 1000px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 2rem;
-  padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  border: 4px solid white;
-  animation: fadeIn 0.5s ease-out;
+  .game-button:hover:not(:disabled) {
+    background-color: #2980b9; /* Darker blue */
+    transform: translateY(-2px);
+  }
+
+  .game-button:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .game-button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
+  .play-button {
+    background-color: var(--bright-green);
+    font-size: 1.5em;
+    padding: 15px 40px;
+  }
+  .play-button:hover:not(:disabled) {
+    background-color: #27ae60; /* Darker green */
+  }
 
-.panel-title {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #0b4f6c;
-  margin-bottom: 1.5rem;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-}
 
-.panel-body {
+/* ======================================================= */
+/* MAIN MENU SCREEN                                        */
+/* ======================================================= */
+
+.main-menu-kid-friendly {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 100;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 2rem;
+  padding: 20px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+  text-align: center;
 }
-
-.left-panel {
-  flex: 0.4;
+.main-menu-header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(3rem, 10vw, 5rem);
+  color: white;
+  text-shadow: 4px 4px 0px #2E8B57;
+  margin: 0;
+}
+.main-menu-header p {
+  font-family: 'Baloo 2', cursive;
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  color: #3CB371;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 0.25rem 1rem;
+  border-radius: 20px;
+}
+.ai-buddy-corner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: #006400;
+  font-weight: bold;
+}
+.main-menu-actions {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  max-width: 350px;
+}
+.btn-playful {
+  padding: 18px 30px; border-radius: 50px; border: none; font-family: 'Baloo 2', cursive;
+  font-weight: 700; font-size: 1.5rem; color: white; cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease; text-transform: uppercase;
+}
+.btn-playful:active { transform: translateY(4px); box-shadow: none; }
+.btn-play { background-color: #FFD700; box-shadow: 0 8px 0 #DAA520; }
+.btn-how-to-play { background-color: #32CD32; box-shadow: 0 8px 0 #228B22; }
+.btn-settings { background-color: #1E90FF; box-shadow: 0 8px 0 #1C86EE; }
+
+@media (min-width: 768px) {
+  .ai-buddy-corner { position: absolute; top: 20px; right: 20px; }
 }
 
-.right-panel {
-  flex: 0.6;
-  display: flex;
-  flex-direction: column;
+  /* --- Responsive Notification System --- */
+  /* --- Mobile Notification Icon --- */
+.notification-icon-container {
+  display: none;
+  position: fixed;
+  top: 15px; right: 15px;
+  z-index: 1500;
 }
-
-/* --- City Map Styles --- */
-.city-map-card, .health-report-card {
-  background: #f0f8ff;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-}
-
-.city-map-card h3, .health-report-card h3 {
-  margin-top: 0;
-  color: #0b4f6c;
-  text-align: center;
-}
-
-.city-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-}
-
-.district-tile {
-  /* Use flexbox to stack the text vertically */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 1rem;
-  align-items: center;
-  gap: 0.25rem; /* A small gap between the two lines */
-  padding: 1rem; /* Adjust padding if needed */
-}
-
-.district-name {
-  font-weight: bold;
-  font-size: 1.1rem; /* Make the name slightly bigger */
-}
-
-.district-status {
-  font-size: 0.8rem;
-  opacity: 0.9;
-  background-color: rgba(22, 22, 22, 0.15); /* Add a subtle background for readability */
-  padding: 0.1rem 0.4rem;
-  border-radius: 5px;
-  color: white;
-}
-.district-tile:hover {
-    transform: scale(1.05);
-}
-
-.aqi-green { background-color: #2ecc71; }
-.aqi-yellow { background-color: #f1c40f; }
-.aqi-red { background-color: #e74c3c; }
-.aqi-orange { background-color: #ff7300; }
-
-/* --- Health Report Styles --- */
-.report-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-.report-item:last-child {
-  border-bottom: none;
-}
-.report-value {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-/* --- Decision List & Card Styles --- */
-.decision-list {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding-right: 1rem;
-  max-height: 400px;
-}
-
-.decision-card {
-  display: flex;
-  background: white;
-  border-radius: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  align-items: center;
-  gap: 1rem;
-  animation: slideInUp 0.5s ease-out;
-  transition: box-shadow 0.2s;
-}
-.decision-card:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.decision-card.disabled {
-    opacity: 0.6;
-    background-color: #f8f9fa;
-}
-
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.decision-icon {
-  font-size: 3rem;
-  padding: 1rem;
-  background-color: #eaf8ff;
+.notification-icon-button {
+  width: 44px; height: 44px;
+  padding: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.notification-icon-button .icon { font-size: 1.3rem; margin: 0; }
+.notification-badge {
+  position: absolute; top: 4px; right: 4px;
+  width: 9px; height: 9px; background-color: #e74c3c;
+  border-radius: 50%; border: 2px solid white;
+}
+.notification-history-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.5rem 1rem; border-bottom: 1px solid #eee; background-color: #f8f9fa;
+  width: 100%;
+}
+.notification-history-header h3 { margin: 0; font-size: 1.2rem; }
+.notification-history-list {
+  padding: 1rem; overflow-y: auto; height: 100%; width: 100%;
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.notification-history-list .notification { animation: none; }
+
+@media (max-width: 768px) {
+  .notification-area { display: none; }
+  .notification-icon-container { display: block; }
+  .screen { padding-top: 65px; }
+  .main-menu-kid-friendly, .forest-mission-screen { padding-top: 0; }
 }
 
-.decision-content { flex-grow: 1; }
-.decision-content h4 { margin: 0 0 0.25rem 0; font-size: 1.25rem; color: #0b4f6c;}
-.decision-content p { margin: 0; color: #555; }
+  /* --- Ocean Mission --- */
+  .ocean-mission-screen { 
+    position: relative;
+  }
 
-.decision-footer {
+  .help-button {
+    background-color: #ff0044; /* Neutral gray color */
+  }
+  .help-button:hover:not(:disabled) {
+    background-color: #7f8c8d;
+  }
+
+  .environment-view {
+    width: 100%;
+    height: 250px; /* Adjust as needed */
+    background-color: var(--primary-blue); /* Default clean ocean */
+    border-radius: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 1s ease, opacity 1s ease;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 2em;
+  }
+  .pollution-item, .clean-item {
+    animation: float 3s ease-in-out infinite alternate;
+  }
+  .oil-slick {
+    width: 80px; height: 30px; background-color: #333; opacity: 0.5; border-radius: 50%;
+  }
+  @keyframes float {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-10px); }
+  }
+
+  .ai-helper-mission {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--neutral-light-gray);
+    padding: 10px;
+    border-radius: 8px;
+    width: 90%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .ai-avatar { font-size: 2em; }
+  .dialogue-box {
+    flex-grow: 1;
+    text-align: left;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+
+  .main-ui-dashboard {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    padding: 15px;
+    border-radius: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .status-bar { width: 100%; }
+  .progress-bar-container {
+    width: 100%;
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 12.5px;
+    overflow: hidden;
+    margin-top: 5px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background-color: var(--bright-green); /* Default to green */
+    border-radius: 12.5px 0 0 12.5px; /* Keep left round, right might be flat if not 100% */
+    transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+  }
+  .resource-counters {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+  .resource-counters span {
+    background-color: var(--neutral-light-gray);
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  .action-buttons-mission {
+    display: flex;
+    /* Mobile-first: stack buttons vertically */
+    flex-direction: column;
+    align-items: stretch; /* Makes buttons full-width */
+    gap: 0.75rem;
+  }
+
+  .ocean-footer-buttons {
+    width: 100%;
+    max-width: 500px; /* Match other content for consistency */
+    display: flex;
+    margin-top: 1rem;
+    /* Mobile-first: stack buttons vertically */
+    flex-direction: column;
+    align-items: stretch; /* Makes buttons full-width */
+    gap: 0.75rem;
+  }
+
+
+  .back-button-mission {
+    margin-top: 15px;
+    background-color: var(--accent-orange);
+  }
+  .back-button-mission:hover:not(:disabled) {
+    background-color: #d35400; /* Darker orange */
+  }
+
+  @media (min-width: 768px) {
+    .action-buttons-mission {
+      /* Switch to horizontal layout on wider screens */
+      flex-direction: row;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .ocean-footer-buttons {
+      /* Switch to horizontal layout */
+      flex-direction: row;
+      justify-content: space-between; /* Pushes buttons to each side */
+      align-items: center;
+      max-width: none; /* Allow it to span the full dashboard width */
+    }
+  }
+  /* --- Sort Trash Minigame (Improved Responsiveness) --- */
+  .sort-trash-minigame {
+    background-color: #e8f6fd;
+    padding: 1.5rem 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* REMOVED the main 'gap' to use specific margins instead */
+  }
+
+  .sort-trash-minigame h2 {
+    margin: 0; /* Remove default margins to prevent overlap */
+    text-align: center;
+  }
+
+  .minigame-timer {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-blue);
+    background-color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 0.75rem; /* Add specific space below the title */
+    margin-bottom: 1.5rem; /* Add space above the item area */
+  }
+
+  .minigame-item-area {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-width: 500px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    width: -webkit-fill-available; /* Modern cross-browser way to fill space */
+    width: -moz-available;
+    width: stretch;
+  }
+
+
+  .item-to-sort {
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: bold;
+    margin-top: 0.5rem;
+    word-wrap: break-word;
+  }
+
+  .sorting-bins {
+    display: flex;
+    gap: 1rem;
+    max-width: 500px;
+    flex-direction: column;
+    width: -webkit-fill-available; /* Modern cross-browser way to fill space */
+    width: -moz-available;
+    width: stretch;
+
+  }
+
+  @media (min-width: 768px) {
+    .sorting-bins {
+      flex-direction: row;
+    }
+    .sorting-bins .game-button {
+      flex-grow: 1;
+    }
+  }
+
+  .minigame-feedback {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 1rem;
+    min-height: 1.5em;
+    text-align: center;
+  }
+
+  .minigame-feedback.correct { color: var(--bright-green); }
+  .minigame-feedback.incorrect { color: var(--warning-red); }
+
+  /* This targets the progress counter text */
+  .sort-trash-minigame > p {
+      margin-top: 1rem;
+  }
+
+  .minigame-quit-button {
+    margin-top: 1rem;
+    background-color: var(--warning-red);
+  }
+
+  .minigame-quit-button:hover:not(:disabled) {
+    background-color: #c0392b;
+  }
+
+  /* --- Upgrade Panel (Popup) --- */
+  .popup-overlay {
+    position: fixed; /* Use fixed for true overlay */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+  }
+  .upgrade-panel {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: left;
+  }
+  .upgrade-panel h3 { text-align: center; margin-bottom: 20px; }
+  .upgrade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .upgrade-item {
+    background-color: var(--neutral-light-gray);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid var(--sunny-yellow);
+  }
+  .upgrade-item h4 { margin-top: 0; color: var(--neutral-dark-gray); }
+  .upgrade-item p { margin-bottom: 10px; }
+  .upgrade-item .game-button { width: 100%; margin-top: 10px; }
+  .upgrade-item.purchased {
+    border-left-color: var(--bright-green);
+    opacity: 0.8;
+  }
+  .upgrade-item.purchased .game-button {
+    background-color: var(--bright-green);
+  }
+  .upgrade-panel > .game-button { /* Close button styling */
+    display: block;
+    margin: 20px auto 0;
+    background-color: var(--accent-orange);
+  }
+  .upgrade-panel > .game-button:hover:not(:disabled) {
+    background-color: #d35400;
+  }
+
+  /* ... (previous CSS rules remain the same) ... */
+
+  /* --- General Enhancements --- */
+  .animated-ai .icon {
+    display: inline-block; /* Allows transform */
+    animation: subtleBob 1.5s ease-in-out infinite;
+  }
+  @keyframes subtleBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  /* --- Modal --- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 15px; /* Ensure modal is not edge-to-edge on small screens */
+    box-sizing: border-box;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 600px; /* Increased max-width for HowToPlay */
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: left; /* Better for lists and paragraphs */
+  }
+  .modal-content h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+  }
+  .modal-content ol {
+    padding-left: 20px;
+    margin-bottom: 15px;
+  }
+  .modal-content li {
+    margin-bottom: 8px;
+  }
+  .modal-close-button { /* Specific styling for modal close button */
+    display: block;
+    margin: 20px auto 0;
+    background-color: var(--accent-orange);
+  }
+  .modal-close-button:hover:not(:disabled) {
+    background-color: #d35400;
+  }
+
+/* --- Mission Select --- */
+.mission-select-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  gap: 1.5rem;
+}
+
+.mission-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.mission-card {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid transparent; /* Default transparent border */
+  border-radius: 12px;
+  padding: 25px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.mission-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.mission-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.mission-card-header .icon {
+  font-size: 2em;
+  margin: 0;
+}
+
+.mission-card-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+}
+
+.mission-card p {
+  flex-grow: 1;
+  margin: 0 0 20px 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.mission-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: #3498db; /* primary-blue */
+  font-weight: bold;
+  margin-top: auto;
+}
+
+/* --- Locked State --- */
+.mission-card.locked {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+  color: #999;
+  border-left-color: #bdc3c7; /* Gray border for locked */
+}
+.mission-card.locked:hover {
+  transform: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+.mission-card.locked .mission-card-header .icon,
+.mission-card.locked h3,
+.mission-card.locked .mission-card-footer {
+  color: #999;
+}
+
+
+/* --- NEW: Completed State --- */
+.mission-card.completed {
+  border-left-color: #27ae60; /* Green border for completed */
+  background-color: #f0fdf4; /* Light green background */
+}
+
+.mission-card.completed .mission-card-header,
+.mission-card.completed .mission-card-footer {
+  color: #27ae60; /* Green text color */
+}
+
+
+  /* --- Ocean Mission Environment View Enhancements --- */
+  .ocean-view {
+    background: linear-gradient(to bottom, var(--primary-blue) 0%, #1abc9c 100%); /* Nicer gradient */
+    position: relative;
+  }
+  .ocean-view::before { /* Water surface shimmer */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 30px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0));
+    opacity: var(--pollution-opacity, 0.5); /* Tie to pollution */
+    animation: shimmer 5s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-20%); }
+    100% { transform: translateX(20%); }
+  }
+
+  .pollution-item, .clean-item {
+    position: absolute; /* Allows better placement */
+    font-size: 1.5em; /* Slightly smaller for more items */
+    opacity: var(--pollution-opacity, 1); /* Tie to pollution for pollution items */
+    transition: opacity 0.5s ease;
+  }
+  .clean-item {
+    opacity: calc(1 - var(--pollution-opacity, 0)); /* Inverse opacity for clean items */
+  }
+
+  /* Example placements for items - adjust as needed */
+  .pollution-item.plastic-bottle { top: 20%; left: 15%; }
+  .pollution-item.plastic-bag { top: 50%; left: 70%; }
+  .pollution-item.oil-slick { top: 70%; left: 30%; width: 60px; height: 20px; background-color: #222; opacity: calc(var(--pollution-opacity, 1) * 0.7) !important; border-radius: 50%; }
+  .pollution-item.tire { top: 80%; left: 5%; font-size: 1.8em; }
+
+  .clean-item.happy-fish { top: 30%; left: 60%; font-size: 2em; }
+  .clean-item.coral { top: 65%; left: 20%; color: #ff7f50; font-size: 1.8em; transform: rotate(-15deg); } /* Coral color */
+  .clean-item.sun-rays {
+    top: 10%; left: 50%; transform: translateX(-50%);
+    font-size: 3em; color: var(--sunny-yellow);
+    opacity: calc( (1 - var(--pollution-opacity, 0)) * 0.7); /* Make sunrays appear when cleaner */
+  }
+
+
+  /* --- AI Helper Enhancements --- */
+  .ai-helper-mission .ai-avatar .icon {
+    font-size: 1.5em; /* Make AI avatar icon a bit bigger */
+    transition: transform 0.3s ease;
+  }
+  .ai-helper-mission .ai-avatar .icon.happyAI { color: var(--bright-green); transform: scale(1.1); }
+  .ai-helper-mission .ai-avatar .icon.concernedAI { color: var(--accent-orange); }
+  .ai-helper-mission .ai-avatar .icon.thinkingAI { animation: thinkingPulse 1s infinite; }
+
+  @keyframes thinkingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* --- Notification System --- */
+  .notification-area {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    overflow-y: scroll;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: auto; /* Fit content */
+    max-width: 300px;
+  }
+  .notification {
+    background-color: var(--neutral-dark-gray);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInNotification 0.3s ease-out;
+  }
+  .notification.notification-success { background-color: var(--bright-green); }
+  .notification.notification-error { background-color: var(--warning-red); }
+  .notification.notification-info { background-color: var(--primary-blue); }
+
+  .notification-dismiss {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0 5px;
+  }
+  @keyframes slideInNotification {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* --- Sort Trash Minigame Enhancements --- */
+  .minigame-timer {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  /* Tooltip (Simple, can be enhanced with JS library for complex ones) */
+  [title] {
+    position: relative; /* Needed for more complex tooltip styling if you go that route */
+  }
+  /* For very simple browser default tooltips, this is often enough.
+    If you want custom tooltips, you'd add ::after pseudo-elements and more CSS. */
+
+
+  /* Ensure Upgrade Panel is scrollable if content overflows */
+  .upgrade-panel { /* This was in the JSX, ensure it's here too for modal content */
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .upgrade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }             
+/* ======================================================= */
+/* FINAL, COMPLETE & CONSOLIDATED FOREST MISSION STYLES    */
+/* ======================================================= */
+
+/* --- Main Screen Layout --- */
+.forest-mission-screen {
+  width: 100%;
+  background: #e8f5e9;
+  color: #1b5e20;
+  padding: 0;
+  padding-bottom: 2rem; /* Add space at the very bottom */
+}
+
+/* --- Top Stats Bar (HUD) --- */
+.forest-hud {
+  display: flex;
+  flex-wrap: wrap; /* Let stats wrap on very narrow screens */
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px 20px; /* Vertical and horizontal gap */
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 2px solid #a5d6a7;
+  /* Make it sticky to the top of the screen when scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1em;
+}
+
+/* --- Main Content Area --- */
+.forest-main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+/* --- Forest Map Container --- */
+.forest-map-container {
+  overflow-x: auto; /* Allows horizontal scrolling for the map */
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.forest-map-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-width, 15), 40px);
+  gap: 3px;
+  padding-bottom: 5px; /* Prevent scrollbar from covering last tiles */
+}
+
+/* --- Action Panel Section --- */
+/* Note: Use className="forest-action-panel" in your JSX */
+.forest-action-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: #c8e6c9;
+  border-radius: 12px;
+}
+.forest-action-panel h3 { display: none; }
+
+/* Resource counters are a clean row */
+.forest-action-panel .resource-counters.vertical {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 1em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #a5d6a7;
+}
+
+/* A perfect, responsive grid for buttons */
+.action-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+/* --- Planting Menu Popup --- */
+.planting-menu {
+  position: fixed;
+  bottom: 10px; left: 10px; right: 10px;
+  background: white; border: 2px solid #81c784; border-radius: 12px;
+  padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 20;
+}
+.planting-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.planting-menu-header h4 { margin: 0; }
+.close-popup-button { background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0; line-height: 1; }
+.planting-menu ul { list-style-type: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.planting-menu li { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; }
+.planting-menu li:hover { background-color: #e8f5e9; }
+.planting-menu li.selected { background-color: #a5d6a7; font-weight: bold; }
+.planting-menu li.disabled { opacity: 0.5; cursor: not-allowed; background-color: transparent !important; }
+.planting-menu .tree-visual { font-size: 1.8em; }
+.planting-menu .tree-info { flex-grow: 1; display: flex; flex-direction: column; text-align: left; }
+.planting-menu .tree-info strong { font-size: 1.1em; }
+.planting-menu .tree-info span { font-size: 0.85em; opacity: 0.8; }
+.planting-menu .tree-cost { font-size: 1.1em; font-weight: bold; }
+
+/* ======================================================= */
+/* --- DESKTOP STYLES for Forest Mission --- */
+@media (min-width: 1024px) {
+  .forest-mission-screen {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+  }
+  .forest-hud {
+    position: static;
+  }
+  .forest-main-content {
+    flex-direction: row;
+    padding: 0;
+  }
+  .forest-action-panel {
+    width: 240px;
+    border-radius: 0;
+    border-top: none;
+    border-right: 2px solid #a5d6a7;
+  }
+  .action-button-grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .forest-map-container {
+    overflow-x: hidden;
+    justify-content: center;
+  }
+  .planting-menu {
+    position: absolute; width: 300px; bottom: 20px; left: 260px; right: auto;
+  }
+}
+
+  /* ======================================================= */
+  /* MEDIA QUERIES FOR TABLET & DESKTOP                      */
+  /* ======================================================= */
+
+  /* --- Tablet Styles (up to 1024px) --- */
+  @media (min-width: 768px) {
+    .App {
+      padding: 20px;
+      border-radius: 15px;
+      min-height: 90vh;
+      max-height: 95vh;
+    }
+    h1 { font-size: 2.5em; }
+    h2 { font-size: 1.8em; }
+    h3 { font-size: 1.4em; }
+
+    /* Main Menu */
+    .main-menu-screen .planet-background { width: 90%; }
+
+    /* Mission Select */
+    .mission-select-screen .mission-cards-container {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .mission-card {
+      width: clamp(250px, 40%, 300px);
+    }
+
+    /* Ocean Mission */
+    .environment-view { height: 250px; }
+    .ai-helper-mission { flex-direction: row; }
+    .dialogue-box { text-align: left; }
+    .resource-counters {
+      flex-direction: row;
+      justify-content: space-around;
+      font-size: 1.1em;
+    }
+    .action-buttons-mission {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    /* Minigames */
+    .sorting-bins, .classification-buttons {
+      flex-direction: row;
+    }
+    .sorting-bins .game-button, .classification-buttons .game-button {
+      width: auto;
+      flex-grow: 1;
+      max-width: 200px;
+    }
+  }
+
+  .tile {
+    width: 40px; /* Default desktop size */
+    height: 40px; /* Default desktop size */
+    border: 1px solid #a5d6a7;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    font-size: 1.5em; /* Default desktop size */
+    transition: all 0.2s ease;
+  }
+
+  /* --- Desktop Styles (Optional, for very large screens) --- */
+  @media (min-width: 1200px) {
+    /* You can add specific styles for very large monitors here if needed */
+    /* For example, increase font size or spacing */
+  }
+  .custom-select-container {
+    position: relative;
+    width: 180px; /* Adjust width as needed */
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    margin-top: 0.5rem; /* Matches your original style */
+  }
+
+  .selected-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    justify-content: space-between; /* To push arrow to the right */
+    gap: 8px; /* Space between flag and text */
+  }
+
+  .flag-icon {
+    width: 20px; /* Adjust flag size */
+    height: auto;
+    margin-right: 5px; /* Space between flag and text within the selected item */
+    vertical-align: middle;
+  }
+
+  .arrow {
+    margin-left: auto; /* Pushes the arrow to the far right */
+    font-size: 0.7em;
+  }
+
+  .options-list {
+    position: absolute;
+    top: 100%; /* Position right below the selected item */
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    background-color: #fff;
+    list-style: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+    max-height: 200px; /* Max height for scrollable list */
+    overflow-y: auto; /* Enable scrolling if too many options */
+    z-index: 100; /* Ensure it's above other content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    gap: 8px; /* Space between flag and text */
+  }
+
+  .option-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .option-item.selected {
+    background-color: #e0e0e0; /* Highlight selected item in the list */
+    font-weight: bold;
+  }
+
+  /* Specific styling for flag within options if needed */
+  .option-item .flag-icon {
+    margin-right: 5px; /* Space between flag and text within each option */
+  }
+
+  /* src/App.css or another global stylesheet */
+
+  .game-guide-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top of everything */
+    padding: 20px;
+  }
+
+  .game-guide-content {
+    background-color: #f4f4f9; /* A light, clean background */
+    color: #333;
+    padding: 25px 35px;
+    border-radius: 12px;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto; /* Allow scrolling if content is long */
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+  }
+
+  .game-guide-content h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+
+  .guide-section {
+    margin-bottom: 20px;
+  }
+
+  .guide-section h4 {
+    margin-bottom: 10px;
+    color: #34495e;
+  }
+
+  .guide-section ul, .guide-section ol {
+    padding-left: 20px;
+    line-height: 1.6;
+  }
+
+  .game-guide-content .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+  }
+  .game-guide-content .close-button:hover {
+    color: #333;
+  }
+
+  /* Helper class for styling icons in text */
+  .icon-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background-color: #e9e9f2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* --- Main Panel Styles --- */
+  .panel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* min-height: 100vh; */
+    background: linear-gradient(135deg, #4facfe, #00f2fe);  
+    padding: 2rem;
+  }
+
+  .city-panel {
+    width: 100%;
+    max-width: 1000px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 2rem;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 4px solid white;
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .panel-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #0b4f6c;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .panel-body {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .left-panel {
+    flex: 0.4;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .right-panel {
+    flex: 0.6;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- City Map Styles --- */
+  .city-map-card, .health-report-card {
+    background: #f0f8ff;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  .city-map-card h3, .health-report-card h3 {
+    margin-top: 0;
+    color: #0b4f6c;
+    text-align: center;
+  }
+
+  .city-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .district-tile {
+    /* Use flexbox to stack the text vertically */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 1rem;
+    align-items: center;
+    gap: 0.25rem; /* A small gap between the two lines */
+    padding: 1rem; /* Adjust padding if needed */
+  }
+
+  .district-name {
+    font-weight: bold;
+    font-size: 1.1rem; /* Make the name slightly bigger */
+  }
+
+  .district-status {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    background-color: rgba(22, 22, 22, 0.15); /* Add a subtle background for readability */
+    padding: 0.1rem 0.4rem;
+    border-radius: 5px;
+    color: white;
+  }
+  .district-tile:hover {
+      transform: scale(1.05);
+  }
+
+  .aqi-green { background-color: #2ecc71; }
+  .aqi-yellow { background-color: #f1c40f; }
+  .aqi-red { background-color: #e74c3c; }
+  .aqi-orange { background-color: #ff7300; }
+
+  /* --- Health Report Styles --- */
+  .report-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.75rem;
-}
-.cost { font-weight: bold; color: #e67e22; }
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .report-item:last-child {
+    border-bottom: none;
+  }
+  .report-value {
+    font-weight: bold;
+    color: #2c3e50;
+  }
 
-.impact-hint span {
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
-    padding: 0.2rem;
-    border-radius: 4px;
-}
-.impact-good { background-color: #d4edda; }
-.impact-bad { background-color: #f8d7da; }
+  /* --- Decision List & Card Styles --- */
+  .decision-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 1rem;
+    max-height: 400px;
+  }
+
+  .decision-card {
+    display: flex;
+    background: white;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    gap: 1rem;
+    animation: slideInUp 0.5s ease-out;
+    transition: box-shadow 0.2s;
+  }
+  .decision-card:hover {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .decision-card.disabled {
+      opacity: 0.6;
+      background-color: #f8f9fa;
+  }
+
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .decision-icon {
+    font-size: 3rem;
+    padding: 1rem;
+    background-color: #eaf8ff;
+    border-radius: 50%;
+  }
+
+  .decision-content { flex-grow: 1; }
+  .decision-content h4 { margin: 0 0 0.25rem 0; font-size: 1.25rem; color: #0b4f6c;}
+  .decision-content p { margin: 0; color: #555; }
+
+  .decision-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.75rem;
+  }
+  .cost { font-weight: bold; color: #e67e22; }
+
+  .impact-hint span {
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+      padding: 0.2rem;
+      border-radius: 4px;
+  }
+  .impact-good { background-color: #d4edda; }
+  .impact-bad { background-color: #f8d7da; }
 
 
-/* --- Button Styles --- */
-.approve-button, .back-button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  border: none;
-  font-family: 'Baloo 2', cursive;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+  /* --- Button Styles --- */
+  .approve-button, .back-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
 
-.approve-button {
-  background-color: #2ecc71;
-  color: white;
-  box-shadow: 0 4px 0 #27ae60;
-}
-.approve-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 0 #27ae60;
-}
-.approve-button:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #27ae60;
-}
-.approve-button:disabled {
-  background-color: #bdc3c7;
-  box-shadow: 0 4px 0 #95a5a6;
-  cursor: not-allowed;
-}
+  .approve-button {
+    background-color: #2ecc71;
+    color: white;
+    box-shadow: 0 4px 0 #27ae60;
+  }
+  .approve-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #27ae60;
+  }
+  .approve-button:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #27ae60;
+  }
+  .approve-button:disabled {
+    background-color: #bdc3c7;
+    box-shadow: 0 4px 0 #95a5a6;
+    cursor: not-allowed;
+  }
 
-.back-button {
-  margin-top: 1.5rem;
-  align-self: center;
-  background-color: #3498db;
-  color: white;
-  box-shadow: 0 4px 0 #2980b9;
-}
-.back-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 0 #2980b9;
-}
+  .back-button {
+    margin-top: 1.5rem;
+    align-self: center;
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 4px 0 #2980b9;
+  }
+  .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #2980b9;
+  }
 
-.no-decisions {
+  .no-decisions {
+      text-align: center;
+      padding: 3rem;
+      color: #7f8c8d;
+  } 
+
+  .right-panel {
+    /* Remove the back button from the flex layout */
+    justify-content: flex-start; 
+  }
+
+  .city-action-buttons {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Style for the city training proposal card */
+  .training-item-area.city-proposal {
+    background-color: #f0f8ff;
+    border: 2px solid #66a6ff;
+  }
+  .proposal-icon {
+    font-size: 3rem;
+  }
+  /* Add these styles to CityManagementPanel.css */
+
+  .left-panel .resource-counters.horizontal {
+    display: flex;
+    justify-content: space-around;
+    background: #eaf8ff;
+    border-radius: 0.75rem;
+    margin-top: 1.5rem;
+    font-weight: bold;
+  }
+
+  .action-buttons-mission.city-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Add these new styles to CityManagementPanel.css */
+
+  /* --- AQI Text Color Classes --- */
+  .report-value.aqi-text-green {
+    color: #27ae60; /* Darker Green */
+    font-weight: bold;
+  }
+  .report-value.aqi-text-yellow {
+    color: #f39c12; /* Darker Yellow */
+    font-weight: bold;
+  }
+  .report-value.aqi-text-orange {
+    color: #d35400; /* Darker Orange */
+    font-weight: bold;
+  }
+  .report-value.aqi-text-red {
+    color: #c0392b; /* Darker Red */  
+    font-weight: bold;
+  } 
+  /* Add these styles to CityManagementPanel.css */
+
+  /* --- Styles for AI Recommendation --- */
+  .decision-card.recommended-by-ai {
+    box-shadow: 0 0 15px 5px #00f2fe;
+    border: 2px solid #4facfe;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-recommend-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #4facfe;
+    color: white;
+    padding: 0.2rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transform: translateX(-25%) translateY(15px) rotate(-45deg);
+    transform-origin: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+
+  .cost.discounted {
+    color: #27ae60; /* Green for discounted price */
+  }
+
+  .original-cost {
+    text-decoration: line-through;
+    color: #e74c3c;
+    font-size: 0.8em;
+    margin-right: 0.25rem;
+    opacity: 0.8;
+  }
+
+  /* Style for the new accuracy counter */
+  .left-panel .resource-counters.horizontal span {
+    flex: 1;
     text-align: center;
-    padding: 3rem;
-    color: #7f8c8d;
-} 
+  } 
+  /* Add these styles to your main CSS file */
 
-.right-panel {
-  /* Remove the back button from the flex layout */
-  justify-content: flex-start; 
-}
+  .tile-diseased { 
+    background-color: #9b59b6; /* Sickly purple */
+    border-color: #8e44ad;
+  }
 
-.city-action-buttons {
-  margin-top: 1rem;
+  .tile-fire_risk { 
+    background-color: #e67e22; /* Dry orange */
+    border-color: #d35400;
+  }
+  /* ======================================================= */
+  /* KID-FRIENDLY MAIN MENU (VERSION 3 - FORCED FULLSCREEN)  */
+  /* ======================================================= */
+
+  .main-menu-kid-friendly {
+    /* --- Force Element to Cover Viewport --- */
+    position: fixed;      /* Position relative to the browser window, not the parent */
+    top: 0;
+    left: 0;
+    width: 100%;          /* Cover the full width */
+    height: 100%;         /* Cover the full height */
+    z-index: 100;         /* Ensure it appears on top of any other page content */
+    
+    /* --- Layout & Spacing --- */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding: 20px;
+    box-sizing: border-box; /* Prevents padding from creating scrollbars */
+    /* --- Background & Font --- */
+    background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
+    text-align: center;
+  }
+
+  /* --- The rest of the styles are unchanged and should work correctly --- */
+
+  .main-menu-header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(3rem, 10vw, 5rem);
+    color: white;
+    text-shadow: 4px 4px 0px #2E8B57;
+    margin: 0;
+    animation: bounceIn 1s ease;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .main-menu-header p {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    color: #3CB371;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+  }
+
+  .ai-buddy-corner {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: #006400;
+    font-weight: bold;
+    font-family: 'Baloo 2', cursive;
+  }
 
-/* Style for the city training proposal card */
-.training-item-area.city-proposal {
-  background-color: #f0f8ff;
-  border: 2px solid #66a6ff;
-}
-.proposal-icon {
-  font-size: 3rem;
-}
-/* Add these styles to CityManagementPanel.css */
+  .ai-buddy-corner .icon {
+    font-size: 4rem;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
 
-.left-panel .resource-counters.horizontal {
-  display: flex;
-  justify-content: space-around;
-  background: #eaf8ff;
-  border-radius: 0.75rem;
-  margin-top: 1.5rem;
-  font-weight: bold;
-}
+  .main-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 350px;
+  }
 
-.action-buttons-mission.city-actions {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
+  .btn-playful {
+    padding: 18px 30px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Baloo 2', cursive;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    will-change: transform;
+    text-transform: uppercase;
+  }
 
-/* Add these new styles to CityManagementPanel.css */
+  .btn-playful:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
 
-/* --- AQI Text Color Classes --- */
-.report-value.aqi-text-green {
-  color: #27ae60; /* Darker Green */
-  font-weight: bold;
-}
-.report-value.aqi-text-yellow {
-  color: #f39c12; /* Darker Yellow */
-  font-weight: bold;
-}
-.report-value.aqi-text-orange {
-  color: #d35400; /* Darker Orange */
-  font-weight: bold;
-}
-.report-value.aqi-text-red {
-  color: #c0392b; /* Darker Red */  
-  font-weight: bold;
-} 
-/* Add these styles to CityManagementPanel.css */
+  .btn-play {
+    background-color: #FFD700;
+    box-shadow: 0 8px 0 #DAA520;
+  }
+  .btn-play:active { background-color: #F0C400; }
 
-/* --- Styles for AI Recommendation --- */
-.decision-card.recommended-by-ai {
-  box-shadow: 0 0 15px 5px #00f2fe;
-  border: 2px solid #4facfe;
-  position: relative;
-  overflow: hidden;
-}
+  .btn-how-to-play {
+    background-color: #32CD32;
+    box-shadow: 0 8px 0 #228B22;
+  }
+  .btn-how-to-play:active { background-color: #28a428; }
 
-.ai-recommend-banner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #4facfe;
-  color: white;
-  padding: 0.2rem 1.5rem;
-  font-size: 0.8rem;
-  font-weight: bold;
-  transform: translateX(-25%) translateY(15px) rotate(-45deg);
-  transform-origin: center;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
+  .btn-settings {
+    background-color: #1E90FF;
+    box-shadow: 0 8px 0 #1C86EE;
+  }
+  .btn-settings:active { background-color: #1A82E8; }
 
-.cost.discounted {
-  color: #27ae60; /* Green for discounted price */
-}
 
-.original-cost {
-  text-decoration: line-through;
-  color: #e74c3c;
-  font-size: 0.8em;
-  margin-right: 0.25rem;
-  opacity: 0.8;
-}
-
-/* Style for the new accuracy counter */
-.left-panel .resource-counters.horizontal span {
-  flex: 1;
-  text-align: center;
-} 
-/* Add these styles to your main CSS file */
-
-.tile-diseased { 
-  background-color: #9b59b6; /* Sickly purple */
-  border-color: #8e44ad;
-}
-
-.tile-fire_risk { 
-  background-color: #e67e22; /* Dry orange */
-  border-color: #d35400;
-}
+  @media (min-width: 768px) {
+    .main-menu-actions {
+      max-width: 450px;
+      gap: 2rem;
+    }
+    .btn-playful {
+      font-size: 1.8rem;
+    }
+    .ai-buddy-corner {
+      /* Re-add absolute positioning ONLY on larger screens */
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+  }
