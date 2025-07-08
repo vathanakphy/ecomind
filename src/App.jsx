@@ -62,6 +62,19 @@ function App() {
   const location = useLocation();
   const { result } = useLanguage();
 
+  const [activeTutorial, setActiveTutorial] = useState({ mission: null, step: 1 });
+
+  const startTutorial = (missionName) => {
+      setActiveTutorial({ mission: missionName, step: 1 });
+    };
+
+    const advanceTutorial = () => {
+      setActiveTutorial(prev => ({ ...prev, step: prev.step + 1 }));
+    };
+
+    const endTutorial = () => {
+      setActiveTutorial({ mission: null, step: 1 });
+    };
   // --- Game State ---
   const [dataPoints, setDataPoints] = useState(INITIAL_DATA_POINTS);
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
@@ -69,17 +82,17 @@ function App() {
   const [aiDialogue, setAiDialogue] = useState('Hi! I am Eco, your AI helper!');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioRef = useRef(null);
-  const [currentTrackSrc, setCurrentTrackSrc] = useState(musicTracks[0].src); // Set initial track
+  const [currentTrackSrc, setCurrentTrackSrc] = useState(musicTracks[0].src);
   const handleMusicChange = (newTrackSrc) => {
     setCurrentTrackSrc(newTrackSrc);
   };
    useEffect(() => {
     const audio = audioRef.current;
     if (audio && isMusicPlaying) {
-        audio.load(); // Load the new source
+        audio.load();
         audio.play().catch(e => console.error("Audio play failed:", e));
     }
-  }, [currentTrackSrc]); // Re-run when the track source changes
+  }, [currentTrackSrc, isMusicPlaying]);
 
 
   // --- NOTIFICATION STATE ---
@@ -113,8 +126,6 @@ function App() {
   const [minigameItems, setMinigameItems] = useState([]);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [minigameFeedback, setMinigameFeedback] = useState('');
-  const [minigameTimeLeft, setMinigameTimeLeft] = useState(MINIGAME_DURATION_SECONDS);
-  const minigameTimerRef = useRef(null);
   const [isForestMissionUnlocked, setIsForestMissionUnlocked] = useState(true);
   const [co2Level, setCo2Level] = useState(INITIAL_CO2_PPM);
   const [globalTemp, setGlobalTemp] = useState(1.1);
@@ -158,8 +169,6 @@ function App() {
   }, [isForestMissionUnlocked, isCityMissionUnlocked, addNotification, navigate, addForestNotification]);
 
   const endMinigame = useCallback((completedAllItems = true) => {
-    clearInterval(minigameTimerRef.current);
-    const timeTaken = MINIGAME_DURATION_SECONDS - minigameTimeLeft;
     if (completedAllItems && timeTaken <= MINIGAME_QUICK_BONUS_THRESHOLD) {
       const bonusDP = MINIGAME_QUICK_BONUS_DP;
       setDataPoints(dp => dp + bonusDP);
@@ -172,7 +181,7 @@ function App() {
       setAiDialogue(`Training session complete. We've gathered valuable data!`);
       setAiMood('neutralAI');
     }, 2000);
-  }, [minigameTimeLeft, navigate]);
+  }, [navigate]);
 
   const handleSortItem = useCallback((item, selectedBinType) => {
     if (item.type === selectedBinType) {
@@ -289,11 +298,19 @@ function App() {
     setMinigameItems(shuffledItems);
     setCurrentItemIndex(0);
     setMinigameFeedback('');
-    setMinigameTimeLeft(MINIGAME_DURATION_SECONDS);
-    navigate('/missions/ocean/train');
     setAiDialogue("Training mode activated! Sort these items quickly and accurately.");
     setAiMood('thinkingAI');
-  }, [navigate]);
+    if (activeTutorial.mission === 'ocean' && activeTutorial.step === 3) {
+      advanceTutorial(); 
+    }
+    navigate('/missions/ocean/train');
+  }, [navigate,activeTutorial]);
+
+   useEffect(() => {
+    if (activeTutorial.mission === 'ocean' && activeTutorial.step === 4 && location.pathname === '/missions/ocean') {
+      advanceTutorial(); // Advance step to 5
+    }
+  }, [location.pathname, activeTutorial]);
 
   const convertBiomassToEnergy = useCallback(() => {
     if (!hasUpgradeBiomassGenerator) return;
@@ -541,14 +558,13 @@ function App() {
   }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification]);
 
     const toggleMusic = () => {
-    // We check the opposite of the current state because setState is asynchronous
-    const shouldBePlaying = !isMusicPlaying; 
+    const shouldBePlaying = !isMusicPlaying;
     setIsMusicPlaying(shouldBePlaying);
 
     const audio = audioRef.current;
     if (audio) {
       if (shouldBePlaying) {
-        audio.volume = 1.0; // Set volume when you play
+        audio.volume = 1.0;
         audio.play().catch(e => console.error("Audio play failed:", e));
       } else {
         audio.pause();
@@ -578,16 +594,6 @@ function App() {
       setAiMood('neutralAI');
     }
   }, [oceanHealth, dataPoints, energy, location.pathname, isOceanMissionCompleted]);
-
-  useEffect(() => {
-    if (location.pathname === '/missions/ocean/train' && minigameTimeLeft > 0) {
-      minigameTimerRef.current = setInterval(() => setMinigameTimeLeft(t => t - 1), 1000);
-    } else if (minigameTimeLeft <= 0 && location.pathname === '/missions/ocean/train') {
-      clearInterval(minigameTimerRef.current);
-      endMinigame(false);
-    }
-    return () => clearInterval(minigameTimerRef.current);
-  }, [location.pathname, minigameTimeLeft, endMinigame]);
 
   useEffect(() => {
     const gameTick = setInterval(() => {
@@ -663,7 +669,6 @@ function App() {
       <audio ref={audioRef} src={currentTrackSrc} loop />
       {/* --- UI OVERLAYS --- */}
       <div className="ui-top-bar">
-        {/* Mobile-only icon to open history */}
         <div className="notification-icon-container">
           {notificationHistory.length > 0 && <span className="notification-badge"></span>}
           <Button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
@@ -671,7 +676,6 @@ function App() {
           </Button>
         </div>
 
-        {/* Music Toggle Button */}
         <div className="music-toggle-container">
             <Button onClick={toggleMusic} className="music-toggle-button">
                 <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
@@ -679,15 +683,14 @@ function App() {
         </div>
       </div>
 
-      {/* Pop-up toasts (mostly for desktop) */}
       <div className="notification-area">
         {toasts.map(n => <Notification key={n.id} {...n} onDismiss={() => setToasts(prev => prev.filter(toast => toast.id !== n.id))} />)}
       </div>
 
       <Routes>
         <Route path="/" element={
-          <MainMenuScreen 
-            onAddNotification={addNotification} 
+          <MainMenuScreen
+            onAddNotification={addNotification}
             aiMood={aiMood}
             musicTracks={musicTracks}
             currentTrackSrc={currentTrackSrc}
@@ -696,21 +699,26 @@ function App() {
         } />
 
         <Route path="/missions" element={<MissionSelectScreen onStartMission={startMission} isOceanMissionCompleted={isOceanMissionCompleted} isForestMissionUnlocked={isForestMissionUnlocked} isCityMissionUnlocked={isCityMissionUnlocked} />} />
-        
+
         {/* Ocean Mission Routes */}
         <Route path="/missions/ocean" element={
           <OceanMissionScreen
             oceanHealth={oceanHealth} dataPoints={dataPoints} energy={energy} aiAccuracy={aiAccuracy} aiMood={aiMood} aiDialogue={aiDialogue}
             onStartMinigame={startSortTrashMinigame} onDeployAI={handleDeployAI} onBuyUpgrade={buyUpgrade}
             upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            tutorialInfo={activeTutorial}
+            onStartTutorial={() => startTutorial('ocean')}
+            onAdvanceStep={advanceTutorial}
+            onEndTutorial={endTutorial}
           />
         } />
         <Route path="/missions/ocean/train" element={
           <SortTrashMinigameScreen
-            minigameItems={minigameItems} currentItemIndex={currentItemIndex} minigameFeedback={minigameFeedback} minigameTimeLeft={minigameTimeLeft}
+            minigameItems={minigameItems} currentItemIndex={currentItemIndex} minigameFeedback={minigameFeedback} 
             dataPoints={dataPoints} onSortItem={handleSortItem} onEndMinigame={endMinigame}
+                          tutorialInfo={activeTutorial} 
           />
-        } />
+        } />  
 
         {/* Forest Mission Routes */}
         <Route path="/missions/forest" element={
