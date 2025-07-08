@@ -8,7 +8,7 @@ import Modal from '../components/ui/Modal';
 import LanguageFlagSelector from '../utils/LanguageSelection';
 import ecomind from '../assets/ecomind.png'
 
-const MainMenuScreen = ({ onAddNotification, aiMood }) => {
+const MainMenuScreen = ({ onAddNotification, aiMood, musicTracks, currentTrackSrc, onMusicChange }) => {
   const [showHowToPlayModal, setShowHowToPlayModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const navigate = useNavigate();
@@ -66,6 +66,20 @@ const MainMenuScreen = ({ onAddNotification, aiMood }) => {
             language={language}
             setLanguage={setLanguage}
           />  
+        </div>
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <label><strong>Choose Music:</strong></label><br />
+          <select
+            className="music-selector"
+            value={currentTrackSrc}
+            onChange={(e) => onMusicChange(e.target.value)}
+          >
+            {musicTracks.map((track) => (
+              <option key={track.src} value={track.src}>
+                {track.name}
+              </option>
+            ))}
+          </select>
         </div>
         </Modal>
       </div>
