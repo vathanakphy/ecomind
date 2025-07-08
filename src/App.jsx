@@ -308,7 +308,13 @@ function App() {
 
    useEffect(() => {
     if (activeTutorial.mission === 'ocean' && activeTutorial.step === 4 && location.pathname === '/missions/ocean') {
-      advanceTutorial(); // Advance step to 5
+      advanceTutorial(); // Advance ocean step to 5
+    }
+    if (activeTutorial.mission === 'forest' && activeTutorial.step === 4 && location.pathname === '/missions/forest') {
+      advanceTutorial(); // Advance forest step to 5
+    }
+    if (activeTutorial.mission === 'city' && activeTutorial.step === 4 && location.pathname === '/missions/city') {
+      advanceTutorial(); // Advance city step to 5
     }
   }, [location.pathname, activeTutorial]);
 
@@ -350,15 +356,27 @@ function App() {
     }
   }, [forestMap, dataPoints, addForestNotification]);
 
-  const handleStartForestTraining = useCallback(() => {
+    const handleStartForestTraining = useCallback(() => {
     if (energy >= AI_TRAINING_COST_FOREST) {
+      // Check if we are on the correct step of the FOREST tutorial
+      if (activeTutorial.mission === 'forest' && activeTutorial.step === 3) {
+        advanceTutorial(); // Advance step to 4 before navigating
+      }
       setAiForestTrainingIndex(0);
       setForestTrainingFeedback('');
       navigate('/missions/forest/train');
     } else {
       addForestNotification('Not enough energy to start an AI training session.', 'error');
     }
-  }, [energy, navigate, addForestNotification]);
+  }, [energy, navigate, activeTutorial]);
+   useEffect(() => {
+    if (activeTutorial.mission === 'ocean' && activeTutorial.step === 4 && location.pathname === '/missions/ocean') {
+      advanceTutorial(); // Advance ocean step to 5
+    }
+    if (activeTutorial.mission === 'forest' && activeTutorial.step === 4 && location.pathname === '/missions/forest') {
+      advanceTutorial(); // Advance forest step to 5
+    }
+  }, [location.pathname, activeTutorial]);
 
   const handleImageLabel = useCallback((image, selectedLabel) => {
     if (image.correctLabel === selectedLabel) {
@@ -480,10 +498,14 @@ function App() {
   }, [dataPoints, energy, addNotification, aiRecommendedDecisionId]);
 
   const handleStartCityTraining = useCallback(() => {
+    // Check if we are on the correct step of the CITY tutorial
+    if (activeTutorial.mission === 'city' && activeTutorial.step === 3) {
+      advanceTutorial(); // Advance step to 4
+    }
     setCityTrainingIndex(0);
     setCityTrainingFeedback('');
     navigate('/missions/city/train');
-  }, [navigate]);
+  }, [navigate, activeTutorial]);
 
   const handleClassifyCityProposal = useCallback((proposal, answer, isFinished = false) => {
     if (isFinished) {
@@ -671,15 +693,15 @@ function App() {
       <div className="ui-top-bar">
         <div className="notification-icon-container">
           {notificationHistory.length > 0 && <span className="notification-badge"></span>}
-          <Button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
+          <button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
             <Icon type="bell" />
-          </Button>
+          </button>
         </div>
 
         <div className="music-toggle-container">
-            <Button onClick={toggleMusic} className="music-toggle-button">
-                <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
-            </Button>
+            <button onClick={toggleMusic} className="music-toggle-button">
+              <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
+            </button>
         </div>
       </div>
 
@@ -731,6 +753,10 @@ function App() {
             onConvertBiomass={convertBiomassToEnergy}
             forestAIAccuracy={forestAIAccuracy}
             upgrades={{ hasUpgradeSortSpeed, hasUpgradeEfficientDeployment, hasUpgradeAdvancedSensors, hasUpgradeSolarPanels, hasUpgradeBiomassGenerator }}
+            tutorialInfo={activeTutorial}
+            onStartTutorial={() => startTutorial('forest')}
+            onAdvanceStep={advanceTutorial}
+            onEndTutorial={endTutorial}
           />
         } />
         <Route path="/missions/forest/train" element={
@@ -741,6 +767,7 @@ function App() {
             onEndTraining={() => navigate('/missions/forest')}
             dataPoints={dataPoints}
             forestTrainingFeedback={forestTrainingFeedback}
+            tutorialInfo={activeTutorial}
           />
         } />
 
@@ -757,6 +784,10 @@ function App() {
             aiRecommendedDecisionId={aiRecommendedDecisionId}
             onDeployAICity={handleDeployAICity}
             onBuyUpgrade={buyUpgrade}
+            tutorialInfo={activeTutorial}
+              onStartTutorial={() => startTutorial('city')}
+              onAdvanceStep={advanceTutorial}
+              onEndTutorial={endTutorial}
           />
         } />
         <Route path="/missions/city/train" element={
@@ -766,6 +797,8 @@ function App() {
             onClassify={handleClassifyCityProposal}
             feedback={cityTrainingFeedback}
             dataPoints={dataPoints}
+                          tutorialInfo={activeTutorial}
+
           />
         } />
       </Routes>

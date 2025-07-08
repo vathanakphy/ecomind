@@ -1,8 +1,7 @@
-//filename MainMenuScreen.jsx
+// src/screens/MainMenuScreen.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../utils/language';
-import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import Modal from '../components/ui/Modal';
 import LanguageFlagSelector from '../utils/LanguageSelection';
@@ -17,38 +16,35 @@ const MainMenuScreen = ({ onAddNotification, aiMood, musicTracks, currentTrackSr
 
   return (
     <div className="screen main-menu-kid-friendly">
-      <div className="main-menu-container">
+      {/* The extra "main-menu-container" div has been removed from here */}
 
-        {/* MOVED: The AI buddy is now the first item for a proper mobile layout */}
-        <div className="ai-buddy-corner animated-ai">
-          <Icon type={aiMood || 'neutralAI'} />
-          <span>Eco</span>
-        </div>
-
-        {/* Title Section */}
-        <header className="main-menu-header">
-          <h1>
-            <img src={ecomind} style={{ width: '100px' }} alt="Ecoming" />
-            {menu.title}
-          </h1>
-          <p>{menu.subtitle}</p>
-        </header>
-
-        {/* Action Buttons */}
-        <div className="main-menu-actions">
-          <Button onClick={() => navigate('/missions')} className="btn-playful btn-play">
-            {menu.play}
-          </Button>
-          <Button onClick={() => setShowHowToPlayModal(true)} className="btn-playful btn-how-to-play">
-            {menu.howToPlay}
-          </Button>
-          <Button onClick={() => setShowSettingsModal(true)} className="btn-playful btn-settings">
-            {menu.settings}
-          </Button>
-        </div>
+      <div className="ai-buddy-corner animated-ai">
+        <Icon type={aiMood || 'neutralAI'} />
+        <span>Eco</span>
       </div>
 
-      {/* Modals remain unchanged */}
+      <header className="main-menu-header">
+        <h1>
+          <img src={ecomind} style={{ width: '100px' }} alt="Ecomind" />
+          {menu.title}
+        </h1>
+        <p>{menu.subtitle}</p>
+      </header>
+
+      <div className="main-menu-actions">
+        <button onClick={() => navigate('/missions')} className="btn-playful btn-play">
+        {menu.play}
+      </button>
+
+      <button onClick={() => setShowHowToPlayModal(true)} className="btn-playful btn-how-to-play">
+        {menu.howToPlay}
+      </button>
+
+      <button onClick={() => setShowSettingsModal(true)} className="btn-playful btn-settings">
+        {menu.settings}
+      </button>
+      </div>
+
       <Modal show={showHowToPlayModal} onClose={() => setShowHowToPlayModal(false)} title={menu.modalTitle}>
         <p>{menu.welcome}</p>
         <ol>
@@ -70,7 +66,7 @@ const MainMenuScreen = ({ onAddNotification, aiMood, musicTracks, currentTrackSr
         <div style={{ marginTop: '1rem', textAlign: 'center' }}>
           <label><strong>Choose Music:</strong></label><br />
           <select
-            className="music-selector"
+            className="music-selector" // You may want to add a style for this in your CSS
             value={currentTrackSrc}
             onChange={(e) => onMusicChange(e.target.value)}
           >
@@ -81,8 +77,8 @@ const MainMenuScreen = ({ onAddNotification, aiMood, musicTracks, currentTrackSr
             ))}
           </select>
         </div>
-        </Modal>
-      </div>
+      </Modal>
+    </div>
   );
 };
 

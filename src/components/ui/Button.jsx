@@ -5,7 +5,7 @@ const Button = ({ onClick, children, className = '', disabled = false, title = '
   <button
     {...rest}
     onClick={() => { playSound('click'); if(onClick) onClick(); }}
-    className={`game-button ${className}`}
+    className={`game-button  ${className}`}
     disabled={disabled}
     title={title}
   >

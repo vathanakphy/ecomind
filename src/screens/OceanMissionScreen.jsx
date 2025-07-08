@@ -1,5 +1,5 @@
 // src/screens/OceanMissionScreen.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../utils/language';
 import Button from '../components/ui/Button';
@@ -10,31 +10,25 @@ import TutorialOverlay from '../components/ui/TutorialOverlay';
 import { MAX_OCEAN_HEALTH, DEPLOY_AI_DATA_COST, DEPLOY_AI_ENERGY_COST } from '../constants/gameConstants';
 
 const OceanMissionScreen = (props) => {
-  // These are all the props this component needs.
-  // Notice we get the tutorial state AND functions from App.js.
   const {
     oceanHealth, dataPoints, energy, aiAccuracy, aiMood, aiDialogue,
     onStartMinigame, onDeployAI, onBuyUpgrade, upgrades,
+    // These props now come from the scalable system in App.js
     tutorialInfo,
     onStartTutorial,
     onAdvanceStep,
     onEndTutorial
   } = props;
   
-  // This component only needs its own local state for UI panels, not the tutorial.
   const [showUpgradePanel, setShowUpgradePanel] = useState(false);
   const [showGameGuide, setShowGameGuide] = useState(false);
   const navigate = useNavigate();
   const { result } = useLanguage();
   const text = result.oceanMissionScreen;
 
-  // REMOVED: All local tutorial state (`isTutorialActive`, `tutorialStep`)
-  // REMOVED: All local tutorial handler functions (`startTutorial`, `handleNextTutorialStep`, etc.)
-
-  // This correctly checks if the 'ocean' tutorial is the one that's active.
+  // This checks if the 'ocean' tutorial is the one that's active.
   const isTutorialActive = tutorialInfo.mission === 'ocean';
 
-  // This one useEffect hook is all we need to handle the body scroll.
   useEffect(() => {
     if (isTutorialActive) {
       document.body.style.overflow = 'hidden';
@@ -46,14 +40,55 @@ const OceanMissionScreen = (props) => {
     };
   }, [isTutorialActive]);
 
+  // --- NEW: Define the specific steps for the Ocean Mission tutorial ---
+  const oceanTutorialSteps = useMemo(() => ({
+    1: {
+      highlightId: 'tutorial-health-bar',
+      text: "Welcome to the Ocean Mission! Your goal is to restore <strong>Ocean Health</strong> to 100%.",
+      buttonText: "Next",
+      action: onAdvanceStep,
+    },
+    2: {
+      highlightId: 'tutorial-data-points',
+      text: "To do this, you'll need <strong>Data Points (DP)</strong>, which you get from training me.",
+      buttonText: "Next",
+      action: onAdvanceStep,
+    },
+    3: {
+      highlightId: 'tutorial-train-button',
+      text: "Click <strong>'Train AI'</strong> to start the trash sorting minigame.",
+      buttonText: null, // This forces the user to click the button
+      action: onStartMinigame,
+    },
+    5: { // Step 4 happens on the minigame screen
+      highlightId: 'tutorial-energy-counter',
+      text: "Good work! Deploying the AI also costs <strong>Energy ⚡️</strong>.",
+      buttonText: "Next",
+      action: onAdvanceStep,
+    },
+    6: {
+      highlightId: 'tutorial-deploy-button',
+      text: "When you have enough resources, <strong>'Deploy AI'</strong> to automatically collect trash and clean the ocean.",
+      buttonText: "Next",
+      action: onAdvanceStep,
+    },
+    7: {
+      highlightId: 'tutorial-upgrades-button',
+      text: "Visit <strong>'Upgrades'</strong> to get essential items like the <strong>Solar System</strong> for more energy.",
+      buttonText: "Got It!",
+      action: onEndTutorial,
+    }
+  }), [onAdvanceStep, onEndTutorial, onStartMinigame]);
+
   const healthPercentage = Math.max(0, Math.min(MAX_OCEAN_HEALTH, oceanHealth));
   const pollutionOpacity = Math.max(0.1, (100 - healthPercentage) / 100);
 
   return (
     <div className="screen ocean-mission-screen">
-      {/* The TutorialOverlay is now correctly controlled by props from App.js */}
+      {/* This now passes the ocean-specific steps to the overlay */}
       {isTutorialActive && (
         <TutorialOverlay
+          steps={oceanTutorialSteps}
           step={tutorialInfo.step}
           onNext={onAdvanceStep}
           onEnd={onEndTutorial}
@@ -90,23 +125,21 @@ const OceanMissionScreen = (props) => {
         </div>
 
         <div className="action-buttons-mission">
-          {/* This button's onClick is now simply onStartMinigame. App.js handles the logic. */}
           <Button id="tutorial-train-button" onClick={onStartMinigame} title={text.buttons.trainAITitle}>
-              <Icon type="brain" /> {text.buttons.trainAI}
+            <Icon type="brain" /> {text.buttons.trainAI}
           </Button>
           <Button id="tutorial-deploy-button" onClick={onDeployAI} disabled={dataPoints < DEPLOY_AI_DATA_COST || energy < DEPLOY_AI_ENERGY_COST || oceanHealth >= MAX_OCEAN_HEALTH} title={text.buttons.deployAITitle}><Icon type="rocket" /> {text.buttons.deployAI}</Button>
           <Button id="tutorial-upgrades-button" onClick={() => setShowUpgradePanel(true)} title={text.buttons.upgradesTitle}><Icon type="wrench" /> {text.buttons.upgrades}</Button>
         </div>
       </div>
       <div className="ocean-footer-buttons">
-        {/* This button now correctly calls the onStartTutorial prop from App.js */}
         <Button onClick={onStartTutorial} className="help-button">
           <Icon type="help" /> Show Tutorial
         </Button>
         <Button onClick={() => setShowGameGuide(true)} className="help-button">
-          <Icon type="help" /> {text.buttons.help}
+          <Icon type="help" /> Help
         </Button>
-        <Button onClick={() => navigate('/missions')} className="back-button-mission">{text.buttons.backToMissions}</Button>
+        <Button onClick={() => navigate('/missions')} className="back-button-mission">Back to Missions</Button>
       </div>
       
      <UpgradePanel 
