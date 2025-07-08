@@ -477,8 +477,8 @@
     text-align: center;
   }
 
-  .minigame-feedback.correct { color: var(--bright-green); }
-  .minigame-feedback.incorrect { color: var(--warning-red); }
+  .minigame-feedback.correct { color:green; }
+  .minigame-feedback.incorrect { color: red; }
 
   /* This targets the progress counter text */
   .sort-trash-minigame > p {
