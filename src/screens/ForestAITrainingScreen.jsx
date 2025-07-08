@@ -34,6 +34,7 @@ const ForestAITrainingScreen = ({
         <img className="training-image-placeholder" src={currentItem.visual} alt={currentItem.description} />
         <p className="training-description">{currentItem.description}</p>
       </div>
+      {/* This container will now be responsive */}
       <div className="classification-buttons">
         <Button onClick={() => onImageLabel(currentItem, 'Healthy')}>{text.labels.healthy}</Button>
         <Button onClick={() => onImageLabel(currentItem, 'Diseased')}>{text.labels.diseased}</Button>

@@ -1,50 +1,17 @@
 // src/components/game/forest/ForestMap.js
-import React, { useState, useEffect, useRef } from 'react'; // Import hooks
+import React from 'react';
+import { TREE_TYPES } from '../../../constants/gameConstants';
 
-// ... (TREE_TYPES constant is unchanged) ...
-const TREE_TYPES = [
-  { id: 'oak', visual: '🌳' },
-  { id: 'pine', visual: '🌲' },
-  { id: 'sequoia', visual: '🏞️' },
-  { id: 'mangrove', visual: '🌿' }
-];
-
-
+// This is a much simpler component that doesn't need to calculate scale.
 const ForestMap = ({ forestMap, onTileClick, selectedTree }) => {
-  const containerRef = useRef(null);
-  const [scale, setScale] = useState(1);
   const gridWidth = forestMap[0].length;
-  const gridHeight = forestMap.length;
-
-  // This effect calculates the correct scale for the map
-  useEffect(() => {
-    const calculateScale = () => {
-      if (!containerRef.current) return;
-
-      const TILE_SIZE = 40; // The ideal size of a tile in pixels
-      const GAP_SIZE = 3;   // The gap size in pixels
-
-      const containerWidth = containerRef.current.offsetWidth;
-      const requiredWidth = (gridWidth * TILE_SIZE) + ((gridWidth - 1) * GAP_SIZE);
-      
-      // Only scale down, don't scale up
-      const newScale = Math.min(1, containerWidth / requiredWidth);
-      setScale(newScale);
-    };
-
-    calculateScale(); // Calculate on initial render
-
-    // Recalculate on window resize
-    window.addEventListener('resize', calculateScale);
-    return () => window.removeEventListener('resize', calculateScale);
-  }, [gridWidth, gridHeight]); // Recalculate if the grid dimensions ever change
-
 
   const getTileVisual = (tile) => {
     if (tile.type === 'empty' && selectedTree) return '➕';
+    const treeData = TREE_TYPES.find(t => t.id === tile.treeId);
     switch (tile.type) {
-      case 'young': return TREE_TYPES.find(t => t.id === tile.treeId)?.visual || '🌱';
-      case 'mature': return TREE_TYPES.find(t => t.id === tile.treeId)?.visual || '🌳';
+      case 'young': return treeData?.visual || '🌱';
+      case 'mature': return treeData?.visual || '🌳';
       case 'fire': return '🔥';
       case 'logged': return '🪓';
       case 'diseased': return '🤢';
@@ -54,15 +21,11 @@ const ForestMap = ({ forestMap, onTileClick, selectedTree }) => {
   };
 
   return (
-    // Add the ref to the container
-    <div className="forest-map-container" ref={containerRef}>
+    // The container will now handle scrolling via CSS
+    <div className="forest-map-container">
       <div
         className="forest-map-grid"
-        style={{
-          '--grid-width': gridWidth,
-          // Apply the calculated scale
-          transform: `scale(${scale})`,
-        }}
+        style={{ '--grid-width': gridWidth }}
       >
         {forestMap.flat().map((tile) => (
           <div
@@ -79,4 +42,4 @@ const ForestMap = ({ forestMap, onTileClick, selectedTree }) => {
   );
 };
 
-export default ForestMap;
+export default ForestMap;   
