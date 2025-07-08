@@ -1,7 +1,7 @@
-// App.jsx
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import './App.css';
+import { background_music } from './data/music';
 
 // --- Components and Utils ---
 import { playSound } from './utils/audio';
@@ -63,18 +63,18 @@ function App() {
   const location = useLocation();
   const { result } = useLanguage();
 
-  // --- SHARED STATE ---
+  // --- Game State ---
   const [dataPoints, setDataPoints] = useState(INITIAL_DATA_POINTS);
   const [energy, setEnergy] = useState(INITIAL_ENERGY);
   const [aiMood, setAiMood] = useState('neutralAI');
   const [aiDialogue, setAiDialogue] = useState('Hi! I am Eco, your AI helper!');
+  const [isMusicPlaying, setIsMusicPlaying] = useState(true);
+  const audioRef = useRef(null);
+
 
   // --- NOTIFICATION STATE ---
-  // For the temporary pop-up toasts
   const [toasts, setToasts] = useState([]);
-  // For the full list on mobile
   const [notificationHistory, setNotificationHistory] = useState([]);
-  // To show/hide the full-screen history on mobile
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 
 
@@ -82,14 +82,8 @@ function App() {
   const addNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
     const newNotification = { id, message, type };
-
-    // Add to the history for the full-screen view
-    setNotificationHistory(prev => [newNotification, ...prev.slice(0, 49)]); // keeps the last 50
-
-    // Add to the toasts to show the pop-up
+    setNotificationHistory(prev => [newNotification, ...prev.slice(0, 49)]);
     setToasts(prev => [...prev, newNotification]);
-
-    // Set a timer to automatically remove the pop-up toast after 3 seconds
     setTimeout(() => {
       setToasts(prev => prev.filter(n => n.id !== id));
     }, 3000);
@@ -131,6 +125,7 @@ function App() {
   const [cityTrainingFeedback, setCityTrainingFeedback] = useState('');
   const [cityAIAccuracy, setCityAIAccuracy] = useState(INITIAL_CITY_AI_ACCURACY);
   const [aiRecommendedDecisionId, setAiRecommendedDecisionId] = useState(null);
+
 
   const addForestNotification = useCallback((message, type = 'info') => {
     const id = Date.now();
@@ -535,6 +530,22 @@ function App() {
     }
   }, [dataPoints, energy, availableDecisions, cityAIAccuracy, addNotification]);
 
+    const toggleMusic = () => {
+    // We check the opposite of the current state because setState is asynchronous
+    const shouldBePlaying = !isMusicPlaying; 
+    setIsMusicPlaying(shouldBePlaying);
+
+    const audio = audioRef.current;
+    if (audio) {
+      if (shouldBePlaying) {
+        audio.volume = 1.0; // Set volume when you play
+        audio.play().catch(e => console.error("Audio play failed:", e));
+      } else {
+        audio.pause();
+      }
+    }
+  };
+
   useEffect(() => {
     if (oceanHealth >= MAX_OCEAN_HEALTH && !isOceanMissionCompleted) {
       setIsOceanMissionCompleted(true);
@@ -639,17 +650,28 @@ function App() {
   // --- JSX RENDER ---
   return (
     <div className="App">
+    <audio ref={audioRef} src={background_music.sonic_mania} loop />
+      {/* --- UI OVERLAYS --- */}
+      <div className="ui-top-bar">
+        {/* Mobile-only icon to open history */}
+        <div className="notification-icon-container">
+          {notificationHistory.length > 0 && <span className="notification-badge"></span>}
+          <Button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
+            <Icon type="bell" />
+          </Button>
+        </div>
+
+        {/* Music Toggle Button */}
+        <div className="music-toggle-container">
+            <Button onClick={toggleMusic} className="music-toggle-button">
+                <Icon type={isMusicPlaying ? 'musicOn' : 'musicOff'} />
+            </Button>
+        </div>
+      </div>
+
       {/* Pop-up toasts (mostly for desktop) */}
       <div className="notification-area">
         {toasts.map(n => <Notification key={n.id} {...n} onDismiss={() => setToasts(prev => prev.filter(toast => toast.id !== n.id))} />)}
-      </div>
-
-      {/* Mobile-only icon to open history */}
-      <div className="notification-icon-container">
-        {notificationHistory.length > 0 && <span className="notification-badge"></span>}
-        <Button onClick={() => setShowNotificationModal(true)} className="notification-icon-button">
-          <Icon type="bell" />    
-        </Button>
       </div>
 
       <Routes>
