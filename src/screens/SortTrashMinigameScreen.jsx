@@ -1,5 +1,5 @@
 // src/screens/SortTrashMinigameScreen.jsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo,useRef  } from 'react';
 import { useLanguage } from '../utils/language';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
