@@ -3,6 +3,7 @@ import React from 'react';
 
 const Icon = ({ type, className = '' }) => {
   const icons = {
+
     // General & UI
     'alert-triangle': '⚠️',
     'arrow-right-circle': '➡️',
@@ -46,6 +47,7 @@ const Icon = ({ type, className = '' }) => {
     concernedAI: '😟',
     neutralAI: '🤖',
     thinkingAI: '🤔',
+
   };
 
   // If an icon is found in the list, display it. Otherwise, display the text `type` itself.

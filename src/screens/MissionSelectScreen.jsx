@@ -5,7 +5,7 @@ import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import { useLanguage } from '../utils/language'; // Import useLanguage
 
-const MissionSelectScreen = ({ onStartMission, isOceanMissionCompleted, isForestMissionUnlocked,isCityMissionUnlocked }) => {
+const MissionSelectScreen = ({ onStartMission, isOceanMissionCompleted, isForestMissionUnlocked, isCityMissionUnlocked }) => {
   const navigate = useNavigate();
   const { result } = useLanguage(); // Get the translation function
   const missions = result.missionSelectScreen; // Get translations specific to this screen
@@ -43,15 +43,23 @@ const MissionSelectScreen = ({ onStartMission, isOceanMissionCompleted, isForest
           </p>
           {isForestMissionUnlocked && <Button>{missions.button.startMission}</Button>} {/* Use translated button text */}
         </div>
-        {/* Forest Mission Card */}
-         <div 
-        className={`mission-card ${!isCityMissionUnlocked ? 'locked' : ''}`} 
-        onClick={() => isCityMissionUnlocked && onStartMission('CityMission')}
-    >
-        <h3><Icon type="🏙️" /> City Air Rescue</h3>
-        <p>The city's air is choking! Enact smart policies to clean the skies and keep your citizens happy.</p>
-        {isCityMissionUnlocked && <Button>START MISSION</Button>}
-      </div>
+        
+        {/* City Mission Card */}
+        <div 
+          className={`mission-card ${!isCityMissionUnlocked ? 'locked' : ''}`} 
+          onClick={() => isCityMissionUnlocked && onStartMission('CityMission')}
+          title={!isCityMissionUnlocked ? missions.cityMission.cardTitleLocked : missions.cityMission.cardTitleUnlocked}
+        >
+          <h3>
+            <Icon type={isCityMissionUnlocked ? 'city' : 'padlock'} /> {missions.cityMission.heading}
+          </h3>
+          <p>
+            {isCityMissionUnlocked
+              ? missions.cityMission.descriptionUnlocked
+              : missions.cityMission.descriptionLocked}
+          </p>
+          {isCityMissionUnlocked && <Button>{missions.button.startMission}</Button>}
+        </div>
       </div>
 
       <Button onClick={() => navigate('/')}>{missions.button.backToMainMenu}</Button> {/* Use translated button text */}

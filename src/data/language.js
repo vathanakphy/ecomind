@@ -32,7 +32,14 @@ export const translations = {
         descriptionLocked: "Unlock by completing the Ocean Mission.",
         cardTitleLocked: "Complete Ocean Mission to unlock",
         cardTitleUnlocked: "Manage forest resources sustainably.",
+      },cityMission: {
+        heading: "City Air Rescue",
+        descriptionUnlocked: "The city's air is choking! Enact smart policies to clean the skies and keep your citizens happy.",
+        descriptionLocked: "Unlock by completing the Forest Mission.",
+        cardTitleUnlocked: "Tackle urban air pollution.",
+        cardTitleLocked: "Complete Forest Mission to unlock.",
       },
+      
       button: {
         startMission: "START MISSION",
         backToMainMenu: "Back to Main Menu",
@@ -94,7 +101,7 @@ export const translations = {
         "to open the planting menu and manually plant trees using your Data Points.",
 
       section3Title: "Advanced Strategies",
-      section3_li1_part1: "Use the",
+      section3_li1_part1: "Use the Button",
       section3_li1_part2:
         "button to get permanent improvements like Solar Panels for passive energy, or the",
       section3_li1_part3: "for a quick energy boost from stumps.",
@@ -273,16 +280,16 @@ export const translations = {
       play: "ចាប់ផ្ដើម",
       howToPlay: "របៀបលេង",
       settings: "ការកំណត់",
-      modalTitle: "របៀបលេងអីកូមាញ់",
-      welcome: "សូមស្វាគមន៍ អីកូ-វីរបុរស!",
+      modalTitle: "របៀបលេង Ecomind",
+      welcome: "សូមស្វាគមន៍ វីរបុរស-eco!",
       steps: [
-        "ជ្រើសបេសកកម្ម: ជ្រើសបញ្ហាបរិស្ថានមួយដើម្បីដោះស្រាយ។",
+        "ជ្រើសបេសកកម្ម: ជ្រើសបញ្ហាបរិស្ថានណាមួយដើម្បីដោះស្រាយ។",
         'ហ្វឹកហាត់ AI: លេងល្បែងដូចជា "តម្រៀបសំរាម" ដើម្បីប្រមូលពិន្ទុទិន្នន័យ និងធ្វើឲ្យ AI ឆ្លាត។',
-        "គ្រប់គ្រងធនធាន: ត្រួតពិនិត្យពិន្ទុទិន្នន័យ និងថាមពល។",
+        "គ្រប់គ្រងធនធាន: ពិនិត្យពិន្ទុទិន្នន័យ និងថាមពល។",
         "ដាក់អនុវត្ត AI: ប្រើ DP និងថាមពលដើម្បីអនុវត្ត AI។ ភាពជោគជ័យអាស្រ័យលើភាពត្រឹមត្រូវ។",
         "ធ្វើឲ្យ AI ខ្លាំងឡើង: ប្រើ DP ដើម្បីធ្វើឲ្យ AI របស់អ្នកឆ្លាតនិងមានប្រសិទ្ធភាព។",
       ],
-      goal: "គោលបំណងរបស់អ្នកគឺធ្វើឲ្យបរិស្ថានស្អាតបាន 100%!",
+      goal: "គោលដៅបស់អ្នកគឺធ្វើឲ្យបរិស្ថានស្អាតបាន 100%!",
     },
     missionSelectScreen: {
       title: "ជ្រើសរើសបេសកកម្ម",
@@ -290,15 +297,22 @@ export const translations = {
         cardTitle: "ជួយសម្អាតមហាសមុទ្រដែលរងការបំពុល។",
         heading: "បញ្ឈប់ការបំពុលមហាសមុទ្រ",
         description:
-          "មហាសមុទ្រកំពុងតែរងការបំពុលដោយសារប្លាស្ទិក។ បណ្តុះបណ្តាល AI របស់អ្នកឱ្យកំណត់ប្រភេទប្លាស្ទិក និងជួយប្រមូលសម្រាម!",
+          "មហាសមុទ្រកំពុងតែរងការបំពុលដោយសារប្លាស្ទិក។ បណ្តុះបណ្តាល AI របស់អ្នកឱ្យស្គាល់ប្រភេទប្លាស្ទិក និងជួយប្រមូលសម្រាម!",
       },
       forestMission: {
         heading: "អ្នកយាមព្រៃឈើ",
         descriptionUnlocked:
-          "កាត់បន្ថយ CO₂ សកលលោកដោយគ្រប់គ្រងប្រព័ន្ធអេកូឡូស៊ីព្រៃឈើដ៏សំខាន់។",
-        descriptionLocked: "ដោះសោដោយបំពេញបេសកកម្មមហាសមុទ្រ។",
+          "កាត់បន្ថយ CO₂ ដោយគ្រប់គ្រងប្រព័ន្ធអេកូឡូស៊ីព្រៃឈើដ៏សំខាន់។",
+        descriptionLocked: "ដោះសោដោយបំពេញបេសកកម្មក្នុងមហាសមុទ្រ។",
         cardTitleLocked: "បំពេញបេសកកម្មមហាសមុទ្រដើម្បីដោះសោ",
         cardTitleUnlocked: "គ្រប់គ្រងធនធានព្រៃឈើប្រកបដោយនិរន្តរភាព។",
+      },
+      cityMission: {
+        heading: "សម្អាតខ្យល់ពុលក្នុងទីក្រុង",
+        descriptionUnlocked: "ខ្យល់អាកាសក្នុងទីក្រុងកំពុងតែអាប់អួរខ្លាំងណាស់! សូមដាក់ចេញនូវវិធានការឆ្លាតវៃ ដើម្បីសម្អាតបរិយាកាស និងរក្សាប្រជាពលរដ្ឋឱ្យមានសុភមង្គល។",
+        descriptionLocked: "ដោះសោដោយបំពេញបេសកកម្មព្រៃឈើ។",
+        cardTitleUnlocked: "ដោះស្រាយបញ្ហាបំពុលខ្យល់ក្នុងទីក្រុង។",
+        cardTitleLocked: "បំពេញបេសកកម្មព្រៃឈើដើម្បីដោះសោ។",
       },
       button: {
         startMission: "ចាប់ផ្តើមបេសកកម្ម",
@@ -306,7 +320,7 @@ export const translations = {
       },
     },
     gameGuideForest: {
-      title: "មគ្គុទេសក៍អាជ្ញាធរធនធានព្រៃ",
+      title: "ណែនាំផ្លូវអ្នកការពារព្រៃឈើ",
       closeButton: "បិទ",
       gotItButton: "យល់ហើយ!",
       and: "និង",
@@ -316,7 +330,7 @@ export const translations = {
         globalTemp: "សីតុណ្ហភាពសកល",
         biodiversity: "ជីវចម្រុះ",
         dataPoints: "ពិន្ទុទិន្នន័យ",
-        dataPointsAbbr: "ព.ទ.",
+        dataPointsAbbr: "DP",
         energy: "ថាមពល",
         trainAI: "បណ្តុះបណ្តាល AI",
         manageForest: "គ្រប់គ្រងព្រៃ",
@@ -325,14 +339,14 @@ export const translations = {
         biomassGenerator: "ម៉ាស៊ីនផលិតថាមពលពីសារពាង្គកាយ",
         loggedTiles: "ផ្ទៃដីដែលបានកាប់ឈើ",
         aiAccuracy: "ភាពត្រឹមត្រូវនៃ AI",
-        diseased: "ឈឺ",
+        diseased: "មាន​​ជំងឺ",
         fireRisk: "ហានិភ័យអគ្គីភ័យ",
       },
 
       section1Title: "ការយល់ដឹងអំពីបរិស្ថានរបស់អ្នក",
       section1_li1_part1: "ផ្នែកខាងលើបង្ហាញអំពី",
       section1_li1_part2: "និង",
-      section1_li1_part3: "គោលបំណងរបស់អ្នកគឺកាត់បន្ថយ CO₂ ដោយបង្កើន",
+      section1_li1_part3: "គោលដៅរបស់អ្នកគឺកាត់បន្ថយ CO₂ ដោយបង្កើន",
       section1_li1_part4: "និងការកែលម្អព្រៃឈើ។",
       section1_li2_part1: "ផែនទីបង្ហាញដើមឈើដែលមានសុខភាពល្អ",
       section1_li2_part2: "(ក្មេង)",
@@ -343,7 +357,7 @@ export const translations = {
       section1_li3_part1: "ផ្នែកខាងឆ្វេងបង្ហាញពី",
       section1_li3_part2: "របស់អ្នក",
 
-      section2Title: "វដ្តល្បែងស្នូល",
+      section2Title: "វដ្តនៃការលេងហ្គេម",
       trainWardenIntro: "ចុចលើប៊ូតុង",
       trainWardenPurpose:
         "ដើម្បីបង្រៀនវាអោយស្គាល់ហានិភ័យដូចជារោគសញ្ញា និងហានិភ័យអគ្គីភ័យ។ វានឹងបង្កើន",
@@ -382,7 +396,7 @@ export const translations = {
       section1_li3:
         "ជំនួយការ AI របស់អ្នកនឹងផ្តល់គន្លឹះ និងការណែនាំមានប្រយោជន៍។",
 
-      section2Title: "2. វដ្តនៃការលេងហ្គេមស្នូល: តម្រៀបសំរាម",
+      section2Title: "2. វដ្តនៃការលេងហ្គេម: តម្រៀបសំរាម",
       section2_p1:
         "មហាសមុទ្រពោរពេញដោយសំរាម! ភារកិច្ចរបស់អ្នកគឺបណ្តុះបណ្តាល AI របស់អ្នកឱ្យកំណត់អត្តសញ្ញាណប្រភេទនៃការបំពុលផ្សេងៗគ្នា។",
       section2_li1_part1: "ចុច",
