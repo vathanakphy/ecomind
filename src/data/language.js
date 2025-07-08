@@ -567,6 +567,8 @@ export const translations = {
       "historyTitle": "Notification History",
       "historyEmpty": "No notifications yet."
     }
+  },CityMap:{
+    cityMap:'AQI City Map',
   }
   },
 
@@ -1143,6 +1145,8 @@ export const translations = {
       "historyTitle": "ប្រវត្តិការជូនដំណឹង",
       "historyEmpty": "មិនទាន់មានការជូនដំណឹងនៅឡើយទេ។"
     }
+  },CityMap:{
+    cityMap:'ផែនទីនៃទីក្រុង AQI',
   }
   },
 };
