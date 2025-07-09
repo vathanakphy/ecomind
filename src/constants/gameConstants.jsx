@@ -1,6 +1,6 @@
 // src/constants/gameConstants.js
 
-export const INITIAL_DATA_POINTS = 500;
+export const INITIAL_DATA_POINTS = 300;
 export const INITIAL_ENERGY = 100;
 export const INITIAL_OCEAN_HEALTH = 20;
 export const INITIAL_AI_ACCURACY = 30;
